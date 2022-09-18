@@ -1,0 +1,116 @@
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\bin\Debug\NEA.exe.config
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\bin\Debug\NEA.exe.manifest
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\bin\Debug\NEA.application
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\bin\Debug\NEA.exe
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\bin\Debug\NEA.pdb
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\bin\Debug\MaterialSkin.dll
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\bin\Debug\System.Data.SqlClient.dll
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.csproj.AssemblyReference.cache
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.csproj.SuggestedBindingRedirects.cache
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.FormViewInsights.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.FormAccountCreate.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.FormAccountEdit.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.FormAlter.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.FormDashboard.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.FormLogin.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.FormSettings.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.Properties.Resources.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.FormPurchase.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.FormAccountReset.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.FormRestock.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.FormViewStock.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.FormViewOrders.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.csproj.GenerateResource.cache
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.csproj.CoreCompileInputs.cache
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.exe.manifest
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.application
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.csproj.CopyComplete
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.exe
+C:\Users\mwbel\OneDrive\Homework\A Level\Comp Science\NEA\NEA\obj\Debug\NEA.pdb
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\bin\Debug\NEA.exe.config
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\bin\Debug\NEA.exe.manifest
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\bin\Debug\NEA.application
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\bin\Debug\NEA.exe
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\bin\Debug\NEA.pdb
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\bin\Debug\MaterialSkin.dll
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\bin\Debug\System.Data.SqlClient.dll
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.csproj.AssemblyReference.cache
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.csproj.SuggestedBindingRedirects.cache
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.FormViewInsights.resources
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.FormAccountCreate.resources
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.FormAccountEdit.resources
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.FormAlter.resources
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.FormDashboard.resources
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.FormLogin.resources
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.FormSettings.resources
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.Properties.Resources.resources
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.FormPurchase.resources
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.FormAccountReset.resources
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.FormRestock.resources
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.FormViewStock.resources
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.FormViewOrders.resources
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.csproj.GenerateResource.cache
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.csproj.CoreCompileInputs.cache
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.exe.manifest
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.application
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.csproj.CopyComplete
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.exe
+C:\Users\mwbel\OneDrive\Homework\A Level Computer Science\NEA\NEA\obj\Debug\NEA.pdb
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\bin\Debug\NEA.exe.config
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\bin\Debug\NEA.exe.manifest
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\bin\Debug\NEA.application
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\bin\Debug\NEA.exe
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\bin\Debug\NEA.pdb
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\bin\Debug\MaterialSkin.dll
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\bin\Debug\System.Data.SqlClient.dll
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.csproj.AssemblyReference.cache
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.csproj.SuggestedBindingRedirects.cache
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.FormViewInsights.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.FormAccountCreate.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.FormAccountEdit.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.FormAlter.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.FormDashboard.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.FormLogin.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.FormSettings.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.Properties.Resources.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.FormPurchase.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.FormAccountReset.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.FormRestock.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.FormViewStock.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.FormViewOrders.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.csproj.GenerateResource.cache
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.csproj.CoreCompileInputs.cache
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.exe.manifest
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.application
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.csproj.CopyComplete
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.exe
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Debug\NEA.pdb
+C:\Users\mwbel\Downloads\InventorySystem\NEA\bin\Debug\NEA.exe.config
+C:\Users\mwbel\Downloads\InventorySystem\NEA\bin\Debug\NEA.exe.manifest
+C:\Users\mwbel\Downloads\InventorySystem\NEA\bin\Debug\NEA.application
+C:\Users\mwbel\Downloads\InventorySystem\NEA\bin\Debug\NEA.exe
+C:\Users\mwbel\Downloads\InventorySystem\NEA\bin\Debug\NEA.pdb
+C:\Users\mwbel\Downloads\InventorySystem\NEA\bin\Debug\MaterialSkin.dll
+C:\Users\mwbel\Downloads\InventorySystem\NEA\bin\Debug\System.Data.SqlClient.dll
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.csproj.AssemblyReference.cache
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.csproj.SuggestedBindingRedirects.cache
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.FormViewInsights.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.FormAccountCreate.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.FormAccountEdit.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.FormAlter.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.FormDashboard.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.FormLogin.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.FormSettings.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.Properties.Resources.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.FormPurchase.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.FormAccountReset.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.FormRestock.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.FormViewStock.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.FormViewOrders.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.csproj.GenerateResource.cache
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.csproj.CoreCompileInputs.cache
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.exe.manifest
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.application
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.csproj.CopyComplete
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.exe
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Debug\NEA.pdb

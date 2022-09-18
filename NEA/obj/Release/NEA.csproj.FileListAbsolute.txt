@@ -1,0 +1,58 @@
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\bin\Release\NEA.exe.config
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\bin\Release\NEA.exe.manifest
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\bin\Release\NEA.application
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\bin\Release\NEA.exe
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\bin\Release\NEA.pdb
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\bin\Release\MaterialSkin.dll
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\bin\Release\System.Data.SqlClient.dll
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.csproj.AssemblyReference.cache
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.csproj.SuggestedBindingRedirects.cache
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.FormViewInsights.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.FormAccountCreate.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.FormAccountEdit.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.FormAlter.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.FormDashboard.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.FormLogin.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.FormSettings.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.Properties.Resources.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.FormPurchase.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.FormAccountReset.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.FormRestock.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.FormViewStock.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.FormViewOrders.resources
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.csproj.GenerateResource.cache
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.csproj.CoreCompileInputs.cache
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.exe.manifest
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.application
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.csproj.CopyComplete
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.exe
+C:\Users\mwbel\OneDrive\Homework\A Level\Computer Science\NEA\NEA\obj\Release\NEA.pdb
+C:\Users\mwbel\Downloads\InventorySystem\NEA\bin\Release\NEA.exe.config
+C:\Users\mwbel\Downloads\InventorySystem\NEA\bin\Release\NEA.exe.manifest
+C:\Users\mwbel\Downloads\InventorySystem\NEA\bin\Release\NEA.application
+C:\Users\mwbel\Downloads\InventorySystem\NEA\bin\Release\NEA.exe
+C:\Users\mwbel\Downloads\InventorySystem\NEA\bin\Release\NEA.pdb
+C:\Users\mwbel\Downloads\InventorySystem\NEA\bin\Release\MaterialSkin.dll
+C:\Users\mwbel\Downloads\InventorySystem\NEA\bin\Release\System.Data.SqlClient.dll
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.csproj.AssemblyReference.cache
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.csproj.SuggestedBindingRedirects.cache
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.FormViewInsights.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.FormAccountCreate.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.FormAccountEdit.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.FormAlter.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.FormDashboard.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.FormLogin.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.FormSettings.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.Properties.Resources.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.FormPurchase.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.FormAccountReset.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.FormRestock.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.FormViewStock.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.FormViewOrders.resources
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.csproj.GenerateResource.cache
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.csproj.CoreCompileInputs.cache
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.exe.manifest
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.application
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.csproj.CopyComplete
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.exe
+C:\Users\mwbel\Downloads\InventorySystem\NEA\obj\Release\NEA.pdb
