@@ -1,8 +1,0 @@
-NotificationTime
-30000
-NotificationStock
-10
-RecipientEmailAddress
-mwbelectro@gmail.com
-ColourScheme
-Grey
