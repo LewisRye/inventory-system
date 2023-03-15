@@ -48,8 +48,8 @@
 
             databaseConnection.Open();
 
-            string updateCommand = $@"UPDATE Product SET NumberInStock = NumberInStock + 
-                                   {Quantity} WHERE ProductName = '{ProductName}';";
+            string updateCommand = $@"UPDATE Product SET Number_In_Stock = Number_In_Stock + 
+                                   {Quantity} WHERE Product_Name = '{ProductName}';";
             var cmdUpdate = new MySqlCommand(updateCommand, databaseConnection);                                              // forms an SQL command to change stock values
 
             cmdUpdate.ExecuteNonQuery();                                                                                    // changes stock value then closes connection
@@ -94,7 +94,7 @@
 
             var message = new MailMessage
             (
-                "Lewis Rye lewiscstest@gmail.com", // sender's name and email address
+                "{insert sender name} {insert email}@gmail.com", // sender's name and email address
                 recipient, // recipient's email address
                 "Restocking Invoice", // email subject
                 "You ordered:\n\n" +

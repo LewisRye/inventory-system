@@ -16,5 +16,10 @@ namespace Inventory.DataForms
         {
             InitializeComponent();
         }
+
+        private void FormViewInsights_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -6,6 +6,7 @@
 
         private List<Classes.Product> products = new List<Classes.Product>();
         private List<Classes.Category> categories = new List<Classes.Category>();
+        private List<Classes.Order> orders = new List<Classes.Order>();
 
         private List<Classes.Product> newProductList = new List<Classes.Product>();
 
@@ -25,6 +26,12 @@
         {
             LoadCategories();
             return categories;
+        }
+
+        public List<Classes.Order> GetOrders()
+        {
+            LoadOrders();
+            return orders;
         }
 
         private void LoadProducts()
@@ -52,7 +59,7 @@
             }
         }
 
-        private void LoadProducts(String Search)
+        private void LoadProducts(string Search)
         {
             try
             {
@@ -80,11 +87,35 @@
             try
             {
                 databaseConnection.Open();
-                var command = new MySqlCommand("SELECT category_id, category_name FROM Category", databaseConnection); // uses SQL query to read data
+                var command = new MySqlCommand(@"SELECT category_id, category_name FROM Category", databaseConnection); // uses SQL query to read data
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     categories.Add(new Classes.Category(Convert.ToInt32(reader.GetString(0)), reader.GetString(1).ToString()));
+                }
+                databaseConnection.Close();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("Unable to connect to the database. " + ex.Message);
+            }
+        }
+
+        private void LoadOrders()
+        {
+            try
+            {
+                databaseConnection.Open();
+                var command = new MySqlCommand(@"SELECT CustomerOrderDetails.Order_ID AS 'Order ID', Product.Product_Name AS 'Product Name', 
+                    Customer.Customer_FName AS 'First Name', Customer.Customer_LName AS 'Last Name', CustomerOrderDetails.Quantity_Ordered AS 'Quantity', 
+                    CustomerOrders.Order_Date AS 'Date Ordered', ROUND(Product.Buy_Price * 1.2, 2) AS 'Order Price' FROM Product, CustomerOrders, CustomerOrderDetails, Customer 
+                    WHERE CustomerOrderDetails.Order_ID = CustomerOrders.Order_ID AND Product.Product_ID = CustomerOrderDetails.Product_ID AND Customer.Customer_ID = CustomerOrders.Customer_ID 
+                    GROUP BY CustomerOrderDetails.Order_ID, Product.Product_Name, Customer.Customer_FName, Customer.Customer_LName, CustomerOrderDetails.Quantity_Ordered, CustomerOrders.Order_Date 
+                    ORDER BY Order_Date ASC;", databaseConnection); // uses SQL query to read data
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    orders.Add(new Classes.Order(Convert.ToInt32(reader.GetString(0)), reader.GetString(1).ToString(), reader.GetString(2), reader.GetString(3), Convert.ToInt32(reader.GetString(4)), Convert.ToDateTime(reader.GetString(5)), Convert.ToDecimal(reader.GetString(6))));
                 }
                 databaseConnection.Close();
             }

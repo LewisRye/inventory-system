@@ -1,4 +1,6 @@
-﻿namespace Inventory
+﻿using Mysqlx.Connection;
+
+namespace Inventory
 {
     internal class Notification
     {
@@ -8,19 +10,18 @@
 
         //  -handles notifications
 
+        private MySqlConnection databaseConnection = new MySqlConnection(Logon.ConnectionString); // directs code to location of my database
         private protected int NumberLowItems = 0;
 
         public void CheckForLowStock(NotifyIcon Notification)
         {
-            var databaseConnection = new MySqlConnection(Logon.ConnectionString); // directs code to location of my database
-
             try
             {
                 databaseConnection.Open();
 
                 var sda = new MySqlDataAdapter($@"SELECT COUNT(product_id) 
                     FROM Product 
-                    WHERE number_in_stock < {Logon.NotificationStock}", databaseConnection); // SQL query for user defined critical stock level
+                    WHERE number_in_stock <= {Logon.NotificationStock}", databaseConnection); // SQL query for user defined critical stock level
                 var dt = new DataTable();
                 sda.Fill(dt);
                 NumberLowItems = Convert.ToInt32(dt.Rows[0][0]);

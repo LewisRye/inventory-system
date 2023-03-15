@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9QnP6FVc8TEY18j9uk7fy7Rv8g9p67CTOrO3l5THw5WNiY6o4Vk2UDK2Jde8H7QY/GQggjaDMgoXwr+/xgemgw==",
+  "dgSpecHash": "kz6R4G7MA/QtPTCY1MjfqfdPuDloi+fUlSN813ncKcu4TyPVDjDgKYenHLW/Tsy7fPRAqWhdGGSEsLgd8Ky+ug==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Lewis\\Downloads\\InventorySystemCS\\Inventory\\Inventory.csproj",
+  "projectFilePath": "C:\\Users\\Lewis\\OneDrive\\Downloads\\C#\\Inventory\\Inventory\\Inventory.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Lewis\\.nuget\\packages\\azure.core\\1.6.0\\azure.core.1.6.0.nupkg.sha512",
     "C:\\Users\\Lewis\\.nuget\\packages\\azure.identity\\1.3.0\\azure.identity.1.3.0.nupkg.sha512",
