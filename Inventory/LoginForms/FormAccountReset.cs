@@ -192,10 +192,5 @@
                 E.Handled = true;
             }
         }
-
-        private void FormAccountReset_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

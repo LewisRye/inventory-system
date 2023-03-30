@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAccountReset));
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(FormAccountReset));
             LabelResetPassword = new Label();
             LabelUsername = new Label();
             LabelAddress = new Label();
@@ -231,7 +231,6 @@
             Name = "FormAccountReset";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Inventory Management System";
-            Load += FormAccountReset_Load;
             ResumeLayout(false);
             PerformLayout();
         }

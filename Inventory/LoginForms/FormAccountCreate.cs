@@ -1,18 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Configuration;
-using MaterialSkin;
-using MySql.Data.MySqlClient;
-
-namespace Inventory.LoginForms
+﻿namespace Inventory.LoginForms
 {
     public partial class FormAccountCreate : Form
     {

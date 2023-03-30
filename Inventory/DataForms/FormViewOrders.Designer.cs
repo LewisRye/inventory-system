@@ -31,11 +31,9 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             ComponentResourceManager resources = new ComponentResourceManager(typeof(FormViewOrders));
             DatabaseGrid = new DataGridView();
-            LeftPanel = new Panel();
-            WelcomeText = new Label();
             ButtonClose = new MaterialSkin.Controls.MaterialButton();
+            WelcomeText = new Label();
             ((ISupportInitialize)DatabaseGrid).BeginInit();
-            LeftPanel.SuspendLayout();
             SuspendLayout();
             // 
             // DatabaseGrid
@@ -58,7 +56,7 @@
             DatabaseGrid.DefaultCellStyle = dataGridViewCellStyle1;
             DatabaseGrid.EnableHeadersVisualStyles = false;
             DatabaseGrid.GridColor = Color.White;
-            DatabaseGrid.Location = new Point(228, 75);
+            DatabaseGrid.Location = new Point(13, 63);
             DatabaseGrid.Margin = new Padding(4, 3, 4, 3);
             DatabaseGrid.Name = "DatabaseGrid";
             DatabaseGrid.RowHeadersVisible = false;
@@ -67,29 +65,8 @@
             DatabaseGrid.ShowCellToolTips = false;
             DatabaseGrid.ShowEditingIcon = false;
             DatabaseGrid.ShowRowErrors = false;
-            DatabaseGrid.Size = new Size(814, 512);
+            DatabaseGrid.Size = new Size(1029, 463);
             DatabaseGrid.TabIndex = 30;
-            // 
-            // LeftPanel
-            // 
-            LeftPanel.BackColor = Color.Transparent;
-            LeftPanel.Controls.Add(WelcomeText);
-            LeftPanel.Controls.Add(ButtonClose);
-            LeftPanel.Dock = DockStyle.Left;
-            LeftPanel.Location = new Point(0, 0);
-            LeftPanel.Name = "LeftPanel";
-            LeftPanel.Size = new Size(221, 599);
-            LeftPanel.TabIndex = 31;
-            // 
-            // WelcomeText
-            // 
-            WelcomeText.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
-            WelcomeText.Location = new Point(0, 0);
-            WelcomeText.Name = "WelcomeText";
-            WelcomeText.Size = new Size(221, 38);
-            WelcomeText.TabIndex = 8;
-            WelcomeText.Text = "welcome, {username}!";
-            WelcomeText.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // ButtonClose
             // 
@@ -100,12 +77,12 @@
             ButtonClose.Depth = 0;
             ButtonClose.HighEmphasis = true;
             ButtonClose.Icon = null;
-            ButtonClose.Location = new Point(4, 544);
+            ButtonClose.Location = new Point(13, 535);
             ButtonClose.Margin = new Padding(4, 6, 4, 6);
             ButtonClose.MouseState = MouseState.HOVER;
             ButtonClose.Name = "ButtonClose";
             ButtonClose.NoAccentTextColor = Color.Empty;
-            ButtonClose.Size = new Size(214, 49);
+            ButtonClose.Size = new Size(1029, 49);
             ButtonClose.TabIndex = 6;
             ButtonClose.Text = "Dashboard";
             ButtonClose.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -113,13 +90,24 @@
             ButtonClose.UseVisualStyleBackColor = false;
             ButtonClose.Click += ButtonClose_Click;
             // 
+            // WelcomeText
+            // 
+            WelcomeText.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
+            WelcomeText.Location = new Point(1, 9);
+            WelcomeText.Name = "WelcomeText";
+            WelcomeText.Size = new Size(221, 38);
+            WelcomeText.TabIndex = 8;
+            WelcomeText.Text = "welcome, {username}!";
+            WelcomeText.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // FormViewOrders
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1056, 599);
-            Controls.Add(LeftPanel);
+            Controls.Add(ButtonClose);
+            Controls.Add(WelcomeText);
             Controls.Add(DatabaseGrid);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -129,13 +117,11 @@
             Text = "Inventory Management System";
             Load += ViewOrdersForm_Load;
             ((ISupportInitialize)DatabaseGrid).EndInit();
-            LeftPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
         private System.Windows.Forms.DataGridView DatabaseGrid;
-        private Panel LeftPanel;
         private MaterialSkin.Controls.MaterialButton ButtonClose;
         private Label WelcomeText;
     }
