@@ -1,3 +1,10 @@
-# Inventory Management by Lewis Rye
-## PLEASE NOTE: this application will not work without the SQL database being locally hosted to your machine, please contact me if you wish to see the scripts for creating the database.
-This project is my first ever project committed to GitHub, it was a homework project so I have removed all documentation in order to ensure it cannot be copied as someone else's in future. This is a project that would aid a small business in adding, removing and editing stock that they hold in their warehouse. I believe this project could be further improved by creating a shopping website for an end user that would like to purchase some of the items. Perhaps even implementing the PayPal sandbox... Maybe I will add these changes in the future if I am able to. This project is also being used with branches to help me learn more about Git and how to merge changes.
+# Inventory Management System by Lewis Rye
+## This application will not work without the database being locally hosted to your machine, please contact me if you wish to see the scripts for this.
+This project is my first ever project committed to GitHub, it is a project that would aid a small business in adding, removing and editing stock that they hold in their warehouse.
+
+These changes are being considered for the future:
+- PayPal Sandbox
+- Website for customers
+- Realtime database updates
+
+> This project is also using branches to help me learn more about Git.
