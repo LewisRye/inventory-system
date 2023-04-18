@@ -1,4 +1,6 @@
-﻿namespace Inventory.LoginForms
+﻿using Microsoft.Identity.Client;
+
+namespace Inventory.LoginForms
 {
     public partial class FormAccountEdit : Form
     {
@@ -180,6 +182,7 @@
         private void ButtonApplyNewAddress_Click(object sender, EventArgs e)
         {
             var databaseConn = new MySqlConnection(_connStr);
+            int accountId = 0;
 
             try
             {
@@ -189,15 +192,19 @@
                     string selectedUser = ListOfUsers.SelectedText.ToString();
 
                     string getIdCommand = $"SELECT account_id FROM account WHERE username = '{selectedUser}';";
-                    int accountId = 0;
-                    var command = new MySqlCommand();
+                    var command = new MySqlCommand(getIdCommand, databaseConn);
                     MySqlDataReader dr = command.ExecuteReader();
                     while (dr.Read())
                     {
                         accountId = Convert.ToInt32(dr["account_id"]);
                     }
+                    dr.Close();
+                    databaseConn.Close();
+                }
 
-
+                databaseConn.Open();
+                using (databaseConn)
+                {
                     string newAddress = TextBoxAddress.Text;
                     string editUserCommand = @"UPDATE Staff SET staff_address = @NewAddress WHERE account_id = @AccountID;";
                     var cmd = new MySqlCommand(editUserCommand, databaseConn);
@@ -223,28 +230,42 @@
 
         private void ButtonApplyNewAccessLevel_Click(object sender, EventArgs e)
         {
-            /*
-             if (ListOfAccessLevels.SelectedIndex > 0)
+            if (ListOfAccessLevels.SelectedIndex > 0)
             {
                 var databaseConn = new MySqlConnection(_connStr);
+                string selectedUser = ListOfUsers.SelectedItem.ToString();
+                string selectedAccessLevel = ListOfAccessLevels.SelectedItem.ToString();
+                int accountId = 0;
 
                 try
                 {
                     databaseConn.Open(); // opens connection with the database so it can be queried
                     using (databaseConn)
                     {
-                        int selectedUser = ListOfUsers.SelectedIndex - 1;
+                        string getIdCommand = $"SELECT account_id FROM account WHERE username = '{selectedUser}';";
+                        var command = new MySqlCommand(getIdCommand, databaseConn);
+                        MySqlDataReader dr = command.ExecuteReader();
+                        while (dr.Read())
+                        {
+                            accountId = Convert.ToInt32(dr["account_id"]);
+                        }
+                        dr.Close();
+                        databaseConn.Close();
+                    }
+
+                    databaseConn.Open();
+                    using (databaseConn)
+                    {
                         int newAccessLevel = ListOfAccessLevels.SelectedIndex - 1;
-                        string editUserCommand = @"UPDATE Account SET AccessLevelID = @NewAccessLevel WHERE AccountID = @AccountID;";
+                        string editUserCommand = @"UPDATE Account SET level_id = @NewAccessLevel WHERE Account_ID = @AccountID;";
                         var cmd = new MySqlCommand(editUserCommand, databaseConn); // forms an SQL command to change stock values
                         cmd.Parameters.AddWithValue("@NewAccessLevel", newAccessLevel);
-                        cmd.Parameters.AddWithValue("@AccountID", selectedUser);
+                        cmd.Parameters.AddWithValue("@AccountID", accountId);
                         cmd.ExecuteNonQuery();
 
                         databaseConn.Close();
 
-                        MessageBox.Show(
-                            $"The access level of '{ListOfUsers.SelectedItem}' is now {ListOfAccessLevels.GetItemText(ListOfAccessLevels.SelectedItem)}");
+                        MessageBox.Show($"The access level of '{selectedUser}' is now {selectedAccessLevel}", "Success");
                     }
                 }
                 catch (MySqlException ex)
@@ -260,8 +281,6 @@
             {
                 MessageBox.Show("Please choose an access level.", "Error");
             }
-            */
-            MessageBox.Show("This feature is not working as of yet.", "Error");
         }
 
         private void ButtonReturnDash_Click(object sender, EventArgs e)
