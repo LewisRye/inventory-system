@@ -1,4 +1,4 @@
-﻿namespace Inventory
+﻿namespace Inventory.Classes
 {
     internal class Insights
     {
@@ -7,7 +7,7 @@
          */
 
         //  -creates insights based on SQL queries
-        MySqlConnection databaseConn = new MySqlConnection(Logon.ConnectionString);
+        MySqlConnection databaseConn = new MySqlConnection(Classes.Logon.ConnectionString);
 
         public void CreateStockByTypeChart(Chart Chart)
         {

@@ -110,7 +110,7 @@
                 databaseConn.Close();
 
                 MessageBox.Show("Account successfully added", "Success");
-                Logon.AccountCreated = true; // tells the Logon class that account has been created
+                Classes.Logon.AccountCreated = true; // tells the Logon class that account has been created
             }
             catch (MySqlException ex)
             {
@@ -130,7 +130,7 @@
                     TextBoxUsername.Text, TextBoxPassword.Text);
             }
 
-            if (Logon.AccountCreated)
+            if (Classes.Logon.AccountCreated)
             {
                 foreach (Form var in Application.OpenForms)
                 {
@@ -150,8 +150,8 @@
             {
                 var.Visible = true;
             }
-            Logon.CurrentUser = "";
-            Logon.AccessLevel = "";
+            Classes.Logon.CurrentUser = "";
+            Classes.Logon.AccessLevel = "";
             this.Hide();
             this.Close();
             this.Dispose();

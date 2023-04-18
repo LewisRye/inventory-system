@@ -2,8 +2,8 @@
 {
     public partial class FormRestock : Form
     {
-        private readonly Basket _basket = new Basket();
-        private readonly Database _database = new Database();
+        private readonly Classes.Basket _basket = new Classes.Basket();
+        private readonly Classes.Database _database = new Classes.Database();
         private readonly string _connStr = ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
         private double _price = 0;
         private List<string> _nameOfItem = new List<string>();
@@ -22,7 +22,7 @@
         private void RestockForm_Load(object Sender, EventArgs E)
         {
             _database.LoadNoStockFromProductDb(DatabaseGrid, ListProducts);
-            TextWelcome.Text = $"welcome, {Logon.CurrentUser}!";
+            TextWelcome.Text = $"welcome, {Classes.Logon.CurrentUser}!";
         }
 
         private void ListProducts_SelectedIndexChanged(object Sender, EventArgs E)
@@ -89,7 +89,7 @@
 
         private void ButtonAddToOrder_Click(object Sender, EventArgs E)
         {
-            if (Logon.AccessLevel != "Manager")
+            if (Classes.Logon.AccessLevel != "Manager")
             {
                 MessageBox.Show("You need to be a manager to use this feature", "Manager Required");
             }
@@ -163,7 +163,7 @@
 
         private void ButtonPurchase_Click(object Sender, EventArgs E)
         {
-            if (Logon.AccessLevel != "Manager")
+            if (Classes.Logon.AccessLevel != "Manager")
             {
                 MessageBox.Show("You need to be a manager to use this feature", "Manager Required");
             }

@@ -2,7 +2,7 @@
 {
     public partial class FormSettings : Form
     {
-        private readonly Settings _settings = new Settings();
+        private readonly Classes.Settings _settings = new Classes.Settings();
 
         public FormSettings()
         {

@@ -12,7 +12,7 @@
             if (Hashing.ValidPassword(NewPassword))
             {
                 int userExists = 0;
-                var databaseConnection = new MySqlConnection(Logon.ConnectionString);
+                var databaseConnection = new MySqlConnection(Classes.Logon.ConnectionString);
 
                 try
                 {
@@ -42,7 +42,7 @@
                         changePwd.Parameters.AddWithValue("@hash", hashedInput);                            // changes @password in the query to match password input
                         changePwd.ExecuteNonQuery();
                         MessageBox.Show("Password has been successfully changed", "Success");
-                        Logon.PasswordChanged = true;
+                        Classes.Logon.PasswordChanged = true;
                     }
 
                     else
@@ -73,7 +73,7 @@
                 MessageBox.Show("Not all fields have been entered correctly...", "Error");
             }
 
-            if (Logon.PasswordChanged)
+            if (Classes.Logon.PasswordChanged)
             {
                 foreach (Form var in Application.OpenForms)
                 {
@@ -172,7 +172,7 @@
                         MessageBox.Show("Not all fields have been entered correctly...", "Error");
                     }
 
-                    if (Logon.PasswordChanged)
+                    if (Classes.Logon.PasswordChanged)
                     {
                         foreach (Form var in Application.OpenForms)
                         {

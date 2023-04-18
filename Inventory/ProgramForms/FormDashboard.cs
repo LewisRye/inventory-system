@@ -1,11 +1,8 @@
-﻿using Inventory.DataForms;
-using Inventory.LoginForms;
-
-namespace Inventory.ProgramForms
+﻿namespace Inventory.ProgramForms
 {
     public partial class FormDashboard : Form
     {
-        private readonly Insights _insights = new Insights();
+        private readonly Classes.Insights _insights = new Classes.Insights();
 
         public FormDashboard()
         {
@@ -14,7 +11,7 @@ namespace Inventory.ProgramForms
 
         private void FormDashboard_Load(object Sender, EventArgs E)
         {
-            WelcomeText.Text = $"welcome, {Logon.CurrentUser}!";
+            WelcomeText.Text = $"welcome, {Classes.Logon.CurrentUser}!";
 
             QuantityItemsStock.Text = "0";
             QuantityItemsProfit.Text = "£0";
@@ -52,8 +49,8 @@ namespace Inventory.ProgramForms
         private void ResetPasswordButton_Click(object Sender, EventArgs E)
         {
             new LoginForms.FormAccountReset().Show();
-            Logon.CurrentUser = "";
-            Logon.AccessLevel = "";
+            Classes.Logon.CurrentUser = "";
+            Classes.Logon.AccessLevel = "";
             this.Hide();
             this.Close();
             this.Dispose();
@@ -73,7 +70,7 @@ namespace Inventory.ProgramForms
 
         private void ViewInsightButton_Click(object Sender, EventArgs E)
         {
-            if (Logon.AccessLevel != "Manager")
+            if (Classes.Logon.AccessLevel != "Manager")
             {
                 MessageBox.Show("You need to be a manager to use this feature", "Manager Required");
             }
@@ -91,7 +88,7 @@ namespace Inventory.ProgramForms
 
         private void OpenOrdersButton_Click(object Sender, EventArgs E)
         {
-            if (Logon.AccessLevel != "Manager")
+            if (Classes.Logon.AccessLevel != "Manager")
             {
                 MessageBox.Show("You need to be a manager to use this feature", "Manager Required");
             }
@@ -109,7 +106,7 @@ namespace Inventory.ProgramForms
 
         private void OpenRestockButton_Click(object Sender, EventArgs E)
         {
-            if (Logon.AccessLevel != "Manager")
+            if (Classes.Logon.AccessLevel != "Manager")
             {
                 MessageBox.Show("You need to be a manager to use this feature", "Manager Required");
             }
@@ -127,7 +124,7 @@ namespace Inventory.ProgramForms
 
         private void OpenEditButton_Click(object sender, EventArgs e)
         {
-            if (Logon.AccessLevel != "Manager")
+            if (Classes.Logon.AccessLevel != "Manager")
             {
                 MessageBox.Show("You need to be a manager to use this feature", "Manager Required");
             }
@@ -152,8 +149,8 @@ namespace Inventory.ProgramForms
                     var.Visible = true;
                 }
             }
-            Logon.CurrentUser = ""; // removes the currently logged in username
-            Logon.AccessLevel = ""; // removes the currently logged in access level
+            Classes.Logon.CurrentUser = ""; // removes the currently logged in username
+            Classes.Logon.AccessLevel = ""; // removes the currently logged in access level
             this.Hide();
             this.Close();
             this.Dispose();

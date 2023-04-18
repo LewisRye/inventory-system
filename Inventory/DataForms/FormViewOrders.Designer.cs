@@ -33,6 +33,9 @@
             DatabaseGrid = new DataGridView();
             ButtonClose = new MaterialSkin.Controls.MaterialButton();
             WelcomeText = new Label();
+            ButtonClear = new MaterialSkin.Controls.MaterialButton();
+            SearchBox = new TextBox();
+            TextSearch = new Label();
             ((ISupportInitialize)DatabaseGrid).BeginInit();
             SuspendLayout();
             // 
@@ -100,12 +103,58 @@
             WelcomeText.Text = "welcome, {username}!";
             WelcomeText.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // ButtonClear
+            // 
+            ButtonClear.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            ButtonClear.AutoSize = false;
+            ButtonClear.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            ButtonClear.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            ButtonClear.Depth = 0;
+            ButtonClear.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            ButtonClear.HighEmphasis = true;
+            ButtonClear.Icon = null;
+            ButtonClear.Location = new Point(897, 22);
+            ButtonClear.Margin = new Padding(4, 6, 4, 6);
+            ButtonClear.MouseState = MouseState.HOVER;
+            ButtonClear.Name = "ButtonClear";
+            ButtonClear.NoAccentTextColor = Color.Empty;
+            ButtonClear.Size = new Size(145, 23);
+            ButtonClear.TabIndex = 35;
+            ButtonClear.Text = "Clear";
+            ButtonClear.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            ButtonClear.UseAccentColor = false;
+            ButtonClear.UseVisualStyleBackColor = false;
+            // 
+            // SearchBox
+            // 
+            SearchBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            SearchBox.Location = new Point(471, 22);
+            SearchBox.Name = "SearchBox";
+            SearchBox.Size = new Size(419, 23);
+            SearchBox.TabIndex = 34;
+            SearchBox.TextChanged += SearchBox_TextChanged;
+            // 
+            // TextSearch
+            // 
+            TextSearch.AutoSize = true;
+            TextSearch.BackColor = Color.Transparent;
+            TextSearch.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            TextSearch.Location = new Point(232, 21);
+            TextSearch.Name = "TextSearch";
+            TextSearch.Size = new Size(233, 17);
+            TextSearch.TabIndex = 33;
+            TextSearch.Text = "Search by Customer Name or Product:";
+            TextSearch.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // FormViewOrders
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1056, 599);
+            Controls.Add(ButtonClear);
+            Controls.Add(SearchBox);
+            Controls.Add(TextSearch);
             Controls.Add(ButtonClose);
             Controls.Add(WelcomeText);
             Controls.Add(DatabaseGrid);
@@ -118,11 +167,15 @@
             Load += ViewOrdersForm_Load;
             ((ISupportInitialize)DatabaseGrid).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
         private System.Windows.Forms.DataGridView DatabaseGrid;
         private MaterialSkin.Controls.MaterialButton ButtonClose;
         private Label WelcomeText;
+        private MaterialSkin.Controls.MaterialButton ButtonClear;
+        private TextBox SearchBox;
+        private Label TextSearch;
     }
 }

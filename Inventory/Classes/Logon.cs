@@ -1,4 +1,4 @@
-﻿namespace Inventory
+﻿namespace Inventory.Classes
 {
     internal static class Logon
     {
@@ -13,7 +13,7 @@
         public static bool PasswordChanged = false;
         public static bool AccountCreated = false;
         public static int NotificationTime = 0;
-        public static int NotificationStock = 0;
+        public static int NotificationStock = 5;
         public static string RecipientEmailAddress = "";
         public static string ColourScheme = "";
         public static string ConnectionString = ConfigurationManager.ConnectionStrings["Database"].ConnectionString;

@@ -6,6 +6,7 @@ namespace Inventory.DataForms
     {
         private readonly Database _database = new Database();
         private List<Order> allOrders = new List<Order>();
+        private List<Order> newOrders = new List<Order>();
 
         public FormViewOrders()
         {
@@ -29,6 +30,28 @@ namespace Inventory.DataForms
             }
 
             WelcomeText.Text = $"welcome, {Logon.CurrentUser}!";
+        }
+
+        private void SearchBox_TextChanged(object sender, EventArgs e)
+        {
+            DatabaseGrid.Rows.Clear();
+            newOrders.Clear();
+
+            if (SearchBox.Text == "")
+            {
+                foreach (Order o in allOrders)
+                {
+                    DatabaseGrid.Rows.Add(o.GetId(), o.GetProductName(), o.GetFullName(), o.GetQuantity(), o.GetDate().ToString("dd/MM/yyyy"), "£" + o.GetPrice());
+                }
+            }
+            else
+            {
+                newOrders = _database.GetOrders(SearchBox.Text);
+                foreach (Order o in newOrders)
+                {
+                    DatabaseGrid.Rows.Add(o.GetId(), o.GetProductName(), o.GetFullName(), o.GetQuantity(), o.GetDate().ToString("dd/MM/yyyy"), "£" + o.GetPrice());
+                }
+            }
         }
 
         private void ButtonClose_Click(object sender, EventArgs e)

@@ -1,6 +1,4 @@
-﻿using Mysqlx.Connection;
-
-namespace Inventory
+﻿namespace Inventory.Classes
 {
     internal class Notification
     {
@@ -29,8 +27,9 @@ namespace Inventory
 
                 if (dt.Rows.Count > 0) // if table has any rows, there is a low stock item
                 {
-                    Notification.BalloonTipText = $"There are {NumberLowItems} items running out of stock, click for more information.";
-                    Notification.Visible = true; // shows a Windows notification to the user
+                    Notification.BalloonTipIcon = ToolTipIcon.Info;
+                    Notification.BalloonTipText = $"There are {NumberLowItems} items running low or out of stock, click for more information.";
+                    Notification.BalloonTipTitle = "Stock Warning";
                     Notification.ShowBalloonTip(30000);
                 }
             }

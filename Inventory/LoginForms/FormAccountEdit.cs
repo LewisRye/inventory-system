@@ -41,11 +41,11 @@
             {
                 databaseConn.Open(); // connects to database and reads it
 
-                var cmd = new MySqlCommand("SELECT AccessLevelName FROM AccessLevel", databaseConn); // uses SQL query to read data
+                var cmd = new MySqlCommand("SELECT level_name FROM accesslevel", databaseConn); // uses SQL query to read data
                 MySqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    ListOfAccessLevels.Items.Add(dr["AccessLevelName"].ToString()); // populates the list from the SQL query
+                    ListOfAccessLevels.Items.Add(dr["level_name"].ToString()); // populates the list from the SQL query
                 }
                 ListOfAccessLevels.SelectedIndex = 0; // shows text 'select item to order'
                 databaseConn.Close();
@@ -65,18 +65,18 @@
                 databaseConn.Open(); // opens connection with the database so it can be queried
                 using (databaseConn)
                 {
-                    int selectedUser = ListOfUsers.SelectedIndex - 1;
+                    string selectedUser = ListOfUsers.SelectedItem.ToString();
                     string newUsername = TextBoxUsername.Text;
-                    string editUserCommand = @"UPDATE Account SET Username = @NewUsername WHERE AccountID = @AccountID;";
+                    string editUserCommand = @"UPDATE Account SET Username = @NewUsername WHERE Username = @OldUsername;";
                     var cmd = new MySqlCommand(editUserCommand, databaseConn); // forms an SQL command to change stock values
                     cmd.Parameters.AddWithValue("@NewUsername", newUsername);
-                    cmd.Parameters.AddWithValue("@AccountID", selectedUser);
+                    cmd.Parameters.AddWithValue("@OldUsername", selectedUser);
                     cmd.ExecuteNonQuery();
 
                     databaseConn.Close();
 
                     MessageBox.Show(
-                        $"The username of '{ListOfUsers.SelectedItem}' is now {newUsername}");
+                        $"The username of '{selectedUser}' is now {newUsername}");
                 }
             }
             catch (MySqlException ex)
@@ -98,12 +98,23 @@
                 databaseConn.Open(); // opens connection with the database so it can be queried
                 using (databaseConn)
                 {
-                    int selectedUser = ListOfUsers.SelectedIndex - 1;
+                    string selectedUser = ListOfUsers.SelectedText.ToString();
+
+                    string getIdCommand = $"SELECT account_id FROM account WHERE username = '{selectedUser}';";
+                    int accountId = 0;
+                    var command = new MySqlCommand();
+                    MySqlDataReader dr = command.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        accountId = Convert.ToInt32(dr["account_id"]);
+                    }
+
+
                     string newFirstName = TextBoxFirstName.Text;
-                    string editUserCommand = @"UPDATE Staff SET StaffFirstName = @NewFirstName WHERE AccountID = @AccountID;";
-                    var cmd = new MySqlCommand(editUserCommand, databaseConn); // forms an SQL command to change stock values
+                    string editUserCommand = @"UPDATE Staff SET staff_fname = @NewFirstName WHERE account_id = @AccountID;";
+                    var cmd = new MySqlCommand(editUserCommand, databaseConn);
                     cmd.Parameters.AddWithValue("@NewFirstName", newFirstName);
-                    cmd.Parameters.AddWithValue("@AccountID", selectedUser);
+                    cmd.Parameters.AddWithValue("@AccountID", accountId);
                     cmd.ExecuteNonQuery();
 
                     databaseConn.Close();
@@ -131,18 +142,29 @@
                 databaseConn.Open(); // opens connection with the database so it can be queried
                 using (databaseConn)
                 {
-                    int selectedUser = ListOfUsers.SelectedIndex - 1;
+                    string selectedUser = ListOfUsers.SelectedText.ToString();
+
+                    string getIdCommand = $"SELECT account_id FROM account WHERE username = '{selectedUser}';";
+                    int accountId = 0;
+                    var command = new MySqlCommand();
+                    MySqlDataReader dr = command.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        accountId = Convert.ToInt32(dr["account_id"]);
+                    }
+
+
                     string newLastName = TextBoxLastName.Text;
-                    string editUserCommand = @"UPDATE Staff SET StaffLastName = @NewLastName WHERE AccountID = @AccountID;";
-                    var cmd = new SqlCommand(editUserCommand, databaseConn); // forms an SQL command to change stock values
-                    cmd.Parameters.AddWithValue("@NewLastName", newLastName);
-                    cmd.Parameters.AddWithValue("@AccountID", selectedUser);
+                    string editUserCommand = @"UPDATE Staff SET staff_lname = @NewFirstName WHERE account_id = @AccountID;";
+                    var cmd = new MySqlCommand(editUserCommand, databaseConn);
+                    cmd.Parameters.AddWithValue("@NewFirstName", newLastName);
+                    cmd.Parameters.AddWithValue("@AccountID", accountId);
                     cmd.ExecuteNonQuery();
 
                     databaseConn.Close();
 
                     MessageBox.Show(
-                        $"The first name of '{ListOfUsers.SelectedItem}' is now {newLastName}");
+                        $"The last name of '{ListOfUsers.SelectedItem}' is now {newLastName}");
                 }
             }
             catch (MySqlException ex)
@@ -164,12 +186,23 @@
                 databaseConn.Open(); // opens connection with the database so it can be queried
                 using (databaseConn)
                 {
-                    int selectedUser = ListOfUsers.SelectedIndex - 1;
+                    string selectedUser = ListOfUsers.SelectedText.ToString();
+
+                    string getIdCommand = $"SELECT account_id FROM account WHERE username = '{selectedUser}';";
+                    int accountId = 0;
+                    var command = new MySqlCommand();
+                    MySqlDataReader dr = command.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        accountId = Convert.ToInt32(dr["account_id"]);
+                    }
+
+
                     string newAddress = TextBoxAddress.Text;
-                    string editUserCommand = @"UPDATE Staff SET StaffAddress = @NewAddress WHERE AccountID = @AccountID;";
-                    var cmd = new MySqlCommand(editUserCommand, databaseConn); // forms an SQL command to change stock values
+                    string editUserCommand = @"UPDATE Staff SET staff_address = @NewAddress WHERE account_id = @AccountID;";
+                    var cmd = new MySqlCommand(editUserCommand, databaseConn);
                     cmd.Parameters.AddWithValue("@NewAddress", newAddress);
-                    cmd.Parameters.AddWithValue("@AccountID", selectedUser);
+                    cmd.Parameters.AddWithValue("@AccountID", accountId);
                     cmd.ExecuteNonQuery();
 
                     databaseConn.Close();
@@ -188,42 +221,10 @@
             }
         }
 
-        private void ButtonApplyNewPhone_Click(object sender, EventArgs e)
-        {
-            var databaseConn = new MySqlConnection(_connStr);
-
-            try
-            {
-                databaseConn.Open(); // opens connection with the database so it can be queried
-                using (databaseConn)
-                {
-                    int selectedUser = ListOfUsers.SelectedIndex - 1;
-                    string newPhone = TextBoxPhoneNumber.Text;
-                    string editUserCommand = @"UPDATE Staff SET StaffPhone = @NewPhone WHERE AccountID = @AccountID;";
-                    var cmd = new SqlCommand(editUserCommand, databaseConn); // forms an SQL command to change stock values
-                    cmd.Parameters.AddWithValue("@NewPhone", newPhone);
-                    cmd.Parameters.AddWithValue("@AccountID", selectedUser);
-                    cmd.ExecuteNonQuery();
-
-                    databaseConn.Close();
-
-                    MessageBox.Show(
-                        $"The phone number of '{ListOfUsers.SelectedItem}' is now {newPhone}");
-                }
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show("Unable to connect to the database. " + ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error");
-            }
-        }
-
         private void ButtonApplyNewAccessLevel_Click(object sender, EventArgs e)
         {
-            if (ListOfAccessLevels.SelectedIndex > 0)
+            /*
+             if (ListOfAccessLevels.SelectedIndex > 0)
             {
                 var databaseConn = new MySqlConnection(_connStr);
 
@@ -259,6 +260,8 @@
             {
                 MessageBox.Show("Please choose an access level.", "Error");
             }
+            */
+            MessageBox.Show("This feature is not working as of yet.", "Error");
         }
 
         private void ButtonReturnDash_Click(object sender, EventArgs e)

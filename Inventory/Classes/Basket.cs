@@ -1,4 +1,4 @@
-﻿namespace Inventory
+﻿namespace Inventory.Classes
 {
     internal class Basket
     {
@@ -44,7 +44,7 @@
 
         private void InsertStockToProductDb(int Quantity, string ProductName)
         {
-            var databaseConnection = new MySqlConnection(Logon.ConnectionString);
+            var databaseConnection = new MySqlConnection(Classes.Logon.ConnectionString);
 
             databaseConnection.Open();
 
@@ -59,7 +59,7 @@
 
         private void CreateEmailReceipt(string[,] Basket)
         {
-            string recipient = Logon.RecipientEmailAddress; // gets the recipient email address from settings
+            string recipient = Classes.Logon.RecipientEmailAddress; // gets the recipient email address from settings
             string emailText = "";
             double totalPrice = 0;
 

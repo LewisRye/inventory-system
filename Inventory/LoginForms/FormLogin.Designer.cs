@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLogin));
+            components = new Container();
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(FormLogin));
             TextLogin = new Label();
             TextUsername = new Label();
             TextPassword = new Label();
@@ -84,7 +84,7 @@
             TextBoxUsername.LeadingIcon = null;
             TextBoxUsername.Location = new Point(7, 99);
             TextBoxUsername.MaxLength = 20;
-            TextBoxUsername.MouseState = MaterialSkin.MouseState.OUT;
+            TextBoxUsername.MouseState = MouseState.OUT;
             TextBoxUsername.Multiline = false;
             TextBoxUsername.Name = "TextBoxUsername";
             TextBoxUsername.Size = new Size(493, 50);
@@ -102,7 +102,7 @@
             TextBoxPassword.LeadingIcon = null;
             TextBoxPassword.Location = new Point(7, 180);
             TextBoxPassword.MaxLength = 20;
-            TextBoxPassword.MouseState = MaterialSkin.MouseState.OUT;
+            TextBoxPassword.MouseState = MouseState.OUT;
             TextBoxPassword.Multiline = false;
             TextBoxPassword.Name = "TextBoxPassword";
             TextBoxPassword.Password = true;
@@ -164,7 +164,7 @@
             ButtonLogin.Icon = null;
             ButtonLogin.Location = new Point(7, 273);
             ButtonLogin.Margin = new Padding(4, 6, 4, 6);
-            ButtonLogin.MouseState = MaterialSkin.MouseState.HOVER;
+            ButtonLogin.MouseState = MouseState.HOVER;
             ButtonLogin.Name = "ButtonLogin";
             ButtonLogin.NoAccentTextColor = Color.Empty;
             ButtonLogin.Size = new Size(289, 42);
@@ -188,7 +188,7 @@
             ButtonClear.Icon = null;
             ButtonClear.Location = new Point(304, 273);
             ButtonClear.Margin = new Padding(4, 6, 4, 6);
-            ButtonClear.MouseState = MaterialSkin.MouseState.HOVER;
+            ButtonClear.MouseState = MouseState.HOVER;
             ButtonClear.Name = "ButtonClear";
             ButtonClear.NoAccentTextColor = Color.Empty;
             ButtonClear.Size = new Size(94, 42);
@@ -212,7 +212,7 @@
             ButtonExit.Icon = null;
             ButtonExit.Location = new Point(406, 273);
             ButtonExit.Margin = new Padding(4, 6, 4, 6);
-            ButtonExit.MouseState = MaterialSkin.MouseState.HOVER;
+            ButtonExit.MouseState = MouseState.HOVER;
             ButtonExit.Name = "ButtonExit";
             ButtonExit.NoAccentTextColor = Color.Empty;
             ButtonExit.Size = new Size(94, 42);
@@ -235,7 +235,8 @@
             // 
             // StockTimer
             // 
-            StockTimer.Interval = 20000;
+            StockTimer.Enabled = true;
+            StockTimer.Interval = 30000;
             StockTimer.Tick += StockTimer_Tick;
             // 
             // FormLogin

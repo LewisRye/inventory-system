@@ -1,4 +1,4 @@
-﻿namespace Inventory
+﻿namespace Inventory.Classes
 {
     internal class Database
     {
@@ -9,6 +9,7 @@
         private List<Classes.Order> orders = new List<Classes.Order>();
 
         private List<Classes.Product> newProductList = new List<Classes.Product>();
+        private List<Classes.Order> newOrderList = new List<Classes.Order>();
 
         public List<Classes.Product> GetProducts()
         {
@@ -32,6 +33,12 @@
         {
             LoadOrders();
             return orders;
+        }
+
+        public List<Classes.Order> GetOrders(String Search)
+        {
+            LoadOrders(Search);
+            return newOrderList;
         }
 
         private void LoadProducts()
@@ -116,6 +123,31 @@
                 while (reader.Read())
                 {
                     orders.Add(new Classes.Order(Convert.ToInt32(reader.GetString(0)), reader.GetString(1).ToString(), reader.GetString(2), reader.GetString(3), Convert.ToInt32(reader.GetString(4)), Convert.ToDateTime(reader.GetString(5)), Convert.ToDecimal(reader.GetString(6))));
+                }
+                databaseConnection.Close();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("Unable to connect to the database. " + ex.Message);
+            }
+        }
+
+        private void LoadOrders(string Search)
+        {
+            try
+            {
+                databaseConnection.Open();
+                var command = new MySqlCommand(@"SELECT CustomerOrderDetails.Order_ID AS 'Order ID', Product.Product_Name AS 'Product Name', 
+                    Customer.Customer_FName AS 'First Name', Customer.Customer_LName AS 'Last Name', CustomerOrderDetails.Quantity_Ordered AS 'Quantity', 
+                    CustomerOrders.Order_Date AS 'Date Ordered', ROUND(Product.Buy_Price * 1.2, 2) AS 'Order Price' FROM Product, CustomerOrders, CustomerOrderDetails, Customer 
+                    WHERE (Customer.Customer_FName LIKE @search OR Customer.Customer_LName LIKE @search OR Product.Product_Name LIKE @search) AND CustomerOrderDetails.Order_ID = CustomerOrders.Order_ID AND Product.Product_ID = CustomerOrderDetails.Product_ID AND Customer.Customer_ID = CustomerOrders.Customer_ID 
+                    GROUP BY CustomerOrderDetails.Order_ID, Product.Product_Name, Customer.Customer_FName, Customer.Customer_LName, CustomerOrderDetails.Quantity_Ordered, CustomerOrders.Order_Date 
+                    ORDER BY Order_Date ASC;", databaseConnection);
+                command.Parameters.AddWithValue("@search", "%" + Search + "%");
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    newOrderList.Add(new Classes.Order(Convert.ToInt32(reader.GetString(0)), reader.GetString(1).ToString(), reader.GetString(2), reader.GetString(3), Convert.ToInt32(reader.GetString(4)), Convert.ToDateTime(reader.GetString(5)), Convert.ToDecimal(reader.GetString(6))));
                 }
                 databaseConnection.Close();
             }

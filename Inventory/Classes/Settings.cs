@@ -1,4 +1,4 @@
-﻿namespace Inventory
+﻿namespace Inventory.Classes
 {
     internal class Settings
     {
@@ -35,7 +35,8 @@
                 MessageBox.Show("Welcome to the Inventory Management System.\n" +
                                 "Because the app has never been opened before, " +
                                 "a settings file has been created in the application's directory:\n\n" +
-                                "The file is called InventorySettings.txt", "Welcome");                      // detects if the app has never been opened
+                                "The file is called InventorySettings.txt\n\n +" +
+                                "Please ensure notifications are enabled on your device for optimal use.", "Welcome");                      // detects if the app has never been opened
                 CreateFile();
                 Logon.NotificationTime = Convert.ToInt32(File.ReadLines(Logon.FilePath).Skip(1).Take(1).First());        // reads the line where notification time is stored
                 Logon.NotificationStock = Convert.ToInt16(File.ReadLines(Logon.FilePath).Skip(3).Take(1).First());       // reads the line where notification time is stored
@@ -68,7 +69,7 @@
         {
             try
             {
-                if (NewNotificationTimeSeconds > 19)
+                if (NewNotificationTimeSeconds >= 20)
                 {
                     int newNotificationTimeMilliseconds = NewNotificationTimeSeconds * 1000;                        // converts time from seconds to milliseconds
                     string[] notificationLines = File.ReadAllLines(Logon.FilePath);

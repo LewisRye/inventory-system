@@ -2,8 +2,8 @@
 {
     public partial class FormLogin : Form
     {
-        private readonly Settings _settings = new Settings();
-        private readonly Notification _notification = new Notification();
+        private readonly Classes.Settings _settings = new Classes.Settings();
+        private readonly Classes.Notification _notification = new Classes.Notification();
 
         public FormLogin()
         {
@@ -36,7 +36,7 @@
         {
             if (ValidLogin(Username, Password))
             {
-                var databaseConn = new MySqlConnection(Logon.ConnectionString);
+                var databaseConn = new MySqlConnection(Classes.Logon.ConnectionString);
 
                 try
                 {
@@ -61,23 +61,23 @@
                         switch (AccessLevel)
                         {
                             case 0:
-                                Logon.CurrentUser = Username; // remembers logged in user's username
-                                Logon.AccessLevel = "Admin";
+                                Classes.Logon.CurrentUser = Username; // remembers logged in user's username
+                                Classes.Logon.AccessLevel = "Admin";
                                 new LoginForms.FormAccountCreate().Show();
                                 break;
                             case 1:
-                                Logon.CurrentUser = Username; // remembers logged in user's username
-                                Logon.AccessLevel = "Manager";
+                                Classes.Logon.CurrentUser = Username; // remembers logged in user's username
+                                Classes.Logon.AccessLevel = "Manager";
                                 new ProgramForms.FormDashboard().Show();
                                 break;
                             case 2:
-                                Logon.CurrentUser = Username; // remembers logged in user's username
-                                Logon.AccessLevel = "Staff";
+                                Classes.Logon.CurrentUser = Username; // remembers logged in user's username
+                                Classes.Logon.AccessLevel = "Staff";
                                 new ProgramForms.FormDashboard().Show();
                                 break;
                         }
 
-                        StockTimer.Interval = Logon.NotificationTime;
+                        StockTimer.Interval = Classes.Logon.NotificationTime;
                         StockTimer.Start();
 
                         this.Visible = false;
@@ -184,7 +184,7 @@
 
             var materialSkinManager = MaterialSkinManager.Instance;
 
-            switch (Logon.ColourScheme)
+            switch (Classes.Logon.ColourScheme)
             {
                 case "Red":
                     materialSkinManager.ColorScheme = new ColorScheme(Primary.Red500, Primary.Red700, Primary.Red100, Accent.Red200, TextShade.WHITE);
@@ -204,11 +204,12 @@
         private void StockTimer_Tick(object Sender, EventArgs E)
         {
             _notification.CheckForLowStock(StockNotification);
+            StockTimer.Stop();
         }
 
         private void StockNotification_BalloonTipClicked(object Sender, EventArgs E)
         {
-            if (Logon.AccessLevel == "Manager")
+            if (Classes.Logon.AccessLevel == "Manager")
             {
                 new ProgramForms.FormRestock().Show();
                 foreach (Form form in Application.OpenForms)
