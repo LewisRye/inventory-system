@@ -48,11 +48,11 @@
                 newProductList.Clear();
                 databaseConnection.Open();
                 var command = new MySqlCommand(@"SELECT Product.Product_ID, Product.Product_Name, 
-                    Category.Category_Name, Product.Number_In_Stock, Product.Buy_Price, Product.Discontinued  
+                    Category.Category_Name, Product.stock, Product.Buy_Price, Product.Discontinued  
                     FROM Product, Category 
                     WHERE Product.Category_ID = Category.Category_ID 
                     GROUP BY Category.Category_Name, Product.Product_ID, Product.Product_Name, 
-                    Product.Number_In_Stock, Product.Buy_Price, Product.Discontinued;", databaseConnection);
+                    Product.stock, Product.Buy_Price, Product.Discontinued;", databaseConnection);
                 var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -72,7 +72,7 @@
             {
                 databaseConnection.Open();
                 var command = new MySqlCommand(@"SELECT Product.Product_ID, Product.Product_Name, 
-                    Category.Category_Name, Product.Number_In_Stock, Product.Buy_Price, Product.Discontinued  
+                    Category.Category_Name, Product.stock, Product.Buy_Price, Product.Discontinued  
                     FROM Product INNER JOIN Category ON Product.Category_ID = Category.Category_ID 
                     WHERE Product.Product_Name LIKE @search OR Category.Category_Name LIKE @search;", databaseConnection);
                 command.Parameters.AddWithValue("@search", "%" + Search + "%");
@@ -164,7 +164,7 @@
             {
                 databaseConnection.Open();
                 var command = new MySqlCommand(@"SELECT Product.Product_ID, Product.Product_Name, 
-                    Category.Category_Name, Product.Number_In_Stock, Product.Buy_Price, Product.Discontinued  
+                    Category.Category_Name, Product.stock, Product.Buy_Price, Product.Discontinued  
                     FROM Product INNER JOIN Category ON Product.Category_ID = Category.Category_ID 
                     WHERE Product.Product_Name LIKE @search OR Category.Category_Name LIKE @search;", databaseConnection);
                 command.Parameters.AddWithValue("@search", SearchBox);
@@ -189,10 +189,10 @@
                 databaseConnection.Open();
                 DatabaseGrid.Rows.Clear();
                 var da = new MySqlDataAdapter($@"SELECT Product.Product_ID AS 'ID', Product.Product_Name AS 'Name', 
-                    Category.Category_Name AS 'Category', Product.Number_In_Stock AS 'Stock', Product.Buy_Price AS 'Buy Price', 
+                    Category.Category_Name AS 'Category', Product.Stock AS 'Stock', Product.Buy_Price AS 'Buy Price', 
                     Product.Discontinued AS 'Discontinued' 
                     FROM Product INNER JOIN Category on Product.Category_ID = Category.Category_ID 
-                    WHERE Number_In_Stock < {Logon.NotificationStock} AND Discontinued = 'n'", databaseConnection);                               // uses SQL query to read every piece of data in database
+                    WHERE stock < {Logon.NotificationStock} AND Discontinued = 'n'", databaseConnection);                               // uses SQL query to read every piece of data in database
 
                 DataTable dt = new DataTable();
                 da.Fill(dt);

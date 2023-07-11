@@ -44,7 +44,7 @@
 
                     string hashedInput = Hashing.GenerateHash(Password, Username); // hashes the user input to match the password hashes in database
 
-                    string query = "SELECT level_id FROM account WHERE username = @user AND passhash = @pass GROUP BY account.account_id;";
+                    string query = "SELECT Account.level_id FROM Account WHERE username = @user AND passhash = @pass GROUP BY Account.account_id;";
 
                     var command = new MySqlCommand(query, databaseConn);
                     command.Parameters.AddWithValue("@user", Username); // changes @user in the query to match username input

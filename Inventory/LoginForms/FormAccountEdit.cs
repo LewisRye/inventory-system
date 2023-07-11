@@ -21,7 +21,7 @@ namespace Inventory.LoginForms
             {
                 databaseConn.Open();                                                        // connects to database and reads it
 
-                var cmd = new MySqlCommand("SELECT Username FROM Account", databaseConn); // uses SQL query to read data
+                var cmd = new MySqlCommand("SELECT username FROM Account", databaseConn); // uses SQL query to read data
                 MySqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
@@ -43,7 +43,7 @@ namespace Inventory.LoginForms
             {
                 databaseConn.Open(); // connects to database and reads it
 
-                var cmd = new MySqlCommand("SELECT level_name FROM accesslevel", databaseConn); // uses SQL query to read data
+                var cmd = new MySqlCommand("SELECT level_name FROM AccessLevel", databaseConn); // uses SQL query to read data
                 MySqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
@@ -69,7 +69,7 @@ namespace Inventory.LoginForms
                 {
                     string selectedUser = ListOfUsers.SelectedItem.ToString();
                     string newUsername = TextBoxUsername.Text;
-                    string editUserCommand = @"UPDATE Account SET Username = @NewUsername WHERE Username = @OldUsername;";
+                    string editUserCommand = @"UPDATE Account SET username = @NewUsername WHERE username = @OldUsername;";
                     var cmd = new MySqlCommand(editUserCommand, databaseConn); // forms an SQL command to change stock values
                     cmd.Parameters.AddWithValue("@NewUsername", newUsername);
                     cmd.Parameters.AddWithValue("@OldUsername", selectedUser);
@@ -102,7 +102,7 @@ namespace Inventory.LoginForms
                 {
                     string selectedUser = ListOfUsers.SelectedText.ToString();
 
-                    string getIdCommand = $"SELECT account_id FROM account WHERE username = '{selectedUser}';";
+                    string getIdCommand = $"SELECT account_id FROM Account WHERE username = '{selectedUser}';";
                     int accountId = 0;
                     var command = new MySqlCommand();
                     MySqlDataReader dr = command.ExecuteReader();
@@ -113,7 +113,7 @@ namespace Inventory.LoginForms
 
 
                     string newFirstName = TextBoxFirstName.Text;
-                    string editUserCommand = @"UPDATE Staff SET staff_fname = @NewFirstName WHERE account_id = @AccountID;";
+                    string editUserCommand = @"UPDATE Staff SET first_name = @NewFirstName WHERE account_id = @AccountID;";
                     var cmd = new MySqlCommand(editUserCommand, databaseConn);
                     cmd.Parameters.AddWithValue("@NewFirstName", newFirstName);
                     cmd.Parameters.AddWithValue("@AccountID", accountId);
@@ -146,7 +146,7 @@ namespace Inventory.LoginForms
                 {
                     string selectedUser = ListOfUsers.SelectedText.ToString();
 
-                    string getIdCommand = $"SELECT account_id FROM account WHERE username = '{selectedUser}';";
+                    string getIdCommand = $"SELECT account_id FROM Account WHERE username = '{selectedUser}';";
                     int accountId = 0;
                     var command = new MySqlCommand();
                     MySqlDataReader dr = command.ExecuteReader();
@@ -157,7 +157,7 @@ namespace Inventory.LoginForms
 
 
                     string newLastName = TextBoxLastName.Text;
-                    string editUserCommand = @"UPDATE Staff SET staff_lname = @NewFirstName WHERE account_id = @AccountID;";
+                    string editUserCommand = @"UPDATE Staff SET last_name = @NewFirstName WHERE account_id = @AccountID;";
                     var cmd = new MySqlCommand(editUserCommand, databaseConn);
                     cmd.Parameters.AddWithValue("@NewFirstName", newLastName);
                     cmd.Parameters.AddWithValue("@AccountID", accountId);
@@ -191,7 +191,7 @@ namespace Inventory.LoginForms
                 {
                     string selectedUser = ListOfUsers.SelectedText.ToString();
 
-                    string getIdCommand = $"SELECT account_id FROM account WHERE username = '{selectedUser}';";
+                    string getIdCommand = $"SELECT account_id FROM Account WHERE username = '{selectedUser}';";
                     var command = new MySqlCommand(getIdCommand, databaseConn);
                     MySqlDataReader dr = command.ExecuteReader();
                     while (dr.Read())
@@ -242,7 +242,7 @@ namespace Inventory.LoginForms
                     databaseConn.Open(); // opens connection with the database so it can be queried
                     using (databaseConn)
                     {
-                        string getIdCommand = $"SELECT account_id FROM account WHERE username = '{selectedUser}';";
+                        string getIdCommand = $"SELECT account_id FROM Account WHERE username = '{selectedUser}';";
                         var command = new MySqlCommand(getIdCommand, databaseConn);
                         MySqlDataReader dr = command.ExecuteReader();
                         while (dr.Read())

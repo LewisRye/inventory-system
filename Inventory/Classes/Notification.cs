@@ -19,7 +19,7 @@
 
                 var sda = new MySqlDataAdapter($@"SELECT COUNT(product_id) 
                     FROM Product 
-                    WHERE number_in_stock <= {Logon.NotificationStock}", databaseConnection); // SQL query for user defined critical stock level
+                    WHERE stock <= {Logon.NotificationStock}", databaseConnection); // SQL query for user defined critical stock level
                 var dt = new DataTable();
                 sda.Fill(dt);
                 NumberLowItems = Convert.ToInt32(dt.Rows[0][0]);
