@@ -48,11 +48,11 @@
                 newProductList.Clear();
                 databaseConnection.Open();
                 var command = new MySqlCommand(@"SELECT Product.Product_ID, Product.Product_Name, 
-                    Category.Category_Name, Product.stock, Product.Buy_Price, Product.Discontinued  
+                    Category.Category_Name, Product.number_in_stock, Product.Buy_Price, Product.Discontinued  
                     FROM Product, Category 
                     WHERE Product.Category_ID = Category.Category_ID 
                     GROUP BY Category.Category_Name, Product.Product_ID, Product.Product_Name, 
-                    Product.stock, Product.Buy_Price, Product.Discontinued;", databaseConnection);
+                    Product.number_in_stock, Product.Buy_Price, Product.Discontinued;", databaseConnection);
                 var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -72,7 +72,7 @@
             {
                 databaseConnection.Open();
                 var command = new MySqlCommand(@"SELECT Product.Product_ID, Product.Product_Name, 
-                    Category.Category_Name, Product.stock, Product.Buy_Price, Product.Discontinued  
+                    Category.Category_Name, Product.number_in_stock, Product.Buy_Price, Product.Discontinued  
                     FROM Product INNER JOIN Category ON Product.Category_ID = Category.Category_ID 
                     WHERE Product.Product_Name LIKE @search OR Category.Category_Name LIKE @search;", databaseConnection);
                 command.Parameters.AddWithValue("@search", "%" + Search + "%");
@@ -117,7 +117,7 @@
                     Customer.Customer_FName AS 'First Name', Customer.Customer_LName AS 'Last Name', CustomerOrderDetails.Quantity_Ordered AS 'Quantity', 
                     CustomerOrders.Order_Date AS 'Date Ordered', ROUND(Product.Buy_Price * 1.2, 2) AS 'Order Price' FROM Product, CustomerOrders, CustomerOrderDetails, Customer 
                     WHERE CustomerOrderDetails.Order_ID = CustomerOrders.Order_ID AND Product.Product_ID = CustomerOrderDetails.Product_ID AND Customer.Customer_ID = CustomerOrders.Customer_ID 
-                    GROUP BY CustomerOrderDetails.Order_ID, Product.Product_Name, Customer.Customer_FName, Customer.Customer_LName, CustomerOrderDetails.Quantity_Ordered, CustomerOrders.Order_Date 
+                    GROUP BY CustomerOrderDetails.Order_ID, Product.Product_Name, Customer.Customer_FName, Customer.Customer_LName, CustomerOrderDetails.Quantity_Ordered, CustomerOrders.Order_Date, Product.Buy_Price 
                     ORDER BY Order_Date ASC;", databaseConnection); // uses SQL query to read data
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
@@ -141,7 +141,7 @@
                     Customer.Customer_FName AS 'First Name', Customer.Customer_LName AS 'Last Name', CustomerOrderDetails.Quantity_Ordered AS 'Quantity', 
                     CustomerOrders.Order_Date AS 'Date Ordered', ROUND(Product.Buy_Price * 1.2, 2) AS 'Order Price' FROM Product, CustomerOrders, CustomerOrderDetails, Customer 
                     WHERE (Customer.Customer_FName LIKE @search OR Customer.Customer_LName LIKE @search OR Product.Product_Name LIKE @search) AND CustomerOrderDetails.Order_ID = CustomerOrders.Order_ID AND Product.Product_ID = CustomerOrderDetails.Product_ID AND Customer.Customer_ID = CustomerOrders.Customer_ID 
-                    GROUP BY CustomerOrderDetails.Order_ID, Product.Product_Name, Customer.Customer_FName, Customer.Customer_LName, CustomerOrderDetails.Quantity_Ordered, CustomerOrders.Order_Date 
+                    GROUP BY CustomerOrderDetails.Order_ID, Product.Product_Name, Customer.Customer_FName, Customer.Customer_LName, CustomerOrderDetails.Quantity_Ordered, CustomerOrders.Order_Date, Product.Buy_Price 
                     ORDER BY Order_Date ASC;", databaseConnection);
                 command.Parameters.AddWithValue("@search", "%" + Search + "%");
                 var reader = command.ExecuteReader();
@@ -164,7 +164,7 @@
             {
                 databaseConnection.Open();
                 var command = new MySqlCommand(@"SELECT Product.Product_ID, Product.Product_Name, 
-                    Category.Category_Name, Product.stock, Product.Buy_Price, Product.Discontinued  
+                    Category.Category_Name, Product.number_in_stock, Product.Buy_Price, Product.Discontinued  
                     FROM Product INNER JOIN Category ON Product.Category_ID = Category.Category_ID 
                     WHERE Product.Product_Name LIKE @search OR Category.Category_Name LIKE @search;", databaseConnection);
                 command.Parameters.AddWithValue("@search", SearchBox);
@@ -189,7 +189,7 @@
                 databaseConnection.Open();
                 DatabaseGrid.Rows.Clear();
                 var da = new MySqlDataAdapter($@"SELECT Product.Product_ID AS 'ID', Product.Product_Name AS 'Name', 
-                    Category.Category_Name AS 'Category', Product.Stock AS 'Stock', Product.Buy_Price AS 'Buy Price', 
+                    Category.Category_Name AS 'Category', Product.Number_In_Stock AS 'Stock', Product.Buy_Price AS 'Buy Price', 
                     Product.Discontinued AS 'Discontinued' 
                     FROM Product INNER JOIN Category on Product.Category_ID = Category.Category_ID 
                     WHERE stock < {Logon.NotificationStock} AND Discontinued = 'n'", databaseConnection);                               // uses SQL query to read every piece of data in database

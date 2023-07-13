@@ -145,7 +145,7 @@
         {
             foreach (Form var in Application.OpenForms)
             {
-                if (var.Name == "LoginForm")
+                if (var.Name == "FormLogin")
                 {
                     var.Visible = true;
                 }

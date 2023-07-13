@@ -5,7 +5,7 @@
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -111,7 +111,7 @@
             ButtonClose.NoAccentTextColor = Color.Empty;
             ButtonClose.Size = new Size(518, 42);
             ButtonClose.TabIndex = 11;
-            ButtonClose.Text = "Close Without Saving";
+            ButtonClose.Text = "Reload Later";
             ButtonClose.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             ButtonClose.UseAccentColor = false;
             ButtonClose.UseVisualStyleBackColor = true;
@@ -386,7 +386,7 @@
             ButtonRestart.NoAccentTextColor = Color.Empty;
             ButtonRestart.Size = new Size(518, 42);
             ButtonRestart.TabIndex = 10;
-            ButtonRestart.Text = "Restart Application";
+            ButtonRestart.Text = "Reload Now";
             ButtonRestart.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             ButtonRestart.UseAccentColor = false;
             ButtonRestart.UseVisualStyleBackColor = true;
@@ -431,24 +431,24 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label TextNotification1;
+        private Label TextNotification1;
         private MaterialSkin.Controls.MaterialButton ButtonChangeNotifTime;
-        private System.Windows.Forms.Label TextSettings;
+        private Label TextSettings;
         private MaterialSkin.Controls.MaterialButton ButtonClose;
-        private System.Windows.Forms.Label TextEmail;
+        private Label TextEmail;
         private MaterialSkin.Controls.MaterialButton ButtonChangeEmail;
-        private System.Windows.Forms.Label InfoNotification;
-        private System.Windows.Forms.Label InfoEmail;
+        private Label InfoNotification;
+        private Label InfoEmail;
         private MaterialSkin.Controls.MaterialButton UnusedButton;
-        private System.Windows.Forms.Label TextColour;
-        private System.Windows.Forms.Label InfoColour;
+        private Label TextColour;
+        private Label InfoColour;
         private MaterialSkin.Controls.MaterialButton ButtonChangeColour;
         private MaterialSkin.Controls.MaterialComboBox ComboBoxColour;
         private MaterialSkin.Controls.MaterialTextBox TextBoxEmail;
         private MaterialSkin.Controls.MaterialComboBox ComboBoxTime;
-        private System.Windows.Forms.Label TextNotification2;
+        private Label TextNotification2;
         private MaterialSkin.Controls.MaterialButton ButtonChangeNotifStock;
-        private System.Windows.Forms.Label label1;
+        private Label label1;
         private MaterialSkin.Controls.MaterialComboBox ComboBoxStock;
         private MaterialSkin.Controls.MaterialButton ButtonRestart;
     }

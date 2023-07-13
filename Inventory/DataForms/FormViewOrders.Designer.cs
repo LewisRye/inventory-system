@@ -5,7 +5,7 @@
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -62,6 +62,7 @@
             DatabaseGrid.Location = new Point(13, 63);
             DatabaseGrid.Margin = new Padding(4, 3, 4, 3);
             DatabaseGrid.Name = "DatabaseGrid";
+            DatabaseGrid.ReadOnly = true;
             DatabaseGrid.RowHeadersVisible = false;
             DatabaseGrid.RowTemplate.Resizable = DataGridViewTriState.False;
             DatabaseGrid.ShowCellErrors = false;
@@ -171,7 +172,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.DataGridView DatabaseGrid;
+        private DataGridView DatabaseGrid;
         private MaterialSkin.Controls.MaterialButton ButtonClose;
         private Label WelcomeText;
         private MaterialSkin.Controls.MaterialButton ButtonClear;
