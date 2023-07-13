@@ -5,7 +5,7 @@
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -28,6 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            ChartArea chartArea1 = new ChartArea();
+            Legend legend1 = new Legend();
+            Series series1 = new Series();
+            Title title1 = new Title();
+            ChartArea chartArea2 = new ChartArea();
+            Legend legend2 = new Legend();
+            Series series2 = new Series();
+            Title title2 = new Title();
             ComponentResourceManager resources = new ComponentResourceManager(typeof(FormDashboard));
             OpenRestockButton = new MaterialSkin.Controls.MaterialButton();
             LeftPanel = new Panel();
@@ -44,7 +52,9 @@
             WelcomeText = new Label();
             ExitButton = new MaterialSkin.Controls.MaterialButton();
             TopLeftPanel = new Panel();
+            ChartStockType = new Chart();
             TopMiddlePanel = new Panel();
+            ChartDailyOrders = new Chart();
             TopRightPanel = new Panel();
             ListBestSellers = new Label();
             TextBestSellers = new Label();
@@ -62,6 +72,10 @@
             PanelStock = new Panel();
             UnusedButton = new MaterialSkin.Controls.MaterialButton();
             LeftPanel.SuspendLayout();
+            TopLeftPanel.SuspendLayout();
+            ((ISupportInitialize)ChartStockType).BeginInit();
+            TopMiddlePanel.SuspendLayout();
+            ((ISupportInitialize)ChartDailyOrders).BeginInit();
             TopRightPanel.SuspendLayout();
             PanelProfit.SuspendLayout();
             PanelOrders.SuspendLayout();
@@ -352,20 +366,95 @@
             // TopLeftPanel
             // 
             TopLeftPanel.BackColor = Color.Transparent;
+            TopLeftPanel.Controls.Add(ChartStockType);
             TopLeftPanel.Location = new Point(271, 91);
             TopLeftPanel.Margin = new Padding(4, 3, 4, 3);
             TopLeftPanel.Name = "TopLeftPanel";
             TopLeftPanel.Size = new Size(315, 245);
             TopLeftPanel.TabIndex = 28;
             // 
+            // ChartStockType
+            // 
+            ChartStockType.BackColor = Color.Transparent;
+            ChartStockType.BorderlineColor = Color.Transparent;
+            chartArea1.Name = "ChartArea1";
+            ChartStockType.ChartAreas.Add(chartArea1);
+            ChartStockType.Dock = DockStyle.Fill;
+            legend1.BackColor = Color.Transparent;
+            legend1.Font = new Font("Microsoft YaHei UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            legend1.IsTextAutoFit = false;
+            legend1.Name = "Legend1";
+            ChartStockType.Legends.Add(legend1);
+            ChartStockType.Location = new Point(0, 0);
+            ChartStockType.Name = "ChartStockType";
+            ChartStockType.Palette = ChartColorPalette.SeaGreen;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = SeriesChartType.Doughnut;
+            series1.Color = Color.Transparent;
+            series1.Font = new Font("Microsoft YaHei UI", 48F, FontStyle.Regular, GraphicsUnit.Point);
+            series1.Legend = "Legend1";
+            series1.Name = "StockByType";
+            series1.Palette = ChartColorPalette.SeaGreen;
+            ChartStockType.Series.Add(series1);
+            ChartStockType.Size = new Size(315, 245);
+            ChartStockType.TabIndex = 0;
+            ChartStockType.TabStop = false;
+            ChartStockType.Text = "ChartStockType";
+            title1.Font = new Font("Microsoft YaHei UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            title1.Name = "StockByType";
+            title1.Text = "Stock by Type";
+            ChartStockType.Titles.Add(title1);
+            // 
             // TopMiddlePanel
             // 
             TopMiddlePanel.BackColor = Color.Transparent;
+            TopMiddlePanel.Controls.Add(ChartDailyOrders);
             TopMiddlePanel.Location = new Point(602, 91);
             TopMiddlePanel.Margin = new Padding(4, 3, 4, 3);
             TopMiddlePanel.Name = "TopMiddlePanel";
             TopMiddlePanel.Size = new Size(315, 245);
             TopMiddlePanel.TabIndex = 29;
+            // 
+            // ChartDailyOrders
+            // 
+            ChartDailyOrders.BackColor = Color.Transparent;
+            ChartDailyOrders.BorderlineColor = Color.Transparent;
+            chartArea2.AxisX.MajorGrid.Enabled = false;
+            chartArea2.AxisX.MinorGrid.LineColor = Color.Transparent;
+            chartArea2.AxisX2.MajorGrid.Enabled = false;
+            chartArea2.AxisY.MajorGrid.Enabled = false;
+            chartArea2.AxisY2.MajorGrid.Enabled = false;
+            chartArea2.BorderColor = Color.Transparent;
+            chartArea2.BorderWidth = 0;
+            chartArea2.Name = "ChartArea1";
+            ChartDailyOrders.ChartAreas.Add(chartArea2);
+            ChartDailyOrders.Dock = DockStyle.Fill;
+            legend2.Alignment = StringAlignment.Center;
+            legend2.Enabled = false;
+            legend2.IsTextAutoFit = false;
+            legend2.Name = "Legend1";
+            legend2.TitleFont = new Font("Microsoft YaHei UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            ChartDailyOrders.Legends.Add(legend2);
+            ChartDailyOrders.Location = new Point(0, 0);
+            ChartDailyOrders.Name = "ChartDailyOrders";
+            ChartDailyOrders.Palette = ChartColorPalette.Berry;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = SeriesChartType.Bar;
+            series2.CustomProperties = "EmptyPointValue=Zero";
+            series2.IsXValueIndexed = true;
+            series2.Legend = "Legend1";
+            series2.Name = "DailyOrders";
+            series2.Palette = ChartColorPalette.Berry;
+            series2.XValueType = ChartValueType.Date;
+            ChartDailyOrders.Series.Add(series2);
+            ChartDailyOrders.Size = new Size(315, 245);
+            ChartDailyOrders.TabIndex = 1;
+            ChartDailyOrders.TabStop = false;
+            ChartDailyOrders.Text = "ChartDailyOrders";
+            title2.Font = new Font("Microsoft YaHei UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            title2.Name = "OrdersThisWeek";
+            title2.Text = "Orders This Week";
+            ChartDailyOrders.Titles.Add(title2);
             // 
             // TopRightPanel
             // 
@@ -619,6 +708,10 @@
             Text = "Inventory Management System";
             Load += FormDashboard_Load;
             LeftPanel.ResumeLayout(false);
+            TopLeftPanel.ResumeLayout(false);
+            ((ISupportInitialize)ChartStockType).EndInit();
+            TopMiddlePanel.ResumeLayout(false);
+            ((ISupportInitialize)ChartDailyOrders).EndInit();
             TopRightPanel.ResumeLayout(false);
             PanelProfit.ResumeLayout(false);
             PanelOrders.ResumeLayout(false);
@@ -629,36 +722,38 @@
         #endregion
 
         private MaterialSkin.Controls.MaterialButton OpenRestockButton;
-        private System.Windows.Forms.Panel LeftPanel;
+        private Panel LeftPanel;
         private MaterialSkin.Controls.MaterialButton ViewStockButton;
         private MaterialSkin.Controls.MaterialButton ResetPasswordButton;
-        private System.Windows.Forms.Label WelcomeText;
+        private Label WelcomeText;
         private MaterialSkin.Controls.MaterialButton OpenOrdersButton;
         private MaterialSkin.Controls.MaterialButton ExitButton;
-        private System.Windows.Forms.LinkLabel LogoutButton;
-        private System.Windows.Forms.Panel TopLeftPanel;
-        private System.Windows.Forms.Panel TopMiddlePanel;
-        private System.Windows.Forms.Panel TopRightPanel;
-        private System.Windows.Forms.Label HeadingInsights;
-        private System.Windows.Forms.Label HeaderProfit;
-        private System.Windows.Forms.Label HeaderProducts;
-        private System.Windows.Forms.Panel PanelProfit;
-        private System.Windows.Forms.Label WeeklyProfitText;
-        private System.Windows.Forms.Panel PanelOrders;
-        private System.Windows.Forms.Label WeeklyOrderText;
-        private System.Windows.Forms.Button QuantityItemsProfit;
-        private System.Windows.Forms.Button QuantityItemsOrders;
-        private System.Windows.Forms.Label HeaderOrders;
-        private System.Windows.Forms.Label WeeklyStockText;
-        private System.Windows.Forms.Button QuantityItemsStock;
-        private System.Windows.Forms.Panel PanelStock;
-        private System.Windows.Forms.Label ToolsGeneralText;
-        private System.Windows.Forms.Label ToolsManagerText;
+        private LinkLabel LogoutButton;
+        private Panel TopLeftPanel;
+        private Panel TopMiddlePanel;
+        private Panel TopRightPanel;
+        private Label HeadingInsights;
+        private Label HeaderProfit;
+        private Label HeaderProducts;
+        private Panel PanelProfit;
+        private Label WeeklyProfitText;
+        private Panel PanelOrders;
+        private Label WeeklyOrderText;
+        private Button QuantityItemsProfit;
+        private Button QuantityItemsOrders;
+        private Label HeaderOrders;
+        private Label WeeklyStockText;
+        private Button QuantityItemsStock;
+        private Panel PanelStock;
+        private Label ToolsGeneralText;
+        private Label ToolsManagerText;
         private MaterialSkin.Controls.MaterialButton InsightButton;
         private MaterialSkin.Controls.MaterialButton UnusedButton;
         private MaterialSkin.Controls.MaterialButton ButtonSettings;
-        private System.Windows.Forms.Label TextBestSellers;
-        private System.Windows.Forms.Label ListBestSellers;
+        private Label TextBestSellers;
+        private Label ListBestSellers;
         private MaterialSkin.Controls.MaterialButton OpenEditButton;
+        private Chart ChartStockType;
+        private Chart ChartDailyOrders;
     }
 }

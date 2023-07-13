@@ -54,6 +54,9 @@
 
                 Chart.Series["DailyOrders"].XValueMember = "DATE";    // adds the date column to the X axis
                 Chart.Series["DailyOrders"].YValueMembers = "ORDERS"; // adds the amount of orders per day to the Y axis
+                Chart.Series["DailyOrders"]["PieLabelStyle"] = "Disabled"; // stops the chart from labelling
+                Chart.ChartAreas[0].AxisX.LineColor = Chart.BackColor; // removes axis lines
+                Chart.ChartAreas[0].AxisY.LineColor = Chart.BackColor; // removes axis lines
                 Chart.ChartAreas[0].AxisX.LabelStyle.Format = "dd/MM";
 
                 databaseConn.Close();

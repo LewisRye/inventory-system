@@ -21,8 +21,8 @@
             //  creating data to put inside of the graphs
             //
 
-            //_insights.CreateStockByTypeChart(ChartStockType);                       // fills 'Stock by Type' chart with data
-            //_insights.CreateDailyOrdersChart(ChartDailyOrders);                     // fills 'Order History' chart with data
+            _insights.CreateStockByTypeChart(ChartStockType);                       // fills 'Stock by Type' chart with data
+            _insights.CreateDailyOrdersChart(ChartDailyOrders);                     // fills 'Order History' chart with data
             _insights.CreateBestSellersChart(ListBestSellers);                     // fills 'Best Sellers' chart with data
 
             //
@@ -32,8 +32,6 @@
             _insights.CreateQuantityItemsStockText(QuantityItemsStock);             // fills 'items in stock currently' with data
             _insights.CreateQuantityItemsProfitText(QuantityItemsProfit);           // fills 'profit in the last 7 days' with data
             _insights.CreateQuantityItemsOrdersText(QuantityItemsOrders);           // fills 'orders in the last 7 days' with data
-
-            //new NotificationForm().Show();
         }
 
         private void ViewStockButton_Click(object Sender, EventArgs E)

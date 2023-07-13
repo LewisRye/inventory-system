@@ -1,6 +1,4 @@
-﻿using Microsoft.Identity.Client;
-
-namespace Inventory.LoginForms
+﻿namespace Inventory.LoginForms
 {
     public partial class FormAccountEdit : Form
     {
