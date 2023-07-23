@@ -1,0 +1,22 @@
+version: '3.8'
+
+# Docker Compose file to create the MySQL database using Docker.
+# Connect to the database using your own IDE and paste SQL commands found in this folder.
+
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql
+volumes:
+  my-db:
