@@ -75,10 +75,10 @@
 
             else
             {
-                // new DataForms.FormViewInsights().Show(); // do not do this until the form has been finished
-                // this.Hide();
-                // this.Close();
-                // this.Dispose();
+                new DataForms.FormViewInsights().Show();
+                this.Hide();
+                this.Close();
+                this.Dispose();
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             }
