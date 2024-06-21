@@ -48,7 +48,7 @@ diesel::table! {
     customer_orders (order_id) {
         order_id -> Nullable<Integer>,
         customer_id -> Nullable<Integer>,
-        order_date -> Nullable<Date>,
+        order_date -> Nullable<Timestamp>,
     }
 }
 
