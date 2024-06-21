@@ -4,9 +4,15 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-rand = "0.8.5"
-dotenv = "0.15.0"
-diesel = {version = "2.2.1", features = ["sqlite", "chrono"]}
 chrono = {version = "0.4.38", features = ["serde"]}
+dotenv = "0.15.0"
 serde = {version = "1.0.203", features = ["derive"]}
 serde_json = "1.0.117"
+
+sqlite = "0.36.0"
+
+hyper = { version = "1.3.1", features = ["full"] }
+tokio = { version = "1.38.0", features = ["full"] }
+routerify = "3.0.0"
+http-body-util = "0.1"
+hyper-util = { version = "0.1", features = ["full"] }
