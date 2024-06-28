@@ -34,6 +34,12 @@
 
         private void Login(string Username, string Password)
         {
+            if (Username.Equals("1") && Password.Equals("1")) // bypass the login for testing purposes
+            {
+                Classes.Logon.CurrentUser = "TestUser";
+                Classes.Logon.AccessLevel = "Manager";
+                new ProgramForms.FormDashboard().Show();
+            }
             if (ValidLogin(Username, Password))
             {
                 var databaseConn = new MySqlConnection(Classes.Logon.ConnectionString);
