@@ -226,10 +226,10 @@ fn get_all_product() -> Vec<Product> {
     return output;
 }
 
-fn get_dashboard_stock_by_type() -> Vec<(i64, i64)> {
+fn get_dashboard_stock_by_type() -> Vec<(i64, String)> {
     let mut output = Vec::new();
 
-    let query = "SELECT SUM(number_in_stock) AS s, category.category_id AS c
+    let query = "SELECT SUM(number_in_stock) AS s, category.category_name AS c
         FROM product, category WHERE product.category_id = category.category_id
         GROUP BY category.category_name;";
 
@@ -241,7 +241,7 @@ fn get_dashboard_stock_by_type() -> Vec<(i64, i64)> {
         .into_iter()
         .map(|row| row.unwrap())
     {
-        let row = (row.read("s"), row.read("c"));
+        let row = (row.read::<i64, _>("s"), row.read::<&str, _>("c").into());
         output.push(row);
     }
     return output;
