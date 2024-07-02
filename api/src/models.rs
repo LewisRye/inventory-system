@@ -56,3 +56,9 @@ pub struct Product {
     pub buy_price: i64,
     pub discontinued: i64,
 }
+
+#[derive(Serialize, Deserialize)]
+pub struct BestSeller {
+    pub name: String,
+    pub quantity: i64,
+}

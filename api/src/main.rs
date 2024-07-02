@@ -23,7 +23,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     // We create a TcpListener and bind it to 127.0.0.1:3000
     let listener = TcpListener::bind(addr).await?;
 
-    println!("{}\nServer Online", Utc::now());
+    println!("{}: Server Online", Utc::now());
 
     // We start a loop to continuously accept incoming connections
     loop {
@@ -41,7 +41,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
                 .serve_connection(io, service_fn(handle_request))
                 .await
             {
-                eprintln!("\n{}\nError serving connection: {:?}", Utc::now(), err);
+                eprintln!("{}: Error serving connection: {:?}", Utc::now(), err);
             }
         });
     }
@@ -64,7 +64,7 @@ async fn handle_request(
                 }
             }
 
-            println!("\n{}\nRequested Product ID: {}", Utc::now(), id);
+            println!("{}: Requested Product ID: {}", Utc::now(), id);
 
             // Create a JSON value
             let product = get_product(&id);
@@ -77,7 +77,7 @@ async fn handle_request(
         },
 
         (&Method::GET, Some("all_product")) => {
-            println!("\n{}\nRequested All Products", Utc::now());
+            println!("{}: Requested All Products", Utc::now());
 
             // Create a JSON value
             let products = get_all_product();
@@ -90,7 +90,7 @@ async fn handle_request(
         },
 
         (&Method::GET, Some("dashboard_stock_type")) => {
-            println!("\n{}\nRequested Dashboard Stock Types", Utc::now());
+            println!("{}: Requested Dashboard Stock Types", Utc::now());
 
             let stock = get_dashboard_stock_by_type();
 
@@ -100,7 +100,7 @@ async fn handle_request(
         },
 
         (&Method::GET, Some("dashboard_daily_orders")) => {
-            println!("\n{}\nRequested Dashboard Daily Orders", Utc::now());
+            println!("{}: Requested Dashboard Daily Orders", Utc::now());
 
             //let orders = get_dashboard_daily_orders();
 
@@ -111,7 +111,7 @@ async fn handle_request(
         },
 
         (&Method::GET, Some("dashboard_best_sellers")) => {
-            println!("\n{}\nRequested Dashboard Best Sellers", Utc::now());
+            println!("{}: Requested Dashboard Best Sellers", Utc::now());
 
             let best = get_dashboard_best_sellers();
 
@@ -121,7 +121,7 @@ async fn handle_request(
         },
 
         (&Method::GET, Some("dashboard_stock")) => {
-            println!("\n{}\nRequested Dashboard Stock", Utc::now());
+            println!("{}: Requested Dashboard Stock", Utc::now());
 
             let stock = get_dashboard_stock();
 
@@ -131,7 +131,7 @@ async fn handle_request(
         },
 
         (&Method::GET, Some("dashboard_profit")) => {
-            println!("\n{}\nRequested Dashboard Profit", Utc::now());
+            println!("{}: Requested Dashboard Profit", Utc::now());
 
             let profit = get_dashboard_profit();
 
@@ -141,7 +141,7 @@ async fn handle_request(
         },
 
         (&Method::GET, Some("dashboard_orders")) => {
-            println!("\n{}\nRequested Dashboard Orders", Utc::now());
+            println!("{}: Requested Dashboard Orders", Utc::now());
 
             let orders = get_dashboard_orders();
 
@@ -286,10 +286,10 @@ fn get_dashboard_daily_orders() -> Vec<(i64, i64)> {
 }
 */
 
-fn get_dashboard_best_sellers() -> Vec<(i64, i64)> {
+fn get_dashboard_best_sellers() -> Vec<models::BestSeller> {
     let mut output = Vec::new();
 
-    let query = "SELECT SUM(customer_order_details.quantity_ordered) AS quantity, product.product_id AS id FROM customer_order_details
+    let query = "SELECT SUM(customer_order_details.quantity_ordered) AS quantity, product.product_name AS name FROM customer_order_details
         INNER JOIN product ON product.product_id = customer_order_details.product_id
         GROUP BY customer_order_details.product_id, product_name
         ORDER BY SUM(quantity_ordered) DESC LIMIT 5;";
@@ -302,8 +302,15 @@ fn get_dashboard_best_sellers() -> Vec<(i64, i64)> {
         .into_iter()
         .map(|row| row.unwrap())
     {
-        let row = (row.read("quantity"), row.read("id"));
-        output.push(row);
+        let name: String = row.read::<&str, _>("name").to_string();
+        let quantity: i64 = row.read("quantity");
+        
+        let best_seller = models::BestSeller {
+            name: name,
+            quantity: quantity,
+        };
+
+        output.push(best_seller);
     }
     return output;
 }
