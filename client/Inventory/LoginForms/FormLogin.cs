@@ -39,6 +39,7 @@
                 Classes.Logon.CurrentUser = "TestUser";
                 Classes.Logon.AccessLevel = "Manager";
                 new ProgramForms.FormDashboard().Show();
+                return;
             }
             if (ValidLogin(Username, Password))
             {
@@ -105,7 +106,6 @@
             Login(TextBoxUsername.Text, TextBoxPassword.Text);
             TextBoxUsername.Clear();
             TextBoxPassword.Clear();
-            TextBoxUsername.Focus();
         }
 
         private void LinkShowPassword_CheckedChanged(object Sender, EventArgs E)
@@ -126,7 +126,6 @@
             new LoginForms.FormAccountReset().Show();                                // shows the reset password prompt
             TextBoxUsername.Clear();                                        // clears all typed characters
             TextBoxPassword.Clear();
-            TextBoxUsername.Focus();
         }
 
         private void TextBoxUsername_KeyDown(object Sender, KeyEventArgs E) // allows the enter button to be pressed to log in the user
@@ -138,7 +137,6 @@
                 Login(TextBoxUsername.Text, TextBoxPassword.Text);
                 TextBoxUsername.Clear();                                        // clears all typed characters
                 TextBoxPassword.Clear();
-                TextBoxUsername.Focus();
 
                 E.Handled = true;
             }
@@ -153,7 +151,6 @@
                 Login(TextBoxUsername.Text, TextBoxPassword.Text);
                 TextBoxUsername.Clear();                                        // clears all typed characters
                 TextBoxPassword.Clear();
-                TextBoxUsername.Focus();
 
                 E.Handled = true;
             }

@@ -17,6 +17,7 @@
         public static string RecipientEmailAddress = "";
         public static string ColourScheme = "";
         public static string ConnectionString = ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
+        public static string UriPath = ConfigurationManager.ConnectionStrings["Uri"].ConnectionString;
         public static string FilePath = ConfigurationManager.ConnectionStrings["Settings"].ConnectionString;
     }
 }

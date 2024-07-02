@@ -25,7 +25,7 @@
                     InsertStockToProductDb(Convert.ToInt32(basket[i, 2]), basket[i, 0]);                            // uses function to insert these items into the database
                 }
 
-                CreateEmailReceipt(basket);                                                                      // uses function to create and send email receipt
+                // CreateEmailReceipt(basket);                                                                      // uses function to create and send email receipt
             }
             catch (MySqlException)
             {

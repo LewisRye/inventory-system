@@ -59,7 +59,7 @@
             ListBestSellers = new Label();
             TextBestSellers = new Label();
             HeaderProfit = new Label();
-            HeaderProducts = new Label();
+            HeaderStock = new Label();
             PanelProfit = new Panel();
             QuantityItemsProfit = new Button();
             WeeklyProfitText = new Label();
@@ -155,7 +155,7 @@
             // HeadingInsights
             // 
             HeadingInsights.BackColor = Color.Transparent;
-            HeadingInsights.Font = new Font("Microsoft YaHei UI", 24F, FontStyle.Bold, GraphicsUnit.Point);
+            HeadingInsights.Font = new Font("Microsoft YaHei UI", 24F, FontStyle.Bold);
             HeadingInsights.ForeColor = Color.Black;
             HeadingInsights.Location = new Point(4, 3);
             HeadingInsights.Margin = new Padding(4, 0, 4, 0);
@@ -214,7 +214,7 @@
             // ToolsGeneralText
             // 
             ToolsGeneralText.BackColor = Color.Transparent;
-            ToolsGeneralText.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            ToolsGeneralText.Font = new Font("Microsoft YaHei UI", 12F);
             ToolsGeneralText.ForeColor = Color.Black;
             ToolsGeneralText.ImageAlign = ContentAlignment.BottomLeft;
             ToolsGeneralText.Location = new Point(2, 53);
@@ -228,7 +228,7 @@
             // ToolsManagerText
             // 
             ToolsManagerText.BackColor = Color.Transparent;
-            ToolsManagerText.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            ToolsManagerText.Font = new Font("Microsoft YaHei UI", 12F);
             ToolsManagerText.ForeColor = Color.Black;
             ToolsManagerText.ImageAlign = ContentAlignment.BottomLeft;
             ToolsManagerText.Location = new Point(2, 339);
@@ -244,7 +244,7 @@
             LogoutButton.ActiveLinkColor = Color.Black;
             LogoutButton.BackColor = Color.Transparent;
             LogoutButton.DisabledLinkColor = Color.Black;
-            LogoutButton.Font = new Font("Microsoft YaHei UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            LogoutButton.Font = new Font("Microsoft YaHei UI", 11.25F, FontStyle.Bold);
             LogoutButton.LinkColor = Color.Black;
             LogoutButton.Location = new Point(0, 728);
             LogoutButton.Margin = new Padding(4, 0, 4, 0);
@@ -265,7 +265,7 @@
             ViewStockButton.BackColor = Color.White;
             ViewStockButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             ViewStockButton.Depth = 0;
-            ViewStockButton.Font = new Font("Microsoft YaHei UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            ViewStockButton.Font = new Font("Microsoft YaHei UI", 9.75F, FontStyle.Bold);
             ViewStockButton.HighEmphasis = true;
             ViewStockButton.Icon = null;
             ViewStockButton.Location = new Point(7, 89);
@@ -330,7 +330,7 @@
             // WelcomeText
             // 
             WelcomeText.BackColor = Color.Transparent;
-            WelcomeText.Font = new Font("Microsoft YaHei UI", 24F, FontStyle.Bold, GraphicsUnit.Point);
+            WelcomeText.Font = new Font("Microsoft YaHei UI", 24F, FontStyle.Bold);
             WelcomeText.ForeColor = Color.Black;
             WelcomeText.Location = new Point(276, 3);
             WelcomeText.Margin = new Padding(2, 0, 2, 0);
@@ -347,7 +347,7 @@
             ExitButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ExitButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             ExitButton.Depth = 0;
-            ExitButton.Font = new Font("Microsoft YaHei UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            ExitButton.Font = new Font("Microsoft YaHei UI", 9.75F, FontStyle.Bold);
             ExitButton.HighEmphasis = true;
             ExitButton.Icon = null;
             ExitButton.Location = new Point(271, 728);
@@ -381,7 +381,7 @@
             ChartStockType.ChartAreas.Add(chartArea1);
             ChartStockType.Dock = DockStyle.Fill;
             legend1.BackColor = Color.Transparent;
-            legend1.Font = new Font("Microsoft YaHei UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            legend1.Font = new Font("Microsoft YaHei UI", 8.25F);
             legend1.IsTextAutoFit = false;
             legend1.Name = "Legend1";
             ChartStockType.Legends.Add(legend1);
@@ -391,7 +391,7 @@
             series1.ChartArea = "ChartArea1";
             series1.ChartType = SeriesChartType.Doughnut;
             series1.Color = Color.Transparent;
-            series1.Font = new Font("Microsoft YaHei UI", 48F, FontStyle.Regular, GraphicsUnit.Point);
+            series1.Font = new Font("Microsoft YaHei UI", 48F);
             series1.Legend = "Legend1";
             series1.Name = "StockByType";
             series1.Palette = ChartColorPalette.SeaGreen;
@@ -400,7 +400,7 @@
             ChartStockType.TabIndex = 0;
             ChartStockType.TabStop = false;
             ChartStockType.Text = "ChartStockType";
-            title1.Font = new Font("Microsoft YaHei UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            title1.Font = new Font("Microsoft YaHei UI", 14.25F);
             title1.Name = "StockByType";
             title1.Text = "Stock by Type";
             ChartStockType.Titles.Add(title1);
@@ -433,7 +433,7 @@
             legend2.Enabled = false;
             legend2.IsTextAutoFit = false;
             legend2.Name = "Legend1";
-            legend2.TitleFont = new Font("Microsoft YaHei UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            legend2.TitleFont = new Font("Microsoft YaHei UI", 9F, FontStyle.Bold);
             ChartDailyOrders.Legends.Add(legend2);
             ChartDailyOrders.Location = new Point(0, 0);
             ChartDailyOrders.Name = "ChartDailyOrders";
@@ -451,7 +451,7 @@
             ChartDailyOrders.TabIndex = 1;
             ChartDailyOrders.TabStop = false;
             ChartDailyOrders.Text = "ChartDailyOrders";
-            title2.Font = new Font("Microsoft YaHei UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            title2.Font = new Font("Microsoft YaHei UI", 14.25F);
             title2.Name = "OrdersThisWeek";
             title2.Text = "Orders This Week";
             ChartDailyOrders.Titles.Add(title2);
@@ -471,19 +471,19 @@
             // 
             ListBestSellers.BackColor = Color.Transparent;
             ListBestSellers.Dock = DockStyle.Fill;
-            ListBestSellers.Font = new Font("Microsoft YaHei UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            ListBestSellers.Font = new Font("Microsoft YaHei UI", 9.75F);
             ListBestSellers.Location = new Point(0, 43);
             ListBestSellers.Margin = new Padding(4, 0, 4, 0);
             ListBestSellers.Name = "ListBestSellers";
             ListBestSellers.Size = new Size(315, 202);
             ListBestSellers.TabIndex = 1;
-            ListBestSellers.Text = "1. item1\r\n\r\n2. item2\r\n\r\n3. item3\r\n\r\n4. item4\r\n\r\n5. item5";
+            ListBestSellers.Text = "1. ~\r\n\r\n2. ~\r\n\r\n3. ~\r\n\r\n4. ~\r\n\r\n5. ~";
             // 
             // TextBestSellers
             // 
             TextBestSellers.BackColor = Color.Transparent;
             TextBestSellers.Dock = DockStyle.Top;
-            TextBestSellers.Font = new Font("Microsoft YaHei UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            TextBestSellers.Font = new Font("Microsoft YaHei UI", 14.25F);
             TextBestSellers.Location = new Point(0, 0);
             TextBestSellers.Margin = new Padding(4, 0, 4, 0);
             TextBestSellers.Name = "TextBestSellers";
@@ -495,7 +495,7 @@
             // HeaderProfit
             // 
             HeaderProfit.BackColor = Color.Navy;
-            HeaderProfit.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            HeaderProfit.Font = new Font("Microsoft YaHei UI", 12F);
             HeaderProfit.ForeColor = Color.White;
             HeaderProfit.Location = new Point(602, 382);
             HeaderProfit.Margin = new Padding(4, 0, 4, 0);
@@ -505,18 +505,18 @@
             HeaderProfit.Text = "Profit";
             HeaderProfit.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // HeaderProducts
+            // HeaderStock
             // 
-            HeaderProducts.BackColor = Color.Teal;
-            HeaderProducts.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            HeaderProducts.ForeColor = Color.White;
-            HeaderProducts.Location = new Point(271, 382);
-            HeaderProducts.Margin = new Padding(4, 0, 4, 0);
-            HeaderProducts.Name = "HeaderProducts";
-            HeaderProducts.Size = new Size(315, 37);
-            HeaderProducts.TabIndex = 0;
-            HeaderProducts.Text = "Products";
-            HeaderProducts.TextAlign = ContentAlignment.MiddleCenter;
+            HeaderStock.BackColor = Color.Teal;
+            HeaderStock.Font = new Font("Microsoft YaHei UI", 12F);
+            HeaderStock.ForeColor = Color.White;
+            HeaderStock.Location = new Point(271, 382);
+            HeaderStock.Margin = new Padding(4, 0, 4, 0);
+            HeaderStock.Name = "HeaderStock";
+            HeaderStock.Size = new Size(315, 37);
+            HeaderStock.TabIndex = 0;
+            HeaderStock.Text = "Stock";
+            HeaderStock.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // PanelProfit
             // 
@@ -535,7 +535,7 @@
             QuantityItemsProfit.Dock = DockStyle.Fill;
             QuantityItemsProfit.FlatAppearance.BorderSize = 0;
             QuantityItemsProfit.FlatStyle = FlatStyle.Flat;
-            QuantityItemsProfit.Font = new Font("Microsoft YaHei", 21.75F, FontStyle.Regular, GraphicsUnit.Point);
+            QuantityItemsProfit.Font = new Font("Microsoft YaHei", 21.75F);
             QuantityItemsProfit.ForeColor = Color.White;
             QuantityItemsProfit.Location = new Point(0, 0);
             QuantityItemsProfit.Margin = new Padding(4, 3, 4, 3);
@@ -543,14 +543,14 @@
             QuantityItemsProfit.Size = new Size(315, 207);
             QuantityItemsProfit.TabIndex = 29;
             QuantityItemsProfit.TabStop = false;
-            QuantityItemsProfit.Text = "£(total)";
+            QuantityItemsProfit.Text = "£~";
             QuantityItemsProfit.UseVisualStyleBackColor = false;
             // 
             // WeeklyProfitText
             // 
             WeeklyProfitText.BackColor = Color.RoyalBlue;
             WeeklyProfitText.Dock = DockStyle.Bottom;
-            WeeklyProfitText.Font = new Font("Microsoft YaHei UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            WeeklyProfitText.Font = new Font("Microsoft YaHei UI", 14.25F);
             WeeklyProfitText.ForeColor = Color.White;
             WeeklyProfitText.Location = new Point(0, 207);
             WeeklyProfitText.Margin = new Padding(4, 0, 4, 0);
@@ -577,7 +577,7 @@
             QuantityItemsOrders.Dock = DockStyle.Fill;
             QuantityItemsOrders.FlatAppearance.BorderSize = 0;
             QuantityItemsOrders.FlatStyle = FlatStyle.Flat;
-            QuantityItemsOrders.Font = new Font("Microsoft YaHei", 21.75F, FontStyle.Regular, GraphicsUnit.Point);
+            QuantityItemsOrders.Font = new Font("Microsoft YaHei", 21.75F);
             QuantityItemsOrders.ForeColor = Color.White;
             QuantityItemsOrders.Location = new Point(0, 0);
             QuantityItemsOrders.Margin = new Padding(4, 3, 4, 3);
@@ -585,14 +585,14 @@
             QuantityItemsOrders.Size = new Size(315, 207);
             QuantityItemsOrders.TabIndex = 30;
             QuantityItemsOrders.TabStop = false;
-            QuantityItemsOrders.Text = "(items)";
+            QuantityItemsOrders.Text = "~";
             QuantityItemsOrders.UseVisualStyleBackColor = false;
             // 
             // WeeklyOrderText
             // 
             WeeklyOrderText.BackColor = Color.Goldenrod;
             WeeklyOrderText.Dock = DockStyle.Bottom;
-            WeeklyOrderText.Font = new Font("Microsoft YaHei UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            WeeklyOrderText.Font = new Font("Microsoft YaHei UI", 14.25F);
             WeeklyOrderText.ForeColor = Color.White;
             WeeklyOrderText.Location = new Point(0, 207);
             WeeklyOrderText.Margin = new Padding(4, 0, 4, 0);
@@ -605,7 +605,7 @@
             // HeaderOrders
             // 
             HeaderOrders.BackColor = Color.DarkGoldenrod;
-            HeaderOrders.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            HeaderOrders.Font = new Font("Microsoft YaHei UI", 12F);
             HeaderOrders.ForeColor = Color.White;
             HeaderOrders.Location = new Point(934, 382);
             HeaderOrders.Margin = new Padding(4, 0, 4, 0);
@@ -619,7 +619,7 @@
             // 
             WeeklyStockText.BackColor = Color.LightSeaGreen;
             WeeklyStockText.Dock = DockStyle.Bottom;
-            WeeklyStockText.Font = new Font("Microsoft YaHei UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            WeeklyStockText.Font = new Font("Microsoft YaHei UI", 14.25F);
             WeeklyStockText.ForeColor = Color.White;
             WeeklyStockText.Location = new Point(0, 207);
             WeeklyStockText.Margin = new Padding(4, 0, 4, 0);
@@ -635,7 +635,7 @@
             QuantityItemsStock.Dock = DockStyle.Fill;
             QuantityItemsStock.FlatAppearance.BorderSize = 0;
             QuantityItemsStock.FlatStyle = FlatStyle.Flat;
-            QuantityItemsStock.Font = new Font("Microsoft YaHei", 21.75F, FontStyle.Regular, GraphicsUnit.Point);
+            QuantityItemsStock.Font = new Font("Microsoft YaHei", 21.75F);
             QuantityItemsStock.ForeColor = Color.White;
             QuantityItemsStock.Location = new Point(0, 0);
             QuantityItemsStock.Margin = new Padding(4, 3, 4, 3);
@@ -643,7 +643,7 @@
             QuantityItemsStock.Size = new Size(315, 207);
             QuantityItemsStock.TabIndex = 28;
             QuantityItemsStock.TabStop = false;
-            QuantityItemsStock.Text = "(items)";
+            QuantityItemsStock.Text = "~";
             QuantityItemsStock.UseVisualStyleBackColor = false;
             // 
             // PanelStock
@@ -665,7 +665,7 @@
             UnusedButton.BackColor = Color.FromArgb(63, 81, 181);
             UnusedButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             UnusedButton.Depth = 0;
-            UnusedButton.Font = new Font("Microsoft YaHei UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            UnusedButton.Font = new Font("Microsoft YaHei UI", 9.75F, FontStyle.Bold);
             UnusedButton.HighEmphasis = true;
             UnusedButton.Icon = null;
             UnusedButton.Location = new Point(276, 382);
@@ -686,7 +686,7 @@
             BackColor = Color.White;
             ClientSize = new Size(1259, 786);
             Controls.Add(PanelStock);
-            Controls.Add(HeaderProducts);
+            Controls.Add(HeaderStock);
             Controls.Add(HeaderProfit);
             Controls.Add(HeaderOrders);
             Controls.Add(PanelOrders);
@@ -734,7 +734,7 @@
         private Panel TopRightPanel;
         private Label HeadingInsights;
         private Label HeaderProfit;
-        private Label HeaderProducts;
+        private Label HeaderStock;
         private Panel PanelProfit;
         private Label WeeklyProfitText;
         private Panel PanelOrders;
