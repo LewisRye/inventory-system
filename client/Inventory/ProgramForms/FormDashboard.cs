@@ -22,8 +22,13 @@
             //
 
             _insights.CreateStockByTypeChart(ChartStockType);                       // fills 'Stock by Type' chart with data
-            _insights.CreateDailyOrdersChart(ChartDailyOrders);                     // fills 'Order History' chart with data
+            // GET dashboard_stock_type
+
+            //_insights.CreateDailyOrdersChart(ChartDailyOrders);                     // fills 'Order History' chart with data
+            // GET dashboard_daily_orders
+
             _insights.CreateBestSellersChart(ListBestSellers);                     // fills 'Best Sellers' chart with data
+            // GET dashboard_best_sellers
 
             //
             //  creating data to put inside of the buttons
