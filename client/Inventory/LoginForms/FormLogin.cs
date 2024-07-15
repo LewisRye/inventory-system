@@ -26,77 +26,56 @@
                 return false;
             }
 
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
-        private void Login(string Username, string Password)
+        private async void Login(string Username, string Password)
         {
-            if (Username.Equals("1") && Password.Equals("1")) // bypass the login for testing purposes
-            {
-                Classes.Logon.CurrentUser = "TestUser";
-                Classes.Logon.AccessLevel = "Manager";
-                new ProgramForms.FormDashboard().Show();
-                return;
-            }
             if (ValidLogin(Username, Password))
             {
-                var databaseConn = new MySqlConnection(Classes.Logon.ConnectionString);
+                HttpClient client = new HttpClient();
+                HttpRequestMessage request = new HttpRequestMessage();
+                HttpResponseMessage response = new HttpResponseMessage();
 
-                try
+                request = new HttpRequestMessage(HttpMethod.Post, Classes.Logon.UriPath + "login");
+                request.Headers.Add("user", Username);
+                request.Headers.Add("pass", Hashing.GenerateHash(Password, Username));
+                response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    databaseConn.Open(); // opens connection with the database so it can be queried
+                    int AccessLevel = Convert.ToInt32(666);
+                    Classes.Logon.CurrentUser = Username; // remembers logged in user's username
+                    request = new HttpRequestMessage(HttpMethod.Get, Classes.Logon.UriPath + "access_level");
+                    request.Headers.Add("user", Username); // get access level of user
+                    response = await client.SendAsync(request);
 
-                    string hashedInput = Hashing.GenerateHash(Password, Username); // hashes the user input to match the password hashes in database
+                    string json = await response.Content.ReadAsStringAsync();
 
-                    string query = "SELECT Account.level_id FROM Account WHERE username = @user AND passhash = @pass GROUP BY Account.level_id;";
-
-                    var command = new MySqlCommand(query, databaseConn);
-                    command.Parameters.AddWithValue("@user", Username); // changes @user in the query to match username input
-                    command.Parameters.AddWithValue("@pass", hashedInput); // these parameters prevent SQL injection
-
-                    var da = new MySqlDataAdapter(command); // executes the SQL command
-                    var dt = new DataTable(); // creates an instance of a table
-                    da.Fill(dt);    // fills the table with the access level returned by SQL command
-
-                    if (dt.Rows.Count > 0)
+                    switch (json)
                     {
-                        int AccessLevel = Convert.ToInt32(dt.Rows[0][0]);
-
-                        switch (AccessLevel)
-                        {
-                            case 0:
-                                Classes.Logon.CurrentUser = Username; // remembers logged in user's username
-                                Classes.Logon.AccessLevel = "Admin";
-                                new LoginForms.FormAccountCreate().Show();
-                                break;
-                            case 1:
-                                Classes.Logon.CurrentUser = Username; // remembers logged in user's username
-                                Classes.Logon.AccessLevel = "Manager";
-                                new ProgramForms.FormDashboard().Show();
-                                break;
-                            case 2:
-                                Classes.Logon.CurrentUser = Username; // remembers logged in user's username
-                                Classes.Logon.AccessLevel = "Staff";
-                                new ProgramForms.FormDashboard().Show();
-                                break;
-                        }
-
-                        StockTimer.Interval = Classes.Logon.NotificationTime;
-                        StockTimer.Start();
-
-                        this.Visible = false;
+                        case "0":
+                            Classes.Logon.AccessLevel = "Admin";
+                            new LoginForms.FormAccountCreate().Show();
+                            break;
+                        case "1":
+                            Classes.Logon.AccessLevel = "Manager";
+                            new ProgramForms.FormDashboard().Show();
+                            break;
+                        case "2":
+                            Classes.Logon.AccessLevel = "Staff";
+                            new ProgramForms.FormDashboard().Show();
+                            break;
                     }
-                    else
-                    {
-                        MessageBox.Show("Details are incorrect.", "Error");
-                    }
+
+                    StockTimer.Interval = Classes.Logon.NotificationTime;
+                    StockTimer.Start();
+
+                    this.Visible = false;
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.Message, "Error");
+                    MessageBox.Show("Details are incorrect.", "Error");
                 }
             }
         }
