@@ -226,7 +226,7 @@ fn get_all_product() -> Vec<Product> {
     return output;
 }
 
-fn get_dashboard_stock_by_type() -> Vec<(i64, String)> {
+fn get_dashboard_stock_by_type() -> Vec<models::StockType> {
     let mut output = Vec::new();
 
     let query = "SELECT SUM(number_in_stock) AS s, category.category_name AS c
@@ -241,14 +241,21 @@ fn get_dashboard_stock_by_type() -> Vec<(i64, String)> {
         .into_iter()
         .map(|row| row.unwrap())
     {
-        let row = (row.read::<i64, _>("s"), row.read::<&str, _>("c").into());
-        output.push(row);
+        let category: String = row.read::<&str, _>("c").to_string();
+        let quantity: i64 = row.read("s");
+        
+        let stock_type = models::StockType {
+            c: category,
+            s: quantity,
+        };
+
+        output.push(stock_type);
     }
     return output;
 }
 
 /*
-fn get_dashboard_daily_orders() -> Vec<(i64, i64)> {
+fn get_dashboard_daily_orders() -> Vec<models::DailyOrder> {
     let mut output = Vec::new();
 
     let query = "WITH RECURSIVE date_range(date) AS (
@@ -279,8 +286,15 @@ fn get_dashboard_daily_orders() -> Vec<(i64, i64)> {
         .into_iter()
         .map(|row| row.unwrap())
     {
-        let row = (row.read("date"), row.read("orders"));
-        output.push(row);
+        let day_f64: f64 = row.read("date");
+        let orders: i64 = row.read("orders");
+        
+        let daily_order = models::DailyOrder {
+            day: day_f64 as i64,
+            orders: orders,
+        };
+
+        output.push(daily_order);
     }
     return output;
 }

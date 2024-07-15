@@ -58,6 +58,18 @@ pub struct Product {
 }
 
 #[derive(Serialize, Deserialize)]
+pub struct StockType {
+    pub c: String,
+    pub s: i64,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct DailyOrder {
+    pub day: i64,
+    pub orders: i64,
+}
+
+#[derive(Serialize, Deserialize)]
 pub struct BestSeller {
     pub name: String,
     pub quantity: i64,
