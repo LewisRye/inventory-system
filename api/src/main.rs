@@ -9,7 +9,7 @@ use http_body_util::{combinators::BoxBody, BodyExt, Full, Empty};
 use hyper::body::Bytes;
 use hyper::server::conn::http1;
 use hyper::service::service_fn;
-use hyper::{Request, Response, Method, StatusCode};
+use hyper::{Method, Request, Response, StatusCode};
 use hyper_util::rt::TokioIo;
 use models::Product;
 use tokio::net::TcpListener;
@@ -47,30 +47,64 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     }
 }
 
+/* METHODS TO HANDLE HTTP REQUESTS */
+
 async fn handle_request(
     req: Request<hyper::body::Incoming>,
 ) -> Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
     match (req.method(), req.uri().path().split("/").nth(1)) {
         (&Method::POST, Some("echo")) => Ok(Response::new(req.into_body().boxed())),
 
-        (&Method::GET, Some("product")) => {
-            let parts: Vec<&str> = req.uri().path().split("/product/").collect();
-            let mut id: i64 = 0;
+        (&Method::POST, Some("login")) => {
+            let user_header = req.headers().get("user"); // Get the header value for "user"
+            let user_str: Option<&str> = user_header.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+            
+            let pass_header = req.headers().get("pass"); // Get the header value for "pass"
+            let pass_str: Option<&str> = pass_header.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
 
-            // Extract the path parameters
-            if let Some(product_id_str) = parts.get(1) {
-                if let Ok(product_id) = product_id_str.parse::<i64>() {
-                    id = product_id;
-                }
+            println!("{}: Attempted Login: {} {}", Utc::now(), user_str.unwrap_or_default(), pass_str.unwrap_or_default());
+
+            if login(user_str.as_deref(), pass_str.as_deref()) == true {
+                // Construct a 200 OK response
+                let response = Response::builder()
+                .status(StatusCode::OK)
+                .body(empty())
+                .unwrap();
+                println!("Success");
+                return Ok(response);
+            } else {
+                // Construct a 401 Unauthorized response
+                let response = Response::builder()
+                .status(StatusCode::UNAUTHORIZED)
+                .body(empty())
+                .unwrap();
+                println!("Error");
+                return Ok(response);
             }
+        },
 
-            println!("{}: Requested Product ID: {}", Utc::now(), id);
+        (&Method::GET, Some("product")) => {
+            let id = req.headers().get("id");
+            let id_str: Option<&str> = id.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
 
-            // Create a JSON value
-            let product = get_product(&id);
-
+            println!("{}: Requested Product ID: {}", Utc::now(), id_str.unwrap_or_default());
+            
             // Convert JSON to bytes
-            let json = serde_json::to_string(&product).unwrap();
+            let id_int: i64 = id_str.unwrap_or_default().parse().unwrap();
+            let json = serde_json::to_string(&get_product(&id_int)).unwrap();
+
+            // Build the HTTP response
+            Ok(Response::new(full(json)))
+        },
+
+        (&Method::GET, Some("access_level")) => {
+            let user = req.headers().get("user");
+            let user_str: Option<&str> = user.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+
+            println!("{}: Requested Access Level: {}", Utc::now(), user_str.unwrap_or_default());
+            
+            // Convert JSON to bytes
+            let json = serde_json::to_string(&get_access_level(&user_str.unwrap_or_default())).unwrap();
 
             // Build the HTTP response
             Ok(Response::new(full(json)))
@@ -79,11 +113,8 @@ async fn handle_request(
         (&Method::GET, Some("all_product")) => {
             println!("{}: Requested All Products", Utc::now());
 
-            // Create a JSON value
-            let products = get_all_product();
-
             // Convert JSON to bytes
-            let json = serde_json::to_string(&products).unwrap();
+            let json = serde_json::to_string(&get_all_product()).unwrap();
 
             // Build the HTTP response
             Ok(Response::new(full(json)))
@@ -91,20 +122,16 @@ async fn handle_request(
 
         (&Method::GET, Some("dashboard_stock_type")) => {
             println!("{}: Requested Dashboard Stock Types", Utc::now());
-
-            let stock = get_dashboard_stock_by_type();
-
-            let json = serde_json::to_string(&stock).unwrap();
+            
+            let json = serde_json::to_string(&get_dashboard_stock_by_type()).unwrap();
 
             Ok(Response::new(full(json)))
         },
 
         (&Method::GET, Some("dashboard_daily_orders")) => {
             println!("{}: Requested Dashboard Daily Orders", Utc::now());
-
-            //let orders = get_dashboard_daily_orders();
-
-            //let json = serde_json::to_string(&orders).unwrap();
+            
+            //let json = serde_json::to_string(&get_dashboard_daily_orders()).unwrap();
 
             //Ok(Response::new(full(json)))
             Ok(Response::new(empty()))
@@ -113,9 +140,7 @@ async fn handle_request(
         (&Method::GET, Some("dashboard_best_sellers")) => {
             println!("{}: Requested Dashboard Best Sellers", Utc::now());
 
-            let best = get_dashboard_best_sellers();
-
-            let json = serde_json::to_string(&best).unwrap();
+            let json = serde_json::to_string(&get_dashboard_best_sellers()).unwrap();
 
             Ok(Response::new(full(json)))
         },
@@ -123,9 +148,7 @@ async fn handle_request(
         (&Method::GET, Some("dashboard_stock")) => {
             println!("{}: Requested Dashboard Stock", Utc::now());
 
-            let stock = get_dashboard_stock();
-
-            let json = serde_json::to_string(&stock).unwrap();
+            let json = serde_json::to_string(&get_dashboard_stock()).unwrap();
 
             Ok(Response::new(full(json)))
         },
@@ -133,9 +156,7 @@ async fn handle_request(
         (&Method::GET, Some("dashboard_profit")) => {
             println!("{}: Requested Dashboard Profit", Utc::now());
 
-            let profit = get_dashboard_profit();
-
-            let json = serde_json::to_string(&profit).unwrap();
+            let json = serde_json::to_string(&get_dashboard_profit()).unwrap();
 
             Ok(Response::new(full(json)))
         },
@@ -143,9 +164,7 @@ async fn handle_request(
         (&Method::GET, Some("dashboard_orders")) => {
             println!("{}: Requested Dashboard Orders", Utc::now());
 
-            let orders = get_dashboard_orders();
-
-            let json = serde_json::to_string(&orders).unwrap();
+            let json = serde_json::to_string(&get_dashboard_orders()).unwrap();
 
             Ok(Response::new(full(json)))
         },
@@ -157,6 +176,28 @@ async fn handle_request(
             Ok(not_found)
         }
     }
+}
+
+/* METHODS TO GET SQL DATA */
+
+fn login(user: Option<&str>, pass: Option<&str>) -> bool {
+    let mut uname = String::new();
+
+    let query = "SELECT username FROM account WHERE account.passhash = ?;";
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let connection = sqlite::open(database_url).unwrap();
+    for row in connection
+        .prepare(query)
+        .unwrap()
+        .into_iter()
+        .bind((1, pass))
+        .unwrap()
+        .map(|row| row.unwrap())
+    {
+        uname = row.read::<&str, _>("username").to_string();
+    }
+
+    return uname == user.unwrap_or_default();
 }
 
 fn get_product(id: &i64) -> Option<Product> {
@@ -190,6 +231,24 @@ fn get_product(id: &i64) -> Option<Product> {
 
             return Some(product);
         }
+    }
+    return None;
+}
+
+fn get_access_level(id: &str) -> Option<i64> {
+    let query = "SELECT level_id AS id FROM account WHERE username = ?;";
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let connection = sqlite::open(database_url).unwrap();
+    for row in connection
+        .prepare(query)
+        .unwrap()
+        .into_iter()
+        .bind((1, id))
+        .unwrap()
+        .map(|row| row.unwrap())
+    {
+        return row.read("id");
     }
     return None;
 }
