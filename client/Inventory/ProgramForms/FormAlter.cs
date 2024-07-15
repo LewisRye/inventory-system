@@ -66,7 +66,7 @@
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error");
-            } 
+            }
         }
 
         private void AddCategoryButton_Click(object Sender, EventArgs E)

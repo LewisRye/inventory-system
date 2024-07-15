@@ -88,7 +88,7 @@
                 MessageBox.Show("Unable to connect to the database. " + ex.Message);
             }
         }
-        
+
         private void LoadCategories()
         {
             try

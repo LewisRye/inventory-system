@@ -115,7 +115,7 @@ namespace Inventory.Classes
             try
             {
                 HttpResponseMessage response = await client.GetAsync(Classes.Logon.UriPath + "dashboard_stock");
-                
+
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonContent = await response.Content.ReadAsStringAsync();

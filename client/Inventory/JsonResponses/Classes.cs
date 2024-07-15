@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace Inventory.JsonResponses
-{   
+{
     public class StockType
     {
         [JsonPropertyName("c")]

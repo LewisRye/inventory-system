@@ -10,23 +10,16 @@
 
         public static string GenerateHash(string StringToHash, string Username)
         {
-            string salt = Username; // individual salt per account
-            string hashedValue = "";
-
-            var inputWithSalt = new StringBuilder("", 2);
-
-            inputWithSalt.Append(StringToHash);
-            inputWithSalt.Append(salt);
-
-            byte[] inputInBytes = Encoding.UTF8.GetBytes(inputWithSalt.ToString());
-            inputInBytes.Reverse(); // first character in input = last character in array
-
-            foreach (byte value in inputInBytes) // adds the new hashed value into a string
+            byte[] data = [];
+            using (SHA512 sha512 = SHA512.Create())
             {
-                hashedValue += (value * 5); // multiplies the byte by 5 (prime number) so it is harder to crack
+                data = sha512.ComputeHash(Encoding.UTF8.GetBytes(Username + StringToHash));
             }
 
-            return hashedValue; // returns the new hashed value
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in data) sb.Append(b);
+
+            return sb.ToString();
         }
 
         public static bool ValidPassword(string Password)
