@@ -160,6 +160,16 @@ async fn handle_request(
             Ok(Response::new(full(json)))
         },
 
+        (&Method::GET, Some("all_username")) => {
+            println!("{}: GET all_username", Utc::now());
+
+            // Convert JSON to bytes
+            let json = serde_json::to_string(&get_all_username()).unwrap();
+
+            // Build the HTTP response
+            Ok(Response::new(full(json)))
+        },
+
         (&Method::GET, Some("dashboard_stock_type")) => {
             println!("{}: GET dashboard_stock_type", Utc::now());
             
@@ -240,7 +250,7 @@ fn login(user: Option<&str>, pass: Option<&str>) -> bool {
     return uname == user.unwrap_or_default();
 }
 
-fn create_account(level: Option<&str>, user: Option<&str>, pass: Option<&str>) -> bool{
+fn create_account(_level: Option<&str>, _user: Option<&str>, _pass: Option<&str>) -> bool{
     return true;
 }
 
@@ -349,6 +359,25 @@ fn get_all_access_level() -> Vec<models::AccessLevel> {
             level_name: name,
         };
         output.push(level);
+    }
+    return output;
+}
+
+fn get_all_username() -> Vec<String> {
+    let mut output: Vec<String> = Vec::new();
+
+    let query = "SELECT username FROM account;";
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let connection = sqlite::open(database_url).unwrap();
+    for row in connection
+        .prepare(query)
+        .unwrap()
+        .into_iter()
+        .map(|row| row.unwrap())
+    {
+        let username: String = row.read::<&str, _>("username").to_string();
+        output.push(username);
     }
     return output;
 }
