@@ -5,11 +5,11 @@ namespace Inventory.DataForms
     public partial class FormViewStock : Form
     {
         private readonly Database _database = new Database();
-        private MySqlConnection databaseConn = new MySqlConnection(Logon.ConnectionString);
+        private MySqlConnection _databaseConn = new MySqlConnection(Logon.ConnectionString);
 
-        private List<Category> allCategories = new List<Category>();
-        private List<Product> allProducts = new List<Product>();
-        private List<Product> newProducts = new List<Product>();
+        private List<Category> _allCategories = new List<Category>();
+        private List<Product> _allProducts = new List<Product>();
+        private List<Product> _newProducts = new List<Product>();
 
         public FormViewStock()
         {
@@ -34,18 +34,18 @@ namespace Inventory.DataForms
             ComboBoxType.SelectedIndex = 0;
             ComboBoxSort.SelectedIndex = 0;
 
-            allCategories = _database.GetCategories();
-            allProducts = _database.GetProducts();
+            _allCategories = _database.GetCategories();
+            _allProducts = _database.GetProducts();
         }
 
-        private void FormViewStock_Load(object Sender, EventArgs E)
+        private void FormViewStock_Load(object sender, EventArgs e)
         {
-            foreach (Category c in allCategories)
+            foreach (Category c in _allCategories)
             {
                 ComboBoxType.Items.Add(c.GetName());
             }
 
-            foreach (Product p in allProducts)
+            foreach (Product p in _allProducts)
             {
                 DatabaseGrid.Rows.Add(p.GetId(), p.GetName(), p.GetCategory(), p.GetStock(), "£" + p.GetPrice(), p.GetDiscontinued());
             }
@@ -53,19 +53,19 @@ namespace Inventory.DataForms
             TextWelcome.Text = $"welcome, {Logon.CurrentUser}!";
         }
 
-        private void ButtonApplyCategoryFilter_Click(object Sender, EventArgs E)
+        private void ButtonApplyCategoryFilter_Click(object sender, EventArgs e)
         {
             if (ComboBoxType.SelectedIndex != 0)
             {
                 List<Product> newProducts = new List<Product>();
                 DatabaseGrid.Rows.Clear();
-                databaseConn.Open();
+                _databaseConn.Open();
 
                 var command = new MySqlCommand(@"SELECT Product.Product_ID as 'ID', Product.Product_Name as 'Name', 
                     Category.Category_Name as 'Category', Product.Number_In_Stock as 'Stock', Product.Buy_Price as 'Buy Price', 
                     Product.Discontinued AS 'Discontinued' 
                     FROM Product INNER JOIN Category ON Product.Category_ID = Category.Category_ID 
-                    WHERE Product.Category_ID = @category;", databaseConn);
+                    WHERE Product.Category_ID = @category;", _databaseConn);
                 command.Parameters.AddWithValue("@category", ComboBoxType.SelectedIndex);
 
                 var reader = command.ExecuteReader();
@@ -73,7 +73,7 @@ namespace Inventory.DataForms
                 {
                     newProducts.Add(new Classes.Product(Convert.ToInt32(reader.GetString(0)), reader.GetString(1), reader.GetString(2), Convert.ToInt32(reader.GetString(3)), Convert.ToDecimal(reader.GetString(4)), Convert.ToChar(reader.GetString(5))));
                 }
-                databaseConn.Close();
+                _databaseConn.Close();
 
                 foreach (Product p in newProducts)
                 {
@@ -86,7 +86,7 @@ namespace Inventory.DataForms
             }
         }
 
-        private void ButtonApplySort_Click(object Sender, EventArgs E)
+        private void ButtonApplySort_Click(object sender, EventArgs e)
         {
             switch (ComboBoxSort.SelectedIndex)
             {
@@ -114,10 +114,10 @@ namespace Inventory.DataForms
             }
         }
 
-        private void ButtonResetSort_Click(object Sender, EventArgs E)
+        private void ButtonResetSort_Click(object sender, EventArgs e)
         {
             DatabaseGrid.Rows.Clear();
-            foreach (Product p in allProducts)
+            foreach (Product p in _allProducts)
             {
                 DatabaseGrid.Rows.Add(p.GetId(), p.GetName(), p.GetCategory(), p.GetStock(), "£" + p.GetPrice(), p.GetDiscontinued());
             }
@@ -127,34 +127,34 @@ namespace Inventory.DataForms
             ComboBoxSort.SelectedIndex = 0;
         }
 
-        private void SearchBox_TextChanged(object Sender, EventArgs E)
+        private void SearchBox_TextChanged(object sender, EventArgs e)
         {
             DatabaseGrid.Rows.Clear();
-            newProducts.Clear();
+            _newProducts.Clear();
 
             if (SearchBox.Text == "")
             {
-                foreach (Product p in allProducts)
+                foreach (Product p in _allProducts)
                 {
                     DatabaseGrid.Rows.Add(p.GetId(), p.GetName(), p.GetCategory(), p.GetStock(), "£" + p.GetPrice(), p.GetDiscontinued());
                 }
             }
             else
             {
-                newProducts = _database.GetProducts(SearchBox.Text);
-                foreach (Product p in newProducts)
+                _newProducts = _database.GetProducts(SearchBox.Text);
+                foreach (Product p in _newProducts)
                 {
                     DatabaseGrid.Rows.Add(p.GetId(), p.GetName(), p.GetCategory(), p.GetStock(), "£" + p.GetPrice(), p.GetDiscontinued());
                 }
             }
         }
 
-        private void ButtonClear_Click(object Sender, EventArgs E)
+        private void ButtonClear_Click(object sender, EventArgs e)
         {
             SearchBox.Clear();
         }
 
-        private void ButtonAddCategory_Click(object Sender, EventArgs E)
+        private void ButtonAddCategory_Click(object sender, EventArgs e)
         {
             new ProgramForms.FormAlter().Show();
             this.Hide();
@@ -164,7 +164,7 @@ namespace Inventory.DataForms
             GC.WaitForPendingFinalizers();
         }
 
-        private void ButtonAddProduct_Click(object Sender, EventArgs E)
+        private void ButtonAddProduct_Click(object sender, EventArgs e)
         {
             new ProgramForms.FormAlter().Show();
             this.Hide();
@@ -174,7 +174,7 @@ namespace Inventory.DataForms
             GC.WaitForPendingFinalizers();
         }
 
-        private void ButtonDiscontinue_Click(object Sender, EventArgs E)
+        private void ButtonDiscontinue_Click(object sender, EventArgs e)
         {
             new ProgramForms.FormAlter().Show();
             this.Hide();
@@ -194,7 +194,7 @@ namespace Inventory.DataForms
             GC.WaitForPendingFinalizers();
         }
 
-        private void ButtonClose_Click(object Sender, EventArgs E)
+        private void ButtonClose_Click(object sender, EventArgs e)
         {
             new ProgramForms.FormDashboard().Show();
             this.Hide();

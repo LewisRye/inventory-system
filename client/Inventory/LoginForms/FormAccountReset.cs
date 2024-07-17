@@ -7,9 +7,9 @@
             InitializeComponent();
         }
 
-        private void ResetPassword(string Username, string Address, string NewPassword)
+        private void ResetPassword(string username, string address, string newPassword)
         {
-            if (Hashing.ValidPassword(NewPassword))
+            if (Classes.Hashing.ValidPassword(newPassword))
             {
                 int userExists = 0;
                 var databaseConnection = new MySqlConnection(Classes.Logon.ConnectionString);
@@ -20,8 +20,8 @@
                     string resetQuery = @"SELECT COUNT(staff_id) FROM Staff, Account WHERE account.username = @user 
                                         AND staff.staff_address = @address";
                     var command = new MySqlCommand(resetQuery, databaseConnection);
-                    command.Parameters.AddWithValue("@user", Username);                                    // changes @user in the query to match username input
-                    command.Parameters.AddWithValue("@address", Address);                                       // these parameters prevent SQL injection
+                    command.Parameters.AddWithValue("@user", username);                                    // changes @user in the query to match username input
+                    command.Parameters.AddWithValue("@address", address);                                       // these parameters prevent SQL injection
                     var da = new MySqlDataAdapter(command);                                                               // executes the SQL command
                     var dt = new DataTable();                                                                           // creates an instance of a table
                     da.Fill(dt);
@@ -33,12 +33,12 @@
 
                     if (userExists > 0)
                     {
-                        string hashedInput = Hashing.GenerateHash(NewPassword, Username);
+                        string hashedInput = Classes.Hashing.GenerateHash(newPassword, username);
 
                         string updateCommand = @"UPDATE Account SET PasswordHash = @hash 
                                             WHERE Username = @user;";
                         var changePwd = new MySqlCommand(updateCommand, databaseConnection);
-                        changePwd.Parameters.AddWithValue("@user", Username);                               // changes @user in the query to match username input
+                        changePwd.Parameters.AddWithValue("@user", username);                               // changes @user in the query to match username input
                         changePwd.Parameters.AddWithValue("@hash", hashedInput);                            // changes @password in the query to match password input
                         changePwd.ExecuteNonQuery();
                         MessageBox.Show("Password has been successfully changed", "Success");
@@ -59,7 +59,7 @@
             }
         }
 
-        private void ButtonResetPwd_Click(object Sender, EventArgs E)
+        private void ButtonResetPwd_Click(object sender, EventArgs e)
         {
             if (TextBoxUsername.Text.Length > 0                                          // ensures all fields have been entered correctly
                 && TextBoxAddress.Text.Length > 0
@@ -90,10 +90,10 @@
             }
         }
 
-        private void TextBoxPassword_TextChanged(object Sender, EventArgs E)
+        private void TextBoxPassword_TextChanged(object sender, EventArgs e)
         {
-            //ToolTip.SetToolTip(TextBoxPassword, "Passwords must be: \n • at least 8 characters \n" +
-            //"And contain: \n • at least 1 lowercase \n • at least 1 uppercase \n • at least 1 number");
+            ToolTip.SetToolTip(TextBoxPassword, "Passwords must be: \n • at least 8 characters \n" +
+                                                "And contain: \n • at least 1 lowercase \n • at least 1 uppercase \n • at least 1 number");
 
             if (TextBoxPassword.Text.Length > 0)
             {
@@ -113,7 +113,7 @@
                     newPwdStrength = 100;                                             // ensures the value never goes above 100%
                 }
 
-                ValuePwdStrength.Text = newPwdStrength.ToString() + "%";              // displays password strength % in the text box
+                ValuePwdStrength.Text = newPwdStrength + @"%";              // displays password strength % in the text box
                 ValuePwdStrength.ForeColor = Color.Red;
 
                 BarPwdStrength.Value = Convert.ToInt16(newPwdStrength);                  // adds strength bar for visual indication of strength
@@ -137,11 +137,11 @@
             }
             else
             {
-                ValuePwdStrength.Text = "0%";
+                ValuePwdStrength.Text = @"0%";
             }
         }
 
-        private void ButtonReturnLogin_Click(object Sender, EventArgs E)
+        private void ButtonReturnLogin_Click(object sender, EventArgs e)
         {
             foreach (Form var in Application.OpenForms)
             {
@@ -157,9 +157,9 @@
             GC.WaitForPendingFinalizers();
         }
 
-        private void PasswordBox_KeyDown(object Sender, KeyEventArgs E)
+        private void PasswordBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (E.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
                 if (TextBoxPassword.Text.Length != 0)
                 {
@@ -169,7 +169,7 @@
                     }
                     else
                     {
-                        MessageBox.Show("Not all fields have been entered correctly...", "Error");
+                        MessageBox.Show("Not all fields have been entered correctly.", "Error");
                     }
 
                     if (Classes.Logon.PasswordChanged)
@@ -188,8 +188,8 @@
                         GC.WaitForPendingFinalizers();
                     }
                 }
-                E.SuppressKeyPress = true;
-                E.Handled = true;
+                e.SuppressKeyPress = true;
+                e.Handled = true;
             }
         }
     }

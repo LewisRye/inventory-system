@@ -7,19 +7,18 @@ namespace Inventory.Classes
         /*
          *  Contents
          */
-
-        HttpClient client = new HttpClient();
-
-        public async Task CreateStockByTypeChart(Chart Chart)
+        
+        public async Task CreateStockByTypeChart(Chart chart)
         {
             try
             {
+                using HttpClient client = new HttpClient();
                 HttpResponseMessage response = await client.GetAsync(Classes.Logon.UriPath + "dashboard_stock_type");
 
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonContent = await response.Content.ReadAsStringAsync();
-                    List<StockType> stockTypes = JsonSerializer.Deserialize<List<StockType>>(jsonContent);
+                    List<StockType>? stockTypes = JsonSerializer.Deserialize<List<StockType>>(jsonContent);
 
                     Series s = new Series
                     {
@@ -27,17 +26,18 @@ namespace Inventory.Classes
                         ChartType = SeriesChartType.Doughnut,
                     };
 
-                    foreach (StockType stock in stockTypes)
-                    {
-                        s.Points.AddXY(stock.Category, stock.Stock);
-                    }
+                    if (stockTypes != null)
+                        foreach (var stock in stockTypes)
+                        {
+                            s.Points.AddXY(stock.Category, stock.Stock);
+                        }
 
-                    Chart.Series.Add(s);
+                    chart.Series.Add(s);
                 }
             }
             catch (JsonException e)
             {
-                Console.WriteLine($"JSON Error: {e.Message}");
+                MessageBox.Show($"StockType: JSON Error\n{e.Message}");
             }
             catch (HttpRequestException e)
             {
@@ -45,16 +45,17 @@ namespace Inventory.Classes
             }
         }
 
-        public async Task CreateDailyOrdersChart(Chart Chart)
+        public async Task CreateDailyOrdersChart(Chart chart)
         {
             try
             {
+                using HttpClient client = new HttpClient();
                 HttpResponseMessage response = await client.GetAsync(Classes.Logon.UriPath + "dashboard_daily_orders");
 
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonContent = await response.Content.ReadAsStringAsync();
-                    List<DailyOrder> dailyOrders = JsonSerializer.Deserialize<List<DailyOrder>>(jsonContent);
+                    List<DailyOrder>? dailyOrders = JsonSerializer.Deserialize<List<DailyOrder>>(jsonContent);
 
                     Series s = new Series
                     {
@@ -62,17 +63,18 @@ namespace Inventory.Classes
                         ChartType = SeriesChartType.Bar,
                     };
 
-                    foreach (DailyOrder day in dailyOrders)
-                    {
-                        s.Points.AddXY(day.Date, day.Orders);
-                    }
+                    if (dailyOrders != null)
+                        foreach (DailyOrder day in dailyOrders)
+                        {
+                            s.Points.AddXY(day.Date, day.Orders);
+                        }
 
-                    Chart.Series.Add(s);
+                    chart.Series.Add(s);
                 }
             }
             catch (JsonException e)
             {
-                Console.WriteLine($"JSON Error: {e.Message}");
+                MessageBox.Show($"DailyOrders: JSON Error\n{e.Message}");
             }
             catch (HttpRequestException e)
             {
@@ -80,29 +82,32 @@ namespace Inventory.Classes
             }
         }
 
-        public async Task CreateBestSellersChart(Label Label)
+        public async Task CreateBestSellersChart(Label label)
         {
             try
             {
+                using HttpClient client = new HttpClient();
                 HttpResponseMessage response = await client.GetAsync(Classes.Logon.UriPath + "dashboard_best_sellers");
 
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonContent = await response.Content.ReadAsStringAsync();
-                    List<BestSeller> bestSellers = JsonSerializer.Deserialize<List<BestSeller>>(jsonContent);
+                    List<BestSeller>? bestSellers = JsonSerializer.Deserialize<List<BestSeller>>(jsonContent);
                     int i = 1;
                     StringBuilder sb = new StringBuilder();
-                    foreach (BestSeller item in bestSellers)
-                    {
-                        sb.Append($"{i}. {item.Name} ({item.Quantity}x sold)\n\n");
-                        i++;
-                    }
-                    Label.Text = sb.ToString();
+                    if (bestSellers != null)
+                        foreach (BestSeller item in bestSellers)
+                        {
+                            sb.Append($"{i}. {item.Name} ({item.Quantity}x sold)\n\n");
+                            i++;
+                        }
+
+                    label.Text = sb.ToString();
                 }
             }
             catch (JsonException e)
             {
-                Console.WriteLine($"JSON Error: {e.Message}");
+                MessageBox.Show($"BestSeller: JSON Error\n{e.Message}");
             }
             catch (HttpRequestException e)
             {
@@ -110,21 +115,22 @@ namespace Inventory.Classes
             }
         }
 
-        public async Task CreateQuantityItemsStockText(Button Button)
+        public async Task CreateQuantityItemsStockText(Button button)
         {
             try
             {
+                using HttpClient client = new HttpClient();
                 HttpResponseMessage response = await client.GetAsync(Classes.Logon.UriPath + "dashboard_stock");
 
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonContent = await response.Content.ReadAsStringAsync();
-                    Button.Text = jsonContent;
+                    button.Text = jsonContent;
                 }
             }
             catch (JsonException e)
             {
-                Console.WriteLine($"JSON Error: {e.Message}");
+                MessageBox.Show($"ItemsStock: JSON Error\n{e.Message}");
             }
             catch (HttpRequestException e)
             {
@@ -132,22 +138,23 @@ namespace Inventory.Classes
             }
         }
 
-        public async Task CreateQuantityItemsProfitText(Button Button)
+        public async Task CreateQuantityItemsProfitText(Button button)
         {
             try
             {
+                using HttpClient client = new HttpClient();
                 HttpResponseMessage response = await client.GetAsync(Classes.Logon.UriPath + "dashboard_profit");
 
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonContent = await response.Content.ReadAsStringAsync();
                     string result = float.Parse(jsonContent).ToString("#,##0.00");
-                    Button.Text = $"£{result}";
+                    button.Text = $"£{result}";
                 }
             }
             catch (JsonException e)
             {
-                Console.WriteLine($"JSON Error: {e.Message}");
+                MessageBox.Show($"ItemsProfit: JSON Error\n{e.Message}");
             }
             catch (HttpRequestException e)
             {
@@ -155,21 +162,22 @@ namespace Inventory.Classes
             }
         }
 
-        public async Task CreateQuantityItemsOrdersText(Button Button)
+        public async Task CreateQuantityItemsOrdersText(Button button)
         {
             try
             {
+                using HttpClient client = new HttpClient();
                 HttpResponseMessage response = await client.GetAsync(Classes.Logon.UriPath + "dashboard_orders");
 
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonContent = await response.Content.ReadAsStringAsync();
-                    Button.Text = jsonContent;
+                    button.Text = jsonContent;
                 }
             }
             catch (JsonException e)
             {
-                Console.WriteLine($"JSON Error: {e.Message}");
+                MessageBox.Show($"ItemsOrders: JSON Error\n{e.Message}");
             }
             catch (HttpRequestException e)
             {

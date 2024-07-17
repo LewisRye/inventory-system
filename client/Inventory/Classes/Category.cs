@@ -1,24 +1,15 @@
 ﻿namespace Inventory.Classes
 {
-    internal class Category
+    internal class Category(int id, string name)
     {
-        private int _id;
-        private string _name;
-
-        public Category(int id, string name)
-        {
-            _id = id;
-            _name = name;
-        }
-
         public int GetId()
         {
-            return _id;
+            return id;
         }
 
         public string GetName()
         {
-            return _name;
+            return name;
         }
     }
 }

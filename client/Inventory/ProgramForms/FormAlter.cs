@@ -2,7 +2,7 @@
 {
     public partial class FormAlter : Form
     {
-        private static readonly string _connStr = ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
+        private static readonly string ConnStr = ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
 
         public FormAlter()
         {
@@ -18,11 +18,11 @@
             NewProductPrice.Increment = 0.01m;
         }
 
-        private void AlterForm_Load(object Sender, EventArgs E)
+        private void AlterForm_Load(object sender, EventArgs e)
         {
             CategoryList.Items.Add("Select the category");
 
-            var databaseConn = new MySqlConnection(_connStr);
+            var databaseConn = new MySqlConnection(ConnStr);
 
             try
             {
@@ -44,7 +44,7 @@
 
             ProductList.Items.Add("Select the item to discontinue");
 
-            var databaseConnection = new MySqlConnection(_connStr);
+            var databaseConnection = new MySqlConnection(ConnStr);
 
             try
             {
@@ -69,11 +69,11 @@
             }
         }
 
-        private void AddCategoryButton_Click(object Sender, EventArgs E)
+        private void AddCategoryButton_Click(object sender, EventArgs e)
         {
             if (CategoryName.Text.Length > 0)
             {
-                var databaseConnection = new MySqlConnection(_connStr);
+                var databaseConnection = new MySqlConnection(ConnStr);
 
                 try
                 {
@@ -113,11 +113,11 @@
             }
         }
 
-        private void AddProductButton_Click(object Sender, EventArgs E)
+        private void AddProductButton_Click(object sender, EventArgs e)
         {
             if (InputProductName.Text != "" && CategoryList.SelectedIndex != 0)
             {
-                var databaseConnection = new MySqlConnection(_connStr);
+                var databaseConnection = new MySqlConnection(ConnStr);
 
                 try
                 {
@@ -168,11 +168,11 @@
             }
         }
 
-        private void DiscontinueButton_Click(object Sender, EventArgs E)
+        private void DiscontinueButton_Click(object sender, EventArgs e)
         {
             if (ProductList.SelectedIndex != 0)
             {
-                var databaseConnection = new MySqlConnection(_connStr);
+                var databaseConnection = new MySqlConnection(ConnStr);
 
                 try
                 {
@@ -206,9 +206,9 @@
             }
         }
 
-        private void ButtonChange_Click(object Sender, EventArgs E)
+        private void ButtonChange_Click(object sender, EventArgs e)
         {
-            var databaseConnection = new MySqlConnection(_connStr);
+            var databaseConnection = new MySqlConnection(ConnStr);
 
             var sda = new MySqlDataAdapter("SELECT Product_ID FROM Product WHERE Product_Name = '" +
                                          ExistingProductName.Text + "';", databaseConnection);
@@ -249,7 +249,7 @@
             }
         }
 
-        private void CloseButton_Click(object Sender, EventArgs E)
+        private void CloseButton_Click(object sender, EventArgs e)
         {
             this.Hide();
             new DataForms.FormViewStock().Show();

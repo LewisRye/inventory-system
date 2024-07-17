@@ -1,31 +1,44 @@
-﻿namespace Inventory.LoginForms
+﻿using Inventory.JsonResponses;
+
+namespace Inventory.LoginForms
 {
     public partial class FormAccountCreate : Form
     {
-        private readonly string _connStr = ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
-
         public FormAccountCreate()
         {
             InitializeComponent();
 
-            var databaseConn = new MySqlConnection(_connStr);
-            databaseConn.Open();                                                        // connects to database and reads it
-
-            var cmd = new MySqlCommand("SELECT level_id, level_name FROM AccessLevel;", databaseConn); // uses SQL query to read data
-            MySqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            try
             {
-                ComboBoxAccessLevel.Items.Add($"{dr["level_id"]}: {dr["level_name"]}");               // populates the list from the SQL query
+                using HttpClient client = new HttpClient();
+                HttpRequestMessage request =
+                    new HttpRequestMessage(HttpMethod.Get, Classes.Logon.UriPath + "all_access_level");
+                HttpResponseMessage response = client.Send(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = response.Content.ReadAsStringAsync().Result;
+                    
+                    List<AccessLevel>? levels = JsonSerializer.Deserialize<List<AccessLevel>>(json);
+
+                    foreach (AccessLevel al in levels!)
+                    {
+                        ComboBoxAccessLevel.Items.Add($"{al.Id}: {al.Name}");
+                    }
+                }
             }
-            databaseConn.Close();
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error");
+            }
         }
 
-        public int RandomNumber()
+        private int RandomNumber()
         {
             return new Random().Next(1000, 9999);
         }
 
-        public bool CheckRequirements(string Username, string Password)
+        private bool CheckRequirements(string username, string password)
         {
             var contains4Characters = new Regex(@".{4,}"); // checks if a string has 8 characters
             var contains8Characters = new Regex(@".{8,}"); // checks if a string has 8 characters
@@ -34,34 +47,28 @@
             var containsNumber = new Regex(@"[0-9]+"); // checks if a string has a number
             var containsLegalChars = new Regex(@"^[a-zA-Z0-9- _ = + ! @ # $ % ^ & * ( )]*$"); // checks if a string has all legal characters
 
-            if (contains4Characters.IsMatch(Username)
-                        && contains8Characters.IsMatch(Password)
-                        && containsUpperCase.IsMatch(Password)
-                        && containsLowerCase.IsMatch(Password)
-                        && containsNumber.IsMatch(Password))
+            if (contains4Characters.IsMatch(username)
+                        && contains8Characters.IsMatch(password)
+                        && containsUpperCase.IsMatch(password)
+                        && containsLowerCase.IsMatch(password)
+                        && containsNumber.IsMatch(password))
             {
-                if (containsLegalChars.IsMatch(Password))
+                if (containsLegalChars.IsMatch(password))
                 {
                     return true;
                 }
-                else
-                {
-                    MessageBox.Show("Invalid characters detected...", "Error");
-                    return false;
-                }
-            }
-            else
-            {
-                MessageBox.Show("Username or Password does not meet criteria...", "Error");
+                MessageBox.Show("Invalid characters detected.", "Error");
                 return false;
             }
+            MessageBox.Show("Username or Password does not meet criteria.", "Error");
+            return false;
         }
 
-        public void CreateAccount(string FirstName, string LastName, string Address, int AccessLevel, string Username, string Password)
+        private void CreateAccount(string firstName, string lastName, string address, int accessLevel, string username, string password)
         {
-            string hashedInput = Hashing.GenerateHash(Password, Username);
-            var databaseConn = new MySqlConnection(_connStr);
+            string hashedInput = Classes.Hashing.GenerateHash(password, username);
 
+            /*
             try
             {
                 databaseConn.Open();
@@ -92,16 +99,16 @@
                 var insertAccountCmd = new MySqlCommand("INSERT INTO Account VALUES(@AccountID, @User, @PassHash, @AccessLevelID); ", databaseConn);
 
                 insertAccountCmd.Parameters.AddWithValue("@AccountID", newAccountId);
-                insertAccountCmd.Parameters.AddWithValue("@User", Username);
+                insertAccountCmd.Parameters.AddWithValue("@User", username);
                 insertAccountCmd.Parameters.AddWithValue("@PassHash", hashedInput);
-                insertAccountCmd.Parameters.AddWithValue("@AccessLevelID", AccessLevel);
+                insertAccountCmd.Parameters.AddWithValue("@AccessLevelID", accessLevel);
 
                 var insertStaffCmd = new MySqlCommand(@"INSERT INTO Staff VALUES(@StaffID, @fname, @lname, @address, @AccountID); ", databaseConn);
 
                 insertStaffCmd.Parameters.AddWithValue("@StaffID", newAccountId);
-                insertStaffCmd.Parameters.AddWithValue("@fname", FirstName);
-                insertStaffCmd.Parameters.AddWithValue("@lname", LastName);
-                insertStaffCmd.Parameters.AddWithValue("@address", Address);
+                insertStaffCmd.Parameters.AddWithValue("@fname", firstName);
+                insertStaffCmd.Parameters.AddWithValue("@lname", lastName);
+                insertStaffCmd.Parameters.AddWithValue("@address", address);
                 insertStaffCmd.Parameters.AddWithValue("@AccountID", newAccountId);
 
                 insertAccountCmd.ExecuteNonQuery(); // inserts the new account details
@@ -114,15 +121,16 @@
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show("Unable to connect to the database. " + ex.Message);
+                MessageBox.Show("Unable to connect to the database." + ex.Message);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error");
             }
+            */
         }
 
-        private void ButtonCreateUser_Click(object Sender, EventArgs E)
+        private void ButtonCreateUser_Click(object sender, EventArgs e)
         {
             if (CheckRequirements(TextBoxUsername.Text, TextBoxPassword.Text))
             {
@@ -144,7 +152,7 @@
             }
         }
 
-        private void ButtonReturnLogin_Click(object Sender, EventArgs E)
+        private void ButtonReturnLogin_Click(object sender, EventArgs e)
         {
             foreach (Form var in Application.OpenForms)
             {
@@ -159,7 +167,7 @@
             GC.WaitForPendingFinalizers();
         }
 
-        private void TextBoxPassword_TextChanged(object Sender, EventArgs E)
+        private void TextBoxPassword_TextChanged(object sender, EventArgs e)
         {
             ToolTip.SetToolTip(TextBoxPassword, "Passwords must be: \n • at least 8 characters \n" +
                                                 "And contain: \n • at least 1 lowercase \n • at least 1 uppercase \n • at least 1 number");
@@ -182,7 +190,7 @@
                     newPwdStrength = 100;                                             // ensures the value never goes above 100%
                 }
 
-                ValuePwdStrength.Text = newPwdStrength.ToString() + "%";              // displays password strength % in the text box
+                ValuePwdStrength.Text = newPwdStrength + @"%";              // displays password strength % in the text box
                 ValuePwdStrength.ForeColor = Color.Red;
 
                 BarPwdStrength.Value = Convert.ToInt16(newPwdStrength);                  // adds strength bar for visual indication of strength
@@ -206,19 +214,14 @@
             }
             else
             {
-                ValuePwdStrength.Text = "0%";
+                ValuePwdStrength.Text = @"0%";
             }
         }
 
         private void TextBoxFirstName_TextChanged(object sender, EventArgs e)
         {
-            int Prefix = RandomNumber();
-            TextBoxUsername.Text = TextBoxFirstName.Text + Prefix.ToString();
-        }
-
-        private void FormAccountCreate_Load(object sender, EventArgs e)
-        {
-
+            int prefix = RandomNumber();
+            TextBoxUsername.Text = TextBoxFirstName.Text + prefix.ToString();
         }
     }
 }

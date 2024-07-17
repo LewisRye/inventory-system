@@ -1,4 +1,6 @@
-﻿namespace Inventory.Classes
+﻿using System.Globalization;
+
+namespace Inventory.Classes
 {
     internal class Basket
     {
@@ -8,9 +10,9 @@
 
         //  -takes items ordered, and adds them to a basket
 
-        public void CreateBasket(List<string> ListOfItems, List<double> ListOfPrices, List<int> ListOfQuantity)
+        public void CreateBasket(List<string> listOfItems, List<double> listOfPrices, List<int> listOfQuantity)
         {
-            int totalItemsInBasket = ListOfItems.Count;                                                                     // allows the correct array size
+            int totalItemsInBasket = listOfItems.Count;                                                                     // allows the correct array size
 
             try
             {
@@ -18,9 +20,9 @@
 
                 for (int i = 0; i < totalItemsInBasket; i++)
                 {
-                    basket[i, 0] = ListOfItems[i];                                                                          // adds individual item name to basket
-                    basket[i, 1] = ListOfPrices[i].ToString();                                                              // adds individual item's price to basket
-                    basket[i, 2] = ListOfQuantity[i].ToString();                                                            // adds quantity of item to basket
+                    basket[i, 0] = listOfItems[i];                                                                          // adds individual item name to basket
+                    basket[i, 1] = listOfPrices[i].ToString();                                                              // adds individual item's price to basket
+                    basket[i, 2] = listOfQuantity[i].ToString();                                                            // adds quantity of item to basket
 
                     InsertStockToProductDb(Convert.ToInt32(basket[i, 2]), basket[i, 0]);                            // uses function to insert these items into the database
                 }
@@ -33,23 +35,22 @@
             }
             catch (SmtpException)
             {
-                MessageBox.Show("The email could not be sent, but the database updated successfully.", "Error");
+                MessageBox.Show("The email could not be sent.", "Error");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($@"An unknown error occured.
-                {ex.Message}", "Error");
+                MessageBox.Show($"An unknown error occured.\n{ex.Message}", "Error");
             }
         }
 
-        private void InsertStockToProductDb(int Quantity, string ProductName)
+        private void InsertStockToProductDb(int quantity, string productName)
         {
             var databaseConnection = new MySqlConnection(Classes.Logon.ConnectionString);
 
             databaseConnection.Open();
 
-            string updateCommand = $@"UPDATE Product SET Number_In_Stock = Number_In_Stock + 
-                                   {Quantity} WHERE Product_Name = '{ProductName}';";
+            var updateCommand = $@"UPDATE Product SET Number_In_Stock = Number_In_Stock + 
+                                   {quantity} WHERE Product_Name = '{productName}';";
             var cmdUpdate = new MySqlCommand(updateCommand, databaseConnection);                                              // forms an SQL command to change stock values
 
             cmdUpdate.ExecuteNonQuery();                                                                                    // changes stock value then closes connection
@@ -57,28 +58,28 @@
             databaseConnection.Close();
         }
 
-        private void CreateEmailReceipt(string[,] Basket)
+        private void CreateEmailReceipt(string[,] basket)
         {
             string recipient = Classes.Logon.RecipientEmailAddress; // gets the recipient email address from settings
             string emailText = "";
             double totalPrice = 0;
 
-            for (int i = 0; i < Basket.GetLength(0); i++) // adds entire basket to the email body
+            for (int i = 0; i < basket.GetLength(0); i++) // adds entire basket to the email body
             {
-                int quantity = Convert.ToInt32(Basket[i, 2]);
-                string itemName = Basket[i, 0];
-                double priceExact = Convert.ToDouble(Basket[i, 1]);
-                string priceTo2DP = priceExact.ToString("0.00"); // ensures the price is in the correct format
+                int quantity = Convert.ToInt32(basket[i, 2]);
+                string itemName = basket[i, 0];
+                double priceExact = Convert.ToDouble(basket[i, 1]);
+                string priceTo2Dp = priceExact.ToString("0.00"); // ensures the price is in the correct format
 
-                emailText += $"({quantity}x) {itemName}: £{priceTo2DP}\n"; // formats a line of the email contents
+                emailText += $"({quantity}x) {itemName}: £{priceTo2Dp}\n"; // formats a line of the email contents
             }
 
-            for (int i = 0; i < Basket.GetLength(0); i++)
+            for (int i = 0; i < basket.GetLength(0); i++)
             {
-                totalPrice += Convert.ToDouble(Basket[i, 1]); // finds total price of the order
+                totalPrice += Convert.ToDouble(basket[i, 1]); // finds total price of the order
             }
 
-            string totalPriceTo2DP = totalPrice.ToString("0.00"); // puts the total price in correct money format
+            string totalPriceTo2Dp = totalPrice.ToString("0.00"); // puts the total price in correct money format
 
             // sending the email
 
@@ -104,7 +105,7 @@
             smtpClient.Send(message);
 
             MessageBox.Show("Your order of:\n\n" + emailText + "\nHas completed, for a total price of £" +
-                            totalPriceTo2DP + "\n-An email has been sent to confirm this.",
+                            totalPriceTo2Dp + "\n-An email has been sent to confirm this.",
                             "Order Complete");
         }
     }

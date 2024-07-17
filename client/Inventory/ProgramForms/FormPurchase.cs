@@ -38,7 +38,7 @@
             databaseConnection.Close();
         }
 
-        private void OrderProductList_SelectedIndexChanged(object Sender, EventArgs E)  // this function has no point going into a class
+        private void OrderProductList_SelectedIndexChanged(object sender, EventArgs e)  // this function has no point going into a class
         {
             var databaseConnection = new MySqlConnection(_connStr);              // directs code to location of my database file
 
@@ -61,7 +61,7 @@
             TextTotalCost.Text = $"item cost: £{_price.ToString("0.00")}";
         }
 
-        private void QuantityRequired_ValueChanged(object Sender, EventArgs E)          // this function has no point going into a class
+        private void QuantityRequired_ValueChanged(object sender, EventArgs e)          // this function has no point going into a class
         {
             var databaseConnection = new MySqlConnection(_connStr);              // directs code to location of my database file
             databaseConnection.Open();
@@ -84,7 +84,7 @@
             TextTotalCost.Text = $"item cost: £{_price.ToString("0.00")}";
         }
 
-        private void ButtonAdd_Click(object Sender, EventArgs E)
+        private void ButtonAdd_Click(object sender, EventArgs e)
         {
             if (ListProducts.SelectedIndex != 0 && QuantityRequired.Value != 0)
             {
@@ -104,7 +104,7 @@
             }
         }
 
-        private void ButtonOrder_Click(object Sender, EventArgs E)
+        private void ButtonOrder_Click(object sender, EventArgs e)
         {
             if (_nameOfItem.Count > 0)
             {
@@ -124,7 +124,7 @@
             }
         }
 
-        private void ButtonViewBasket_Click(object Sender, EventArgs E)
+        private void ButtonViewBasket_Click(object sender, EventArgs e)
         {
             int totalItemsInBasket = _nameOfItem.Count;
             string currentBasket = "";
@@ -145,7 +145,7 @@
             }
         }
 
-        private void ButtonRemove_Click(object Sender, EventArgs E)
+        private void ButtonRemove_Click(object sender, EventArgs e)
         {
             if (ListBasket.SelectedIndex != 0)
             {
@@ -166,7 +166,7 @@
             }
         }
 
-        private void CloseButton_Click(object Sender, EventArgs E)
+        private void CloseButton_Click(object sender, EventArgs e)
         {
             new FormDashboard().Show();                                                                                 // go back to the main app
             this.Hide();
@@ -174,11 +174,6 @@
             this.Dispose();
             GC.Collect();
             GC.WaitForPendingFinalizers();
-        }
-
-        private void PurchaseForm_Load(object Sender, EventArgs E)
-        {
-
         }
     }
 }

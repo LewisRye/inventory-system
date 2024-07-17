@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAccountCreate));
+            components = new Container();
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(FormAccountCreate));
             HeadingText = new Label();
             LabelFirstName = new Label();
             LabelLastName = new Label();
@@ -54,7 +54,7 @@
             // HeadingText
             // 
             HeadingText.BackColor = Color.Transparent;
-            HeadingText.Font = new Font("Microsoft YaHei UI", 27.75F, FontStyle.Regular, GraphicsUnit.Point);
+            HeadingText.Font = new Font("Microsoft YaHei UI", 27.75F);
             HeadingText.ForeColor = Color.Black;
             HeadingText.Location = new Point(5, 0);
             HeadingText.Margin = new Padding(2, 0, 2, 0);
@@ -67,7 +67,7 @@
             // LabelFirstName
             // 
             LabelFirstName.Anchor = AnchorStyles.None;
-            LabelFirstName.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            LabelFirstName.Font = new Font("Segoe UI", 9.75F);
             LabelFirstName.ForeColor = Color.Black;
             LabelFirstName.Location = new Point(5, 81);
             LabelFirstName.Margin = new Padding(2, 0, 2, 0);
@@ -80,7 +80,7 @@
             // LabelLastName
             // 
             LabelLastName.Anchor = AnchorStyles.None;
-            LabelLastName.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            LabelLastName.Font = new Font("Segoe UI", 9.75F);
             LabelLastName.ForeColor = Color.Black;
             LabelLastName.Location = new Point(4, 110);
             LabelLastName.Margin = new Padding(2, 0, 2, 0);
@@ -93,7 +93,7 @@
             // LabelAddress
             // 
             LabelAddress.Anchor = AnchorStyles.None;
-            LabelAddress.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            LabelAddress.Font = new Font("Segoe UI", 9.75F);
             LabelAddress.ForeColor = Color.Black;
             LabelAddress.Location = new Point(4, 141);
             LabelAddress.Margin = new Padding(2, 0, 2, 0);
@@ -106,7 +106,7 @@
             // LabelAccessLevel
             // 
             LabelAccessLevel.Anchor = AnchorStyles.None;
-            LabelAccessLevel.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            LabelAccessLevel.Font = new Font("Segoe UI", 9.75F);
             LabelAccessLevel.ForeColor = Color.Black;
             LabelAccessLevel.Location = new Point(5, 164);
             LabelAccessLevel.Margin = new Padding(2, 0, 2, 0);
@@ -119,7 +119,7 @@
             // LabelUsername
             // 
             LabelUsername.Anchor = AnchorStyles.None;
-            LabelUsername.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            LabelUsername.Font = new Font("Segoe UI", 9.75F);
             LabelUsername.ForeColor = Color.Black;
             LabelUsername.Location = new Point(6, 235);
             LabelUsername.Margin = new Padding(2, 0, 2, 0);
@@ -132,7 +132,7 @@
             // LabelPassword
             // 
             LabelPassword.Anchor = AnchorStyles.None;
-            LabelPassword.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            LabelPassword.Font = new Font("Segoe UI", 9.75F);
             LabelPassword.ForeColor = Color.Black;
             LabelPassword.Location = new Point(6, 263);
             LabelPassword.Margin = new Padding(2, 0, 2, 0);
@@ -145,7 +145,7 @@
             // LabelPwdStrength
             // 
             LabelPwdStrength.Anchor = AnchorStyles.None;
-            LabelPwdStrength.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            LabelPwdStrength.Font = new Font("Segoe UI", 9.75F);
             LabelPwdStrength.ForeColor = Color.Black;
             LabelPwdStrength.Location = new Point(5, 310);
             LabelPwdStrength.Margin = new Padding(2, 0, 2, 0);
@@ -158,7 +158,7 @@
             // ValuePwdStrength
             // 
             ValuePwdStrength.Anchor = AnchorStyles.None;
-            ValuePwdStrength.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            ValuePwdStrength.Font = new Font("Segoe UI", 9.75F);
             ValuePwdStrength.ForeColor = Color.Red;
             ValuePwdStrength.Location = new Point(132, 313);
             ValuePwdStrength.Margin = new Padding(2, 0, 2, 0);
@@ -172,7 +172,7 @@
             // 
             BarPwdStrength.Depth = 0;
             BarPwdStrength.Location = new Point(185, 319);
-            BarPwdStrength.MouseState = MaterialSkin.MouseState.HOVER;
+            BarPwdStrength.MouseState = MouseState.HOVER;
             BarPwdStrength.Name = "BarPwdStrength";
             BarPwdStrength.Size = new Size(161, 5);
             BarPwdStrength.TabIndex = 45;
@@ -188,7 +188,7 @@
             ButtonCreateUser.Icon = null;
             ButtonCreateUser.Location = new Point(8, 336);
             ButtonCreateUser.Margin = new Padding(4, 3, 4, 3);
-            ButtonCreateUser.MouseState = MaterialSkin.MouseState.HOVER;
+            ButtonCreateUser.MouseState = MouseState.HOVER;
             ButtonCreateUser.Name = "ButtonCreateUser";
             ButtonCreateUser.NoAccentTextColor = Color.Empty;
             ButtonCreateUser.Size = new Size(169, 31);
@@ -210,7 +210,7 @@
             ButtonReturnLogin.Icon = null;
             ButtonReturnLogin.Location = new Point(185, 336);
             ButtonReturnLogin.Margin = new Padding(4, 3, 4, 3);
-            ButtonReturnLogin.MouseState = MaterialSkin.MouseState.HOVER;
+            ButtonReturnLogin.MouseState = MouseState.HOVER;
             ButtonReturnLogin.Name = "ButtonReturnLogin";
             ButtonReturnLogin.NoAccentTextColor = Color.Empty;
             ButtonReturnLogin.Size = new Size(161, 31);
@@ -224,7 +224,7 @@
             // TextBoxFirstName
             // 
             TextBoxFirstName.AcceptsTab = true;
-            TextBoxFirstName.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            TextBoxFirstName.Font = new Font("Segoe UI", 9F);
             TextBoxFirstName.Location = new Point(131, 83);
             TextBoxFirstName.Margin = new Padding(4, 3, 4, 3);
             TextBoxFirstName.MaxLength = 20;
@@ -236,7 +236,7 @@
             // TextBoxLastName
             // 
             TextBoxLastName.AcceptsTab = true;
-            TextBoxLastName.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            TextBoxLastName.Font = new Font("Segoe UI", 9F);
             TextBoxLastName.Location = new Point(131, 112);
             TextBoxLastName.Margin = new Padding(4, 3, 4, 3);
             TextBoxLastName.MaxLength = 20;
@@ -247,7 +247,7 @@
             // TextBoxAddress
             // 
             TextBoxAddress.AcceptsTab = true;
-            TextBoxAddress.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            TextBoxAddress.Font = new Font("Segoe UI", 9F);
             TextBoxAddress.Location = new Point(131, 143);
             TextBoxAddress.Margin = new Padding(4, 3, 4, 3);
             TextBoxAddress.MaxLength = 20;
@@ -258,7 +258,7 @@
             // TextBoxUsername
             // 
             TextBoxUsername.AcceptsTab = true;
-            TextBoxUsername.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            TextBoxUsername.Font = new Font("Segoe UI", 9F);
             TextBoxUsername.Location = new Point(132, 237);
             TextBoxUsername.Margin = new Padding(4, 3, 4, 3);
             TextBoxUsername.MaxLength = 20;
@@ -270,7 +270,7 @@
             // TextBoxPassword
             // 
             TextBoxPassword.AcceptsTab = true;
-            TextBoxPassword.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            TextBoxPassword.Font = new Font("Segoe UI", 9F);
             TextBoxPassword.Location = new Point(132, 265);
             TextBoxPassword.Margin = new Padding(4, 3, 4, 3);
             TextBoxPassword.MaxLength = 20;
@@ -301,7 +301,7 @@
             ComboBoxAccessLevel.ItemHeight = 29;
             ComboBoxAccessLevel.Location = new Point(131, 182);
             ComboBoxAccessLevel.MaxDropDownItems = 4;
-            ComboBoxAccessLevel.MouseState = MaterialSkin.MouseState.OUT;
+            ComboBoxAccessLevel.MouseState = MouseState.OUT;
             ComboBoxAccessLevel.Name = "ComboBoxAccessLevel";
             ComboBoxAccessLevel.Size = new Size(215, 35);
             ComboBoxAccessLevel.StartIndex = 0;
@@ -332,14 +332,13 @@
             Controls.Add(LabelLastName);
             Controls.Add(LabelFirstName);
             Controls.Add(HeadingText);
-            Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            Font = new Font("Microsoft YaHei UI", 9F);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             Name = "FormAccountCreate";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Inventory Management System";
-            Load += FormAccountCreate_Load;
             ResumeLayout(false);
             PerformLayout();
         }

@@ -9,7 +9,7 @@
             InitializeComponent();
         }
 
-        private void SettingsForm_Load(object Sender, EventArgs E)
+        private void SettingsForm_Load(object sender, EventArgs e)
         {
             ComboBoxTime.Items.Add("Select a time.");
             ComboBoxTime.Items.Add("30 seconds");
@@ -34,12 +34,12 @@
             ComboBoxColour.SelectedIndex = 0;
         }
 
-        private void ButtonChangeNotifTime_Click(object Sender, EventArgs E)
+        private void ButtonChangeNotifTime_Click(object sender, EventArgs e)
         {
             if (ComboBoxTime.SelectedIndex != 0)
             {
-                string seconds = ComboBoxTime.SelectedItem.ToString().Substring(0, 2);
-                _settings.ChangeFileNotifTime(Convert.ToInt16(seconds));
+                string? seconds = ComboBoxTime.SelectedItem?.ToString()?.Substring(0, 2);
+                _settings.ChangeFileNotificationTime(Convert.ToInt16(seconds));
             }
             else
             {
@@ -47,12 +47,12 @@
             }
         }
 
-        private void ButtonChangeNotifStock_Click(object Sender, EventArgs E)
+        private void ButtonChangeNotifStock_Click(object sender, EventArgs e)
         {
             if (ComboBoxStock.SelectedIndex != 0)
             {
-                string stockLevel = ComboBoxStock.SelectedItem.ToString().Substring(0, 2);
-                _settings.ChangeFileNotifStock(Convert.ToInt16(stockLevel));
+                string? stockLevel = ComboBoxStock.SelectedItem?.ToString()?.Substring(0, 2);
+                _settings.ChangeFileNotificationStock(Convert.ToInt16(stockLevel));
             }
             else
             {
@@ -60,11 +60,11 @@
             }
         }
 
-        private bool EmailValid(string EmailAddress)
+        private bool EmailValid(string emailAddress)
         {
             try
             {
-                var Email = new MailAddress(EmailAddress);
+                var email = new MailAddress(emailAddress);
                 return true;
             }
             catch (FormatException)
@@ -73,11 +73,11 @@
             }
         }
 
-        private void ButtonChangeEmail_Click(object Sender, EventArgs E)
+        private void ButtonChangeEmail_Click(object sender, EventArgs e)
         {
-            bool Valid = EmailValid(TextBoxEmail.Text); // checks if the entered email exists
+            bool valid = EmailValid(TextBoxEmail.Text); // checks if the entered email exists
 
-            if (Valid)
+            if (valid)
             {
                 _settings.ChangeFileEmail(TextBoxEmail.Text);
             }
@@ -87,11 +87,12 @@
             }
         }
 
-        private void ButtonChangeColour_Click(object Sender, EventArgs E)
+        private void ButtonChangeColour_Click(object sender, EventArgs e)
         {
             if (ComboBoxColour.SelectedIndex != 0)
             {
-                _settings.ChangeFileColour(ComboBoxColour.SelectedItem.ToString());
+                if (ComboBoxColour.SelectedItem != null)
+                    _settings.ChangeFileColour(ComboBoxColour.SelectedItem.ToString() ?? "Grey");
             }
             else
             {
@@ -99,12 +100,12 @@
             }
         }
 
-        private void ButtonRestart_Click(object Sender, EventArgs E)
+        private void ButtonRestart_Click(object sender, EventArgs e)
         {
             Application.Restart();
         }
 
-        private void ButtonClose_Click(object Sender, EventArgs E)
+        private void ButtonClose_Click(object sender, EventArgs e)
         {
             new FormDashboard().Show();
             this.Hide();
