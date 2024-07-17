@@ -53,7 +53,10 @@ async fn handle_request(
     req: Request<hyper::body::Incoming>,
 ) -> Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
     match (req.method(), req.uri().path().split("/").nth(1)) {
-        (&Method::POST, Some("echo")) => Ok(Response::new(req.into_body().boxed())),
+        (&Method::POST, Some("echo")) => {
+            println!("{}: POST echo", Utc::now());
+            Ok(Response::new(req.into_body().boxed()))
+        }
 
         (&Method::POST, Some("login")) => {
             let user_header = req.headers().get("user"); // Get the header value for "user"
@@ -62,7 +65,7 @@ async fn handle_request(
             let pass_header = req.headers().get("pass"); // Get the header value for "pass"
             let pass_str: Option<&str> = pass_header.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
 
-            println!("{}: Attempted Login: {} {}", Utc::now(), user_str.unwrap_or_default(), pass_str.unwrap_or_default());
+            println!("{}: POST login: {} {}", Utc::now(), user_str.unwrap_or_default(), pass_str.unwrap_or_default());
 
             if login(user_str.as_deref(), pass_str.as_deref()) == true {
                 // Construct a 200 OK response
@@ -70,7 +73,6 @@ async fn handle_request(
                 .status(StatusCode::OK)
                 .body(empty())
                 .unwrap();
-                println!("Success");
                 return Ok(response);
             } else {
                 // Construct a 401 Unauthorized response
@@ -78,7 +80,35 @@ async fn handle_request(
                 .status(StatusCode::UNAUTHORIZED)
                 .body(empty())
                 .unwrap();
-                println!("Error");
+                return Ok(response);
+            }
+        },
+
+        (&Method::POST, Some("create_account")) => {
+            let level_header = req.headers().get("level"); // Get the header value for "user"
+            let level_str: Option<&str> = level_header.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+
+            let user_header = req.headers().get("user"); // Get the header value for "user"
+            let user_str: Option<&str> = user_header.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+            
+            let pass_header = req.headers().get("pass"); // Get the header value for "pass"
+            let pass_str: Option<&str> = pass_header.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+
+            println!("{}: POST create_account: {} {} {}", Utc::now(), level_str.unwrap_or_default(), user_str.unwrap_or_default(), pass_str.unwrap_or_default());
+
+            if create_account(level_str.as_deref(), user_str.as_deref(), pass_str.as_deref()) == true {
+                // Construct a 200 OK response
+                let response = Response::builder()
+                .status(StatusCode::OK)
+                .body(empty())
+                .unwrap();
+                return Ok(response);
+            } else {
+                // Construct a 400 Bad Request response
+                let response = Response::builder()
+                .status(StatusCode::BAD_REQUEST)
+                .body(empty())
+                .unwrap();
                 return Ok(response);
             }
         },
@@ -87,7 +117,7 @@ async fn handle_request(
             let id = req.headers().get("id");
             let id_str: Option<&str> = id.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
 
-            println!("{}: Requested Product ID: {}", Utc::now(), id_str.unwrap_or_default());
+            println!("{}: GET product: {}", Utc::now(), id_str.unwrap_or_default());
             
             // Convert JSON to bytes
             let id_int: i64 = id_str.unwrap_or_default().parse().unwrap();
@@ -101,7 +131,7 @@ async fn handle_request(
             let user = req.headers().get("user");
             let user_str: Option<&str> = user.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
 
-            println!("{}: Requested Access Level: {}", Utc::now(), user_str.unwrap_or_default());
+            println!("{}: GET access_level: {}", Utc::now(), user_str.unwrap_or_default());
             
             // Convert JSON to bytes
             let json = serde_json::to_string(&get_access_level(&user_str.unwrap_or_default())).unwrap();
@@ -111,7 +141,7 @@ async fn handle_request(
         },
 
         (&Method::GET, Some("all_product")) => {
-            println!("{}: Requested All Products", Utc::now());
+            println!("{}: GET all_product", Utc::now());
 
             // Convert JSON to bytes
             let json = serde_json::to_string(&get_all_product()).unwrap();
@@ -120,8 +150,18 @@ async fn handle_request(
             Ok(Response::new(full(json)))
         },
 
+        (&Method::GET, Some("all_access_level")) => {
+            println!("{}: GET all_access_level", Utc::now());
+
+            // Convert JSON to bytes
+            let json = serde_json::to_string(&get_all_access_level()).unwrap();
+
+            // Build the HTTP response
+            Ok(Response::new(full(json)))
+        },
+
         (&Method::GET, Some("dashboard_stock_type")) => {
-            println!("{}: Requested Dashboard Stock Types", Utc::now());
+            println!("{}: GET dashboard_stock_type", Utc::now());
             
             let json = serde_json::to_string(&get_dashboard_stock_by_type()).unwrap();
 
@@ -129,7 +169,7 @@ async fn handle_request(
         },
 
         (&Method::GET, Some("dashboard_daily_orders")) => {
-            println!("{}: Requested Dashboard Daily Orders", Utc::now());
+            println!("{}: GET dashboard_daily_orders", Utc::now());
             
             //let json = serde_json::to_string(&get_dashboard_daily_orders()).unwrap();
 
@@ -138,7 +178,7 @@ async fn handle_request(
         },
 
         (&Method::GET, Some("dashboard_best_sellers")) => {
-            println!("{}: Requested Dashboard Best Sellers", Utc::now());
+            println!("{}: GET dashboard_best_sellers", Utc::now());
 
             let json = serde_json::to_string(&get_dashboard_best_sellers()).unwrap();
 
@@ -146,7 +186,7 @@ async fn handle_request(
         },
 
         (&Method::GET, Some("dashboard_stock")) => {
-            println!("{}: Requested Dashboard Stock", Utc::now());
+            println!("{}: GET dashboard_stock", Utc::now());
 
             let json = serde_json::to_string(&get_dashboard_stock()).unwrap();
 
@@ -154,7 +194,7 @@ async fn handle_request(
         },
 
         (&Method::GET, Some("dashboard_profit")) => {
-            println!("{}: Requested Dashboard Profit", Utc::now());
+            println!("{}: GET dashboard_profit", Utc::now());
 
             let json = serde_json::to_string(&get_dashboard_profit()).unwrap();
 
@@ -162,7 +202,7 @@ async fn handle_request(
         },
 
         (&Method::GET, Some("dashboard_orders")) => {
-            println!("{}: Requested Dashboard Orders", Utc::now());
+            println!("{}: GET dashboard_orders", Utc::now());
 
             let json = serde_json::to_string(&get_dashboard_orders()).unwrap();
 
@@ -198,6 +238,10 @@ fn login(user: Option<&str>, pass: Option<&str>) -> bool {
     }
 
     return uname == user.unwrap_or_default();
+}
+
+fn create_account(level: Option<&str>, user: Option<&str>, pass: Option<&str>) -> bool{
+    return true;
 }
 
 fn get_product(id: &i64) -> Option<Product> {
@@ -281,6 +325,30 @@ fn get_all_product() -> Vec<Product> {
             discontinued: disc,
         };
         output.push(product);
+    }
+    return output;
+}
+
+fn get_all_access_level() -> Vec<models::AccessLevel> {
+    let mut output: Vec<models::AccessLevel> = Vec::new();
+
+    let query = "SELECT * FROM access_level;";
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let connection = sqlite::open(database_url).unwrap();
+    for row in connection
+        .prepare(query)
+        .unwrap()
+        .into_iter()
+        .map(|row| row.unwrap())
+    {
+        let id: i64 = row.read("level_id");
+        let name: String = row.read::<&str, _>("level_name").to_string();
+        let level = models::AccessLevel {
+            level_id: id,
+            level_name: name,
+        };
+        output.push(level);
     }
     return output;
 }

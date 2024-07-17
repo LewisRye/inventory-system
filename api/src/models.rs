@@ -4,7 +4,7 @@ use serde::{Serialize, Deserialize};
 #[derive(Serialize, Deserialize)]
 pub struct AccessLevel {
     pub level_id: i64,
-    pub name: String,
+    pub level_name: String,
 }
 
 #[derive(Serialize, Deserialize)]
