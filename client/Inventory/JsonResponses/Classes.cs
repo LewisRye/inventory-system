@@ -28,4 +28,13 @@ namespace Inventory.JsonResponses
         [JsonPropertyName("quantity")]
         public int Quantity { get; set; }
     }
+    
+    public class AccessLevel
+    {
+        [JsonPropertyName("level_id")]
+        public int Id { get; set; }
+
+        [JsonPropertyName("level_name")]
+        public string? Name { get; set; }
+    }
 }

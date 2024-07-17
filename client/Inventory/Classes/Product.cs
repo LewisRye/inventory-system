@@ -1,52 +1,35 @@
 ﻿namespace Inventory.Classes
 {
-    internal class Product
+    internal class Product(int id, string name, string category, int stock, decimal price, char discontinued)
     {
-        private int _id;
-        private string _name;
-        private string _category;
-        private int _stock;
-        private decimal _price;
-        private char _discontinued;
-
-        public Product(int id, string name, string category, int stock, decimal price, char discontinued)
-        {
-            _id = id;
-            _name = name;
-            _category = category;
-            _stock = stock;
-            _price = price;
-            _discontinued = discontinued;
-        }
-
         public int GetId()
         {
-            return _id;
+            return id;
         }
 
         public string GetName()
         {
-            return _name;
+            return name;
         }
 
         public string GetCategory()
         {
-            return _category;
+            return category;
         }
 
         public int GetStock()
         {
-            return _stock;
+            return stock;
         }
 
         public decimal GetPrice()
         {
-            return _price;
+            return price;
         }
 
         public char GetDiscontinued()
         {
-            return _discontinued;
+            return discontinued;
         }
     }
 }

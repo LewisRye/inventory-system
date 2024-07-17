@@ -1,9 +1,9 @@
-﻿namespace Inventory.LoginForms
+﻿using Inventory.JsonResponses;
+
+namespace Inventory.LoginForms
 {
     public partial class FormAccountEdit : Form
     {
-        private static readonly string _connStr = ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
-
         public FormAccountEdit()
         {
             InitializeComponent();
@@ -12,43 +12,50 @@
         private void FormAccountEdit_Load(object sender, EventArgs e)
         {
             ListOfUsers.Items.Add("Select the user");
-
-            var databaseConn = new MySqlConnection(_connStr);
-
             try
             {
-                databaseConn.Open();                                                        // connects to database and reads it
+                using HttpClient client = new HttpClient();
+                HttpRequestMessage request =
+                    new HttpRequestMessage(HttpMethod.Get, Classes.Logon.UriPath + "all_username");
+                HttpResponseMessage response = client.Send(request);
 
-                var cmd = new MySqlCommand("SELECT username FROM Account", databaseConn); // uses SQL query to read data
-                MySqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
+                if (response.IsSuccessStatusCode)
                 {
-                    ListOfUsers.Items.Add(dr["Username"].ToString());               // populates the list from the SQL query
+                    var json = response.Content.ReadAsStringAsync().Result;
+                    
+                    List<string>? usernames = JsonSerializer.Deserialize<List<string>>(json);
+
+                    foreach (var username in usernames!)
+                    {
+                        ListOfUsers.Items.Add($"{username}");
+                    }
+                    ListOfUsers.SelectedIndex = 0;                                              // shows text 'select item to order'
                 }
-                ListOfUsers.SelectedIndex = 0;                                              // shows text 'select item to order'
-                databaseConn.Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error");
             }
 
-            //
-
             ListOfAccessLevels.Items.Add("Select level");
-
             try
             {
-                databaseConn.Open(); // connects to database and reads it
+                using HttpClient client = new HttpClient();
+                HttpRequestMessage request =
+                    new HttpRequestMessage(HttpMethod.Get, Classes.Logon.UriPath + "all_access_level");
+                HttpResponseMessage response = client.Send(request);
 
-                var cmd = new MySqlCommand("SELECT level_name FROM AccessLevel", databaseConn); // uses SQL query to read data
-                MySqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
+                if (response.IsSuccessStatusCode)
                 {
-                    ListOfAccessLevels.Items.Add(dr["level_name"].ToString()); // populates the list from the SQL query
+                    var json = response.Content.ReadAsStringAsync().Result;
+                    
+                    List<AccessLevel>? levels = JsonSerializer.Deserialize<List<AccessLevel>>(json);
+
+                    foreach (AccessLevel al in levels!)
+                    {
+                        ListOfAccessLevels.Items.Add($"{al.Id}: {al.Name}");
+                    }
                 }
-                ListOfAccessLevels.SelectedIndex = 0; // shows text 'select item to order'
-                databaseConn.Close();
             }
             catch (Exception ex)
             {
@@ -58,7 +65,8 @@
 
         private void ButtonApplyNewUsername_Click(object sender, EventArgs e)
         {
-            var databaseConn = new MySqlConnection(_connStr);
+            /*
+            var databaseConn = new MySqlConnection(ConnStr);
 
             try
             {
@@ -87,11 +95,13 @@
             {
                 MessageBox.Show(ex.Message, "Error");
             }
+            */
         }
 
         private void ButtonApplyFirstName_Click(object sender, EventArgs e)
         {
-            var databaseConn = new MySqlConnection(_connStr);
+            /*
+            var databaseConn = new MySqlConnection(ConnStr);
 
             try
             {
@@ -131,11 +141,13 @@
             {
                 MessageBox.Show(ex.Message, "Error");
             }
+            */
         }
 
         private void ButtonApplyLastName_Click(object sender, EventArgs e)
         {
-            var databaseConn = new MySqlConnection(_connStr);
+            /*
+            var databaseConn = new MySqlConnection(ConnStr);
 
             try
             {
@@ -175,11 +187,13 @@
             {
                 MessageBox.Show(ex.Message, "Error");
             }
+            */
         }
 
         private void ButtonApplyNewAddress_Click(object sender, EventArgs e)
         {
-            var databaseConn = new MySqlConnection(_connStr);
+            /*
+            var databaseConn = new MySqlConnection(ConnStr);
             int accountId = 0;
 
             try
@@ -224,13 +238,15 @@
             {
                 MessageBox.Show(ex.Message, "Error");
             }
+            */
         }
 
         private void ButtonApplyNewAccessLevel_Click(object sender, EventArgs e)
         {
+            /*
             if (ListOfAccessLevels.SelectedIndex > 0)
             {
-                var databaseConn = new MySqlConnection(_connStr);
+                var databaseConn = new MySqlConnection(ConnStr);
                 string selectedUser = ListOfUsers.SelectedItem.ToString();
                 string selectedAccessLevel = ListOfAccessLevels.SelectedItem.ToString();
                 int accountId = 0;
@@ -279,6 +295,7 @@
             {
                 MessageBox.Show("Please choose an access level.", "Error");
             }
+            */
         }
 
         private void ButtonReturnDash_Click(object sender, EventArgs e)

@@ -9,7 +9,7 @@
             InitializeComponent();
         }
 
-        private async void FormDashboard_Load(object Sender, EventArgs E)
+        private async void FormDashboard_Load(object sender, EventArgs e)
         {
             WelcomeText.Text = $"welcome, {Classes.Logon.CurrentUser}!";
 
@@ -34,14 +34,14 @@
             await _insights.CreateQuantityItemsOrdersText(QuantityItemsOrders);           // fills 'orders in the last 7 days' with data
         }
 
-        private void ViewStockButton_Click(object Sender, EventArgs E)
+        private void ViewStockButton_Click(object sender, EventArgs e)
         {
             new DataForms.FormViewStock().Show();
             this.Hide();
             this.Close();
         }
 
-        private void ResetPasswordButton_Click(object Sender, EventArgs E)
+        private void ResetPasswordButton_Click(object sender, EventArgs e)
         {
             new LoginForms.FormAccountReset().Show();
             Classes.Logon.CurrentUser = "";
@@ -50,14 +50,14 @@
             this.Close();
         }
 
-        private void ButtonSettings_Click(object Sender, EventArgs E)
+        private void ButtonSettings_Click(object sender, EventArgs e)
         {
             new ProgramForms.FormSettings().Show();
             this.Hide();
             this.Close();
         }
 
-        private void ViewInsightButton_Click(object Sender, EventArgs E)
+        private void ViewInsightButton_Click(object sender, EventArgs e)
         {
             if (Classes.Logon.AccessLevel != "Manager")
             {
@@ -72,7 +72,7 @@
             }
         }
 
-        private void OpenOrdersButton_Click(object Sender, EventArgs E)
+        private void OpenOrdersButton_Click(object sender, EventArgs e)
         {
             if (Classes.Logon.AccessLevel != "Manager")
             {
@@ -87,7 +87,7 @@
             }
         }
 
-        private void OpenRestockButton_Click(object Sender, EventArgs E)
+        private void OpenRestockButton_Click(object sender, EventArgs e)
         {
             if (Classes.Logon.AccessLevel != "Manager")
             {
@@ -117,7 +117,7 @@
             }
         }
 
-        private void LogOutLink_LinkClicked(object Sender, LinkLabelLinkClickedEventArgs E)
+        private void LogOutLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             foreach (Form var in Application.OpenForms)
             {

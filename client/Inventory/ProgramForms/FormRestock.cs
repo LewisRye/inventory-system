@@ -19,13 +19,13 @@
             ListBasket.SelectedIndex = 0;
         }
 
-        private void RestockForm_Load(object Sender, EventArgs E)
+        private void RestockForm_Load(object sender, EventArgs e)
         {
             _database.LoadNoStockFromProductDb(DatabaseGrid, ListProducts);
             TextWelcome.Text = $"welcome, {Classes.Logon.CurrentUser}!";
         }
 
-        private void ListProducts_SelectedIndexChanged(object Sender, EventArgs E)
+        private void ListProducts_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (QuantityRequired.Value != 0)
             {
@@ -56,7 +56,7 @@
             }
         }
 
-        private void QuantityRequired_ValueChanged(object Sender, EventArgs E)
+        private void QuantityRequired_ValueChanged(object sender, EventArgs e)
         {
             if (ListProducts.SelectedIndex != 0)
             {
@@ -87,7 +87,7 @@
             }
         }
 
-        private void ButtonAddToOrder_Click(object Sender, EventArgs E)
+        private void ButtonAddToOrder_Click(object sender, EventArgs e)
         {
             if (Classes.Logon.AccessLevel != "Manager")
             {
@@ -118,7 +118,7 @@
             }
         }
 
-        private void ButtonViewBasket_Click(object Sender, EventArgs E)
+        private void ButtonViewBasket_Click(object sender, EventArgs e)
         {
             int totalItemsInBasket = _nameOfItem.Count;
             string currentBasket = "";
@@ -139,7 +139,7 @@
             }
         }
 
-        private void ButtonRemoveBasket_Click(object Sender, EventArgs E)
+        private void ButtonRemoveBasket_Click(object sender, EventArgs e)
         {
             if (ListBasket.SelectedIndex != 0)
             {
@@ -161,7 +161,7 @@
             }
         }
 
-        private void ButtonPurchase_Click(object Sender, EventArgs E)
+        private void ButtonPurchase_Click(object sender, EventArgs e)
         {
             if (Classes.Logon.AccessLevel != "Manager")
             {
@@ -190,7 +190,7 @@
             }
         }
 
-        private void ButtonClose_Click(object Sender, EventArgs E)
+        private void ButtonClose_Click(object sender, EventArgs e)
         {
             this.Hide();
             foreach (Form var in Application.OpenForms)

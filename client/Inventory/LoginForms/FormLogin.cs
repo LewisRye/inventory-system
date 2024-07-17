@@ -10,155 +10,143 @@
             InitializeComponent();
         }
 
-        private bool ValidLogin(string Username, string Password)
+        private bool ValidLogin(string username, string password)
         {
-            var containsLegalChars = new Regex(@"^[a-zA-Z0-9- _ = + ! @ # $ % ^ & * ( )]*$");                     // checks if a string has all legal characters (unlike emojis)
+            var regex = new Regex(@"^[a-zA-Z0-9- _ = + ! @ # $ % ^ & * ( )]*$"); // checks if a string only has legal characters (unlike emojis)
 
-            if (Username.Length < 4 || Password.Length < 8)
+            if (username.Length < 4 || password.Length < 8)
             {
-                MessageBox.Show("Details are incorrect.", "Error");
+                MessageBox.Show("Incorrect Credentials", "Error");
                 return false;
             }
 
-            else if (!containsLegalChars.IsMatch(Username) || !containsLegalChars.IsMatch(Password))
+            if (!regex.IsMatch(username) || !regex.IsMatch(password))
             {
-                MessageBox.Show("Invalid characters were entered.", "Failed");
+                MessageBox.Show("Incorrect Credentials", "Error");
                 return false;
             }
 
             return true;
         }
 
-        private async void Login(string Username, string Password)
+        private async Task Login(string username, string password)
         {
-            if (ValidLogin(Username, Password))
+            if (ValidLogin(username, password))
             {
-                HttpClient client = new HttpClient();
-                HttpRequestMessage request = new HttpRequestMessage();
-                HttpResponseMessage response = new HttpResponseMessage();
-
-                request = new HttpRequestMessage(HttpMethod.Post, Classes.Logon.UriPath + "login");
-                request.Headers.Add("user", Username);
-                request.Headers.Add("pass", Hashing.GenerateHash(Password, Username));
-                response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    int AccessLevel = Convert.ToInt32(666);
-                    Classes.Logon.CurrentUser = Username; // remembers logged in user's username
-                    request = new HttpRequestMessage(HttpMethod.Get, Classes.Logon.UriPath + "access_level");
-                    request.Headers.Add("user", Username); // get access level of user
-                    response = await client.SendAsync(request);
+                    using HttpClient client = new HttpClient();
+                    HttpRequestMessage request =
+                        new HttpRequestMessage(HttpMethod.Post, Classes.Logon.UriPath + "login");
+                    request.Headers.Add("user", username);
+                    request.Headers.Add("pass", Classes.Hashing.GenerateHash(password, username));
+                    HttpResponseMessage response = await client.SendAsync(request);
 
-                    string json = await response.Content.ReadAsStringAsync();
-
-                    switch (json)
+                    if (response.IsSuccessStatusCode)
                     {
-                        case "0":
-                            Classes.Logon.AccessLevel = "Admin";
-                            new LoginForms.FormAccountCreate().Show();
-                            break;
-                        case "1":
-                            Classes.Logon.AccessLevel = "Manager";
-                            new ProgramForms.FormDashboard().Show();
-                            break;
-                        case "2":
-                            Classes.Logon.AccessLevel = "Staff";
-                            new ProgramForms.FormDashboard().Show();
-                            break;
+                        Classes.Logon.CurrentUser = username; // remembers logged-in user's username
+                        request = new HttpRequestMessage(HttpMethod.Get, Classes.Logon.UriPath + "access_level");
+                        request.Headers.Add("user", username); // get access level of user
+                        response = await client.SendAsync(request);
+
+                        var json = await response.Content.ReadAsStringAsync();
+
+                        switch (json)
+                        {
+                            case "0":
+                                Classes.Logon.AccessLevel = "Admin";
+                                new FormAccountCreate().Show();
+                                break;
+                            case "1":
+                                Classes.Logon.AccessLevel = "Manager";
+                                new ProgramForms.FormDashboard().Show();
+                                break;
+                            case "2":
+                                Classes.Logon.AccessLevel = "Staff";
+                                new ProgramForms.FormDashboard().Show();
+                                break;
+                        }
+
+                        StockTimer.Interval = Classes.Logon.NotificationTime;
+                        StockTimer.Start();
+
+                        this.Visible = false;
                     }
-
-                    StockTimer.Interval = Classes.Logon.NotificationTime;
-                    StockTimer.Start();
-
-                    this.Visible = false;
+                    else
+                    {
+                        MessageBox.Show("Incorrect Credentials", "Error");
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    MessageBox.Show("Details are incorrect.", "Error");
+                    MessageBox.Show("Server Connection Failed\n" + e.Message, "Error");
                 }
             }
         }
 
-        private void ButtonLogin_Click(object Sender, EventArgs E)
+        private async void ButtonLogin_Click(object sender, EventArgs e)
         {
-            Login(TextBoxUsername.Text, TextBoxPassword.Text);
+            await Login(TextBoxUsername.Text, TextBoxPassword.Text);
             TextBoxUsername.Clear();
             TextBoxPassword.Clear();
         }
 
-        private void LinkShowPassword_CheckedChanged(object Sender, EventArgs E)
+        private void LinkShowPassword_CheckedChanged(object sender, EventArgs e)
         {
-            if (LinkShowPassword.Checked)
-            {
-                TextBoxPassword.Password = false;
-            }
-            else
-            {
-                TextBoxPassword.Password = true;               // this hides the password for security
-            }
+            TextBoxPassword.Password = LinkShowPassword.Checked == false; // this hides the password for security
         }
 
-        private void LinkReset_LinkClicked(object Sender, LinkLabelLinkClickedEventArgs E)
+        private void LinkReset_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             this.Visible = false;                                       // only gets rid of the login window if there is still a connection
-            new LoginForms.FormAccountReset().Show();                                // shows the reset password prompt
+            new FormAccountReset().Show();                                // shows the reset password prompt
             TextBoxUsername.Clear();                                        // clears all typed characters
             TextBoxPassword.Clear();
         }
 
-        private void TextBoxUsername_KeyDown(object Sender, KeyEventArgs E) // allows the enter button to be pressed to log in the user
+        private async void TextBoxUsername_KeyDown(object sender, KeyEventArgs e) // allows the enter button to be pressed to log in the user
         {
-            if (E.KeyCode == Keys.Enter)
-            {
-                E.SuppressKeyPress = true;
+            if (e.KeyCode != Keys.Enter) return;
+            e.SuppressKeyPress = true;
 
-                Login(TextBoxUsername.Text, TextBoxPassword.Text);
+            await Login(TextBoxUsername.Text, TextBoxPassword.Text);
+            TextBoxUsername.Clear();                                        // clears all typed characters
+            TextBoxPassword.Clear();
+
+            e.Handled = true;
+        }
+
+        private async void TextBoxPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+
+                await Login(TextBoxUsername.Text, TextBoxPassword.Text);
                 TextBoxUsername.Clear();                                        // clears all typed characters
                 TextBoxPassword.Clear();
 
-                E.Handled = true;
+                e.Handled = true;
             }
         }
 
-        private void TextBoxPassword_KeyDown(object Sender, KeyEventArgs E)
+        private void LinkShowPassword_KeyDown(object sender, KeyEventArgs e) // allows the enter button to be pressed to enable the password hide
         {
-            if (E.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
-                E.SuppressKeyPress = true;
-
-                Login(TextBoxUsername.Text, TextBoxPassword.Text);
-                TextBoxUsername.Clear();                                        // clears all typed characters
-                TextBoxPassword.Clear();
-
-                E.Handled = true;
+                LinkShowPassword.Checked = LinkShowPassword.Checked == false;
+                e.Handled = true;
             }
         }
 
-        private void LinkShowPassword_KeyDown(object Sender, KeyEventArgs E) // allows the enter button to be pressed to enable the password hide
-        {
-            if (E.KeyCode == Keys.Enter)
-            {
-                if (LinkShowPassword.Checked == false)
-                {
-                    LinkShowPassword.Checked = true;
-                }
-                else
-                {
-                    LinkShowPassword.Checked = false;
-                }
-                E.Handled = true;
-            }
-        }
-
-        private void ButtonClear_Click(object Sender, EventArgs E)
+        private void ButtonClear_Click(object sender, EventArgs e)
         {
             TextBoxUsername.Clear();                                        // clears all typed characters
             TextBoxPassword.Clear();
             TextBoxUsername.Focus();
         }
 
-        private void FormLogin_Load(object Sender, EventArgs E)
+        private void FormLogin_Load(object sender, EventArgs e)
         {
             _settings.LoadSettings();
 
@@ -183,13 +171,13 @@
             }
         }
 
-        private void StockTimer_Tick(object Sender, EventArgs E)
+        private void StockTimer_Tick(object sender, EventArgs e)
         {
             _notification.CheckForLowStock(StockNotification);
             StockTimer.Stop();
         }
 
-        private void StockNotification_BalloonTipClicked(object Sender, EventArgs E)
+        private void StockNotification_BalloonTipClicked(object sender, EventArgs e)
         {
             if (Classes.Logon.AccessLevel == "Manager")
             {
@@ -198,7 +186,7 @@
                 {
                     if (form.Name != "RestockForm")
                     {
-                        form.WindowState = FormWindowState.Minimized;                    // minimises all windows so you can focus on the restocking form
+                        form.WindowState = FormWindowState.Minimized;                    // minimises all windows, so you can focus on the restocking form
                     }
                 }
             }
@@ -214,7 +202,7 @@
             StockTimer.Stop();
         }
 
-        private void ButtonExit_Click(object Sender, EventArgs E)
+        private void ButtonExit_Click(object sender, EventArgs e)
         {
             Environment.Exit(0);
         }

@@ -1,54 +1,42 @@
 ﻿namespace Inventory.Classes
 {
-    internal class Order
+    internal class Order(
+        int id,
+        string product_name,
+        string firstname,
+        string lastname,
+        int quantity,
+        DateTime date_ordered,
+        decimal price)
     {
-        private int _id;
-        private string _productName;
-        private string _firstname;
-        private string _lastname;
-        private int _quantity;
-        private DateTime _dateOrdered;
-        private decimal _price;
-
-        public Order(int id, string productname, string firstname, string lastname, int quantity, DateTime dateordered, decimal price)
-        {
-            _id = id;
-            _productName = productname;
-            _firstname = firstname;
-            _lastname = lastname;
-            _quantity = quantity;
-            _dateOrdered = dateordered;
-            _price = price;
-        }
-
         public int GetId()
         {
-            return _id;
+            return id;
         }
 
         public string GetProductName()
         {
-            return _productName;
+            return product_name;
         }
 
         public string GetFullName()
         {
-            return _firstname + " " + _lastname;
+            return firstname + " " + lastname;
         }
 
         public int GetQuantity()
         {
-            return _quantity;
+            return quantity;
         }
 
         public DateTime GetDate()
         {
-            return _dateOrdered;
+            return date_ordered;
         }
 
         public decimal GetPrice()
         {
-            return _price;
+            return price;
         }
     }
 }
