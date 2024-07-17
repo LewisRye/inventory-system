@@ -9,69 +9,55 @@
             InitializeComponent();
         }
 
-        private void FormDashboard_Load(object Sender, EventArgs E)
+        private async void FormDashboard_Load(object sender, EventArgs e)
         {
             WelcomeText.Text = $"welcome, {Classes.Logon.CurrentUser}!";
 
-            QuantityItemsStock.Text = "0";
-            QuantityItemsProfit.Text = "£0";
-            QuantityItemsOrders.Text = "0";
+            await GenerateContent(); // generates content for the dashboard
+        }
 
+        private async Task GenerateContent()
+        {
             //
             //  creating data to put inside of the graphs
             //
 
-            _insights.CreateStockByTypeChart(ChartStockType);                       // fills 'Stock by Type' chart with data
-            // GET dashboard_stock_type
-
-            //_insights.CreateDailyOrdersChart(ChartDailyOrders);                     // fills 'Order History' chart with data
-            // GET dashboard_daily_orders
-
-            _insights.CreateBestSellersChart(ListBestSellers);                     // fills 'Best Sellers' chart with data
-            // GET dashboard_best_sellers
+            await _insights.CreateStockByTypeChart(ChartStockType);                       // fills 'Stock by Type' chart with data
+            await _insights.CreateDailyOrdersChart(ChartDailyOrders);                     // fills 'Order History' chart with data
+            await _insights.CreateBestSellersChart(ListBestSellers);                     // fills 'Best Sellers' chart with data
 
             //
             //  creating data to put inside of the buttons
             //
-
-            _insights.CreateQuantityItemsStockText(QuantityItemsStock);             // fills 'items in stock currently' with data
-            _insights.CreateQuantityItemsProfitText(QuantityItemsProfit);           // fills 'profit in the last 7 days' with data
-            _insights.CreateQuantityItemsOrdersText(QuantityItemsOrders);           // fills 'orders in the last 7 days' with data
+            await _insights.CreateQuantityItemsStockText(QuantityItemsStock);             // fills 'items in stock currently' with data
+            await _insights.CreateQuantityItemsProfitText(QuantityItemsProfit);           // fills 'profit in the last 7 days' with data
+            await _insights.CreateQuantityItemsOrdersText(QuantityItemsOrders);           // fills 'orders in the last 7 days' with data
         }
 
-        private void ViewStockButton_Click(object Sender, EventArgs E)
+        private void ViewStockButton_Click(object sender, EventArgs e)
         {
             new DataForms.FormViewStock().Show();
             this.Hide();
             this.Close();
-            this.Dispose();
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
-        private void ResetPasswordButton_Click(object Sender, EventArgs E)
+        private void ResetPasswordButton_Click(object sender, EventArgs e)
         {
             new LoginForms.FormAccountReset().Show();
             Classes.Logon.CurrentUser = "";
             Classes.Logon.AccessLevel = "";
             this.Hide();
             this.Close();
-            this.Dispose();
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
-        private void ButtonSettings_Click(object Sender, EventArgs E)
+        private void ButtonSettings_Click(object sender, EventArgs e)
         {
             new ProgramForms.FormSettings().Show();
             this.Hide();
             this.Close();
-            this.Dispose();
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
-        private void ViewInsightButton_Click(object Sender, EventArgs E)
+        private void ViewInsightButton_Click(object sender, EventArgs e)
         {
             if (Classes.Logon.AccessLevel != "Manager")
             {
@@ -83,13 +69,10 @@
                 new DataForms.FormViewInsights().Show();
                 this.Hide();
                 this.Close();
-                this.Dispose();
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
             }
         }
 
-        private void OpenOrdersButton_Click(object Sender, EventArgs E)
+        private void OpenOrdersButton_Click(object sender, EventArgs e)
         {
             if (Classes.Logon.AccessLevel != "Manager")
             {
@@ -101,13 +84,10 @@
                 new DataForms.FormViewOrders().Show();
                 this.Hide();
                 this.Close();
-                this.Dispose();
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
             }
         }
 
-        private void OpenRestockButton_Click(object Sender, EventArgs E)
+        private void OpenRestockButton_Click(object sender, EventArgs e)
         {
             if (Classes.Logon.AccessLevel != "Manager")
             {
@@ -119,9 +99,6 @@
                 new ProgramForms.FormPurchase().Show();
                 this.Hide();
                 this.Close();
-                this.Dispose();
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
             }
         }
 
@@ -137,13 +114,10 @@
                 new LoginForms.FormAccountEdit().Show();
                 this.Hide();
                 this.Close();
-                this.Dispose();
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
             }
         }
 
-        private void LogOutLink_LinkClicked(object Sender, LinkLabelLinkClickedEventArgs E)
+        private void LogOutLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             foreach (Form var in Application.OpenForms)
             {
@@ -156,9 +130,6 @@
             Classes.Logon.AccessLevel = ""; // removes the currently logged in access level
             this.Hide();
             this.Close();
-            this.Dispose();
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
         private void ExitButton_Click(object sender, EventArgs e)

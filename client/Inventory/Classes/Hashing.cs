@@ -1,4 +1,4 @@
-﻿namespace Inventory
+﻿namespace Inventory.Classes
 {
     internal class Hashing
     {
@@ -8,28 +8,21 @@
 
         //  -takes a user input and returns it as a hash
 
-        public static string GenerateHash(string StringToHash, string Username)
+        public static string GenerateHash(string stringToHash, string username)
         {
-            string salt = Username; // individual salt per account
-            string hashedValue = "";
-
-            var inputWithSalt = new StringBuilder("", 2);
-
-            inputWithSalt.Append(StringToHash);
-            inputWithSalt.Append(salt);
-
-            byte[] inputInBytes = Encoding.UTF8.GetBytes(inputWithSalt.ToString());
-            inputInBytes.Reverse(); // first character in input = last character in array
-
-            foreach (byte value in inputInBytes) // adds the new hashed value into a string
+            byte[] data;
+            using (SHA512 sha512 = SHA512.Create())
             {
-                hashedValue += (value * 5); // multiplies the byte by 5 (prime number) so it is harder to crack
+                data = sha512.ComputeHash(Encoding.UTF8.GetBytes(username + stringToHash));
             }
 
-            return hashedValue; // returns the new hashed value
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in data) sb.Append(b);
+
+            return sb.ToString();
         }
 
-        public static bool ValidPassword(string Password)
+        public static bool ValidPassword(string password)
         {
             var contains8Characters = new Regex(@".{8,}");                                                        // checks if a string has 8 characters
             var containsUpperCase = new Regex(@"[A-Z]+");                                                         // checks if a string has an upper case char
@@ -37,12 +30,12 @@
             var containsNumber = new Regex(@"[0-9]+");                                                            // checks if a string has a number
             var containsLegalChars = new Regex(@"^[a-zA-Z0-9- _ = + ! @ # $ % ^ & * ( )]*$");                     // checks if a string has all legal characters (unlike emojis)
 
-            if (contains8Characters.IsMatch(Password)
-                && containsUpperCase.IsMatch(Password)
-                && containsLowerCase.IsMatch(Password)
-                && containsNumber.IsMatch(Password))
+            if (contains8Characters.IsMatch(password)
+                && containsUpperCase.IsMatch(password)
+                && containsLowerCase.IsMatch(password)
+                && containsNumber.IsMatch(password))
             {
-                if (!containsLegalChars.IsMatch(Password))
+                if (!containsLegalChars.IsMatch(password))
                 {
                     MessageBox.Show("Invalid characters detected...", "Error");
                     return false;

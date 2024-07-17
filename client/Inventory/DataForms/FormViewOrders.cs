@@ -5,8 +5,8 @@ namespace Inventory.DataForms
     public partial class FormViewOrders : Form
     {
         private readonly Database _database = new Database();
-        private List<Order> allOrders = new List<Order>();
-        private List<Order> newOrders = new List<Order>();
+        private List<Order> _allOrders = new List<Order>();
+        private List<Order> _newOrders = new List<Order>();
 
         public FormViewOrders()
         {
@@ -19,12 +19,12 @@ namespace Inventory.DataForms
             DatabaseGrid.Columns.Add("4", "Date Ordered");
             DatabaseGrid.Columns.Add("5", "Order Price");
 
-            allOrders = _database.GetOrders();
+            _allOrders = _database.GetOrders();
         }
 
-        private void ViewOrdersForm_Load(object Sender, EventArgs E)
+        private void ViewOrdersForm_Load(object sender, EventArgs e)
         {
-            foreach (Order o in allOrders)
+            foreach (Order o in _allOrders)
             {
                 DatabaseGrid.Rows.Add(o.GetId(), o.GetProductName(), o.GetFullName(), o.GetQuantity(), o.GetDate().ToString("dd/MM/yyyy"), "£" + o.GetPrice());
             }
@@ -35,19 +35,19 @@ namespace Inventory.DataForms
         private void SearchBox_TextChanged(object sender, EventArgs e)
         {
             DatabaseGrid.Rows.Clear();
-            newOrders.Clear();
+            _newOrders.Clear();
 
             if (SearchBox.Text == "")
             {
-                foreach (Order o in allOrders)
+                foreach (Order o in _allOrders)
                 {
                     DatabaseGrid.Rows.Add(o.GetId(), o.GetProductName(), o.GetFullName(), o.GetQuantity(), o.GetDate().ToString("dd/MM/yyyy"), "£" + o.GetPrice());
                 }
             }
             else
             {
-                newOrders = _database.GetOrders(SearchBox.Text);
-                foreach (Order o in newOrders)
+                _newOrders = _database.GetOrders(SearchBox.Text);
+                foreach (Order o in _newOrders)
                 {
                     DatabaseGrid.Rows.Add(o.GetId(), o.GetProductName(), o.GetFullName(), o.GetQuantity(), o.GetDate().ToString("dd/MM/yyyy"), "£" + o.GetPrice());
                 }

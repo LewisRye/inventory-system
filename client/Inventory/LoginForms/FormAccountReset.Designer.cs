@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new Container();
             ComponentResourceManager resources = new ComponentResourceManager(typeof(FormAccountReset));
             LabelResetPassword = new Label();
             LabelUsername = new Label();
@@ -41,12 +42,13 @@
             BarPwdStrength = new MaterialSkin.Controls.MaterialProgressBar();
             ButtonResetPwd = new MaterialSkin.Controls.MaterialButton();
             ButtonReturnLogin = new MaterialSkin.Controls.MaterialButton();
+            ToolTip = new ToolTip(components);
             SuspendLayout();
             // 
             // LabelResetPassword
             // 
             LabelResetPassword.BackColor = Color.Transparent;
-            LabelResetPassword.Font = new Font("Microsoft YaHei UI", 27.75F, FontStyle.Regular, GraphicsUnit.Point);
+            LabelResetPassword.Font = new Font("Microsoft YaHei UI", 27.75F);
             LabelResetPassword.ForeColor = Color.Black;
             LabelResetPassword.Location = new Point(6, 3);
             LabelResetPassword.Margin = new Padding(2, 0, 2, 0);
@@ -60,7 +62,7 @@
             // 
             LabelUsername.Anchor = AnchorStyles.None;
             LabelUsername.BackColor = Color.Transparent;
-            LabelUsername.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            LabelUsername.Font = new Font("Segoe UI", 9.75F);
             LabelUsername.ForeColor = Color.Black;
             LabelUsername.Location = new Point(6, 69);
             LabelUsername.Margin = new Padding(2, 0, 2, 0);
@@ -74,7 +76,7 @@
             // 
             LabelAddress.Anchor = AnchorStyles.None;
             LabelAddress.BackColor = Color.Transparent;
-            LabelAddress.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            LabelAddress.Font = new Font("Segoe UI", 9.75F);
             LabelAddress.ForeColor = Color.Black;
             LabelAddress.Location = new Point(6, 94);
             LabelAddress.Margin = new Padding(2, 0, 2, 0);
@@ -88,7 +90,7 @@
             // 
             LabelPassword.Anchor = AnchorStyles.None;
             LabelPassword.BackColor = Color.Transparent;
-            LabelPassword.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            LabelPassword.Font = new Font("Segoe UI", 9.75F);
             LabelPassword.ForeColor = Color.Black;
             LabelPassword.Location = new Point(6, 144);
             LabelPassword.Margin = new Padding(2, 0, 2, 0);
@@ -102,7 +104,7 @@
             // 
             LabelPwdStrength.Anchor = AnchorStyles.None;
             LabelPwdStrength.BackColor = Color.Transparent;
-            LabelPwdStrength.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            LabelPwdStrength.Font = new Font("Segoe UI", 9.75F);
             LabelPwdStrength.ForeColor = Color.Black;
             LabelPwdStrength.Location = new Point(6, 176);
             LabelPwdStrength.Margin = new Padding(2, 0, 2, 0);
@@ -116,7 +118,7 @@
             // 
             ValuePwdStrength.Anchor = AnchorStyles.None;
             ValuePwdStrength.BackColor = Color.Transparent;
-            ValuePwdStrength.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            ValuePwdStrength.Font = new Font("Segoe UI", 9.75F);
             ValuePwdStrength.ForeColor = Color.Red;
             ValuePwdStrength.Location = new Point(128, 176);
             ValuePwdStrength.Margin = new Padding(2, 0, 2, 0);
@@ -207,6 +209,11 @@
             ButtonReturnLogin.UseVisualStyleBackColor = false;
             ButtonReturnLogin.Click += ButtonReturnLogin_Click;
             // 
+            // ToolTip
+            // 
+            ToolTip.BackColor = Color.White;
+            ToolTip.IsBalloon = true;
+            // 
             // FormAccountReset
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -249,5 +256,6 @@
         private MaterialSkin.Controls.MaterialProgressBar BarPwdStrength;
         private MaterialSkin.Controls.MaterialButton ButtonResetPwd;
         private MaterialSkin.Controls.MaterialButton ButtonReturnLogin;
+        private ToolTip ToolTip;
     }
 }

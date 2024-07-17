@@ -361,7 +361,6 @@
             Name = "FormPurchase";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Inventory Management System";
-            Load += PurchaseForm_Load;
             ((ISupportInitialize)QuantityRequired).EndInit();
             BluePanel.ResumeLayout(false);
             BluePanel.PerformLayout();

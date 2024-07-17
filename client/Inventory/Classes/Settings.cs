@@ -49,15 +49,13 @@
         {
             try
             {
-                using (FileStream fs = File.Create(Logon.FilePath))
-                {
-                    byte[] fileContents = new UTF8Encoding(true).GetBytes(
-                        "NotificationTime\n30000\n" +
-                            "NotificationStock\n10\n" +
-                            "RecipientEmailAddress\nexample@gmail.com\n" +
-                            "ColourScheme\nGrey");
-                    fs.Write(fileContents, 0, fileContents.Length);                                     // writes the correct information to the new file
-                }
+                using FileStream fs = File.Create(Logon.FilePath);
+                byte[] fileContents = new UTF8Encoding(true).GetBytes(
+                    "NotificationTime\n30000\n" +
+                    "NotificationStock\n10\n" +
+                    "RecipientEmailAddress\nexample@gmail.com\n" +
+                    "ColourScheme\nGrey");
+                fs.Write(fileContents, 0, fileContents.Length);                                     // writes the correct information to the new file
             }
             catch (Exception ex)
             {
@@ -65,13 +63,13 @@
             }
         }
 
-        public void ChangeFileNotifTime(int NewNotificationTimeSeconds)
+        public void ChangeFileNotificationTime(int newNotificationTimeSeconds)
         {
             try
             {
-                if (NewNotificationTimeSeconds >= 20)
+                if (newNotificationTimeSeconds >= 20)
                 {
-                    int newNotificationTimeMilliseconds = NewNotificationTimeSeconds * 1000;                        // converts time from seconds to milliseconds
+                    int newNotificationTimeMilliseconds = newNotificationTimeSeconds * 1000;                        // converts time from seconds to milliseconds
                     string[] notificationLines = File.ReadAllLines(Logon.FilePath);
                     notificationLines[1] = Convert.ToString(newNotificationTimeMilliseconds);
                     File.WriteAllLines(Logon.FilePath, notificationLines);                                               // writes the new notification time to the settings file
@@ -88,12 +86,12 @@
             }
         }
 
-        public void ChangeFileNotifStock(int NewNotificationStockLevel)
+        public void ChangeFileNotificationStock(int newNotificationStockLevel)
         {
             try
             {
                 string[] notificationLines = File.ReadAllLines(Logon.FilePath);
-                notificationLines[3] = Convert.ToString(NewNotificationStockLevel);
+                notificationLines[3] = Convert.ToString(newNotificationStockLevel);
                 File.WriteAllLines(Logon.FilePath, notificationLines);                                                   // writes the new notification stock to the settings file
                 MessageBox.Show("Notification time changed! Click restart to apply changes.", "Success");
             }
@@ -103,12 +101,12 @@
             }
         }
 
-        public void ChangeFileEmail(string NewRecipientEmailAddress)
+        public void ChangeFileEmail(string newRecipientEmailAddress)
         {
             try
             {
                 string[] emailLines = File.ReadAllLines(Logon.FilePath);
-                emailLines[5] = NewRecipientEmailAddress;
+                emailLines[5] = newRecipientEmailAddress;
                 File.WriteAllLines(Logon.FilePath, emailLines);                                                      // writes the new email address to the settings file
                 MessageBox.Show("Recipient email address changed! Click restart to apply changes.", "Success");
             }
@@ -118,12 +116,12 @@
             }
         }
 
-        public void ChangeFileColour(string NewColourScheme)
+        public void ChangeFileColour(string newColourScheme)
         {
             try
             {
                 string[] colourLines = File.ReadAllLines(Logon.FilePath);
-                colourLines[7] = NewColourScheme;
+                colourLines[7] = newColourScheme;
                 File.WriteAllLines(Logon.FilePath, colourLines);                                                         // writes the new colour scheme to the settings file
                 MessageBox.Show("Colour scheme changed! Click restart to apply changes.", "Success");
             }

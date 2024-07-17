@@ -2,7 +2,7 @@
 {
     public partial class FormViewInsights : Form
     {
-        private static readonly string _connStr = ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
+        private static readonly string ConnStr = ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
 
         public FormViewInsights()
         {
@@ -17,14 +17,14 @@
             ToDate.Value = DateTime.Today;
         }
 
-        private void FormViewInsights_Load(object Sender, EventArgs E)
+        private void FormViewInsights_Load(object sender, EventArgs e)
         {
             WelcomeText.Text = $"welcome, {Classes.Logon.CurrentUser}!";
         }
 
-        private void GenerateBestSeller(Label BestSeller)
+        private void GenerateBestSeller(Label bestSellerLabel)
         {
-            var databaseConn = new MySqlConnection(_connStr);
+            var databaseConn = new MySqlConnection(ConnStr);
 
             try
             {
@@ -44,7 +44,7 @@
                 {
                     if (reader[0] != DBNull.Value) // stops an error when the database is empty
                     {
-                        BestSeller.Text = $@"•The best selling item was: {reader[0]} ({reader[1]} sold)";
+                        bestSellerLabel.Text = $@"•The best selling item was: {reader[0]} ({reader[1]} sold)";
                     }
                 }
             }
@@ -58,9 +58,9 @@
             }
         }
 
-        private void GenerateTotalProfit(Label TotalProfit)
+        private void GenerateTotalProfit(Label totalProfit)
         {
-            var databaseConn = new MySqlConnection(_connStr);
+            var databaseConn = new MySqlConnection(ConnStr);
 
             try
             {
@@ -81,7 +81,7 @@
                     if (reader[0] != DBNull.Value) // stops an error when the database is empty
                     {
                         var profit = reader[0];
-                        TotalProfit.Text = $@"•The total profit was: £{profit}";
+                        totalProfit.Text = $@"•The total profit was: £{profit}";
                     }
                 }
             }
@@ -95,9 +95,9 @@
             }
         }
 
-        private void GenerateMostProfitableDay(Label MostProfitableDay)
+        private void GenerateMostProfitableDay(Label mostProfitableDayLabel)
         {
-            var databaseConn = new MySqlConnection(_connStr);
+            var databaseConn = new MySqlConnection(ConnStr);
 
             try
             {
@@ -121,7 +121,7 @@
                         DateTime originalDate = Convert.ToDateTime(reader[0].ToString());
                         var convertedDate = originalDate.ToString("ddd', 'dd' 'MMM' 'yyyy");
                         var profit = reader[1];
-                        MostProfitableDay.Text = $@"•The most profitable day was: {convertedDate} (£{profit} profit was made)";
+                        mostProfitableDayLabel.Text = $@"•The most profitable day was: {convertedDate} (£{profit} profit was made)";
                     }
                 }
             }
@@ -135,9 +135,9 @@
             }
         }
 
-        private void GenerateTotalItemsSold(Label ItemsSold)
+        private void GenerateTotalItemsSold(Label itemsSold)
         {
-            var databaseConn = new MySqlConnection(_connStr);
+            var databaseConn = new MySqlConnection(ConnStr);
 
             try
             {
@@ -156,7 +156,7 @@
                 {
                     if (reader[0] != DBNull.Value) // stops an error when the database is empty
                     {
-                        ItemsSold.Text = $@"•The amount of items sold was: {reader[0]}";
+                        itemsSold.Text = $@"•The amount of items sold was: {reader[0]}";
                     }
                 }
             }
@@ -170,13 +170,13 @@
             }
         }
 
-        private void CreateDailyOrdersChart(Chart Chart)
+        private void CreateDailyOrdersChart(Chart chart)
         {
-            var databaseConn = new MySqlConnection(_connStr);
+            var databaseConn = new MySqlConnection(ConnStr);
 
             try
             {
-                Chart.Series["Revenue Per Order"].Points.Clear();
+                chart.Series["Revenue Per Order"].Points.Clear();
 
                 databaseConn.Open();
 
@@ -190,10 +190,10 @@
 
                 var dailyOrdersDs = new DataSet(); // creates a new set of data found by the query
                 dailyOrdersDa.Fill(dailyOrdersDs);
-                Chart.DataSource = dailyOrdersDs;
+                chart.DataSource = dailyOrdersDs;
 
-                Chart.Series["Revenue Per Order"].XValueMember = "ORDER ID";    // adds the date column to the X axis
-                Chart.Series["Revenue Per Order"].YValueMembers = "REVENUE"; // adds the amount of orders per day to the Y axis
+                chart.Series["Revenue Per Order"].XValueMember = "ORDER ID";    // adds the date column to the X axis
+                chart.Series["Revenue Per Order"].YValueMembers = "REVENUE"; // adds the amount of orders per day to the Y axis
 
                 databaseConn.Close();
             }
@@ -207,11 +207,11 @@
             }
         }
 
-        private void ButtonInsight_Click(object Sender, EventArgs E)
+        private void ButtonInsight_Click(object sender, EventArgs e)
         {
             TextSelectDate.Visible = false;
 
-            var databaseConnection = new MySqlConnection(_connStr);                                                       // directs code to location of my database file
+            var databaseConnection = new MySqlConnection(ConnStr);                                                       // directs code to location of my database file
 
             databaseConnection.Open();
 
@@ -244,7 +244,7 @@
             CreateDailyOrdersChart(ChartDailyRevenue);
         }
 
-        private void CloseButton_Click(object Sender, EventArgs E)
+        private void CloseButton_Click(object sender, EventArgs e)
         {
             new ProgramForms.FormDashboard().Show();
             this.Hide();
