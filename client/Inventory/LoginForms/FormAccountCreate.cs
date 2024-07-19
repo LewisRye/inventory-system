@@ -144,11 +144,9 @@ namespace Inventory.LoginForms
                 {
                     var.Visible = true;
                 }
-                this.Hide();
                 this.Close();
                 this.Dispose();
                 GC.Collect();
-                GC.WaitForPendingFinalizers();
             }
         }
 
@@ -160,11 +158,9 @@ namespace Inventory.LoginForms
             }
             Classes.Logon.CurrentUser = "";
             Classes.Logon.AccessLevel = "";
-            this.Hide();
             this.Close();
             this.Dispose();
             GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
         private void TextBoxPassword_TextChanged(object sender, EventArgs e)

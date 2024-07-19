@@ -82,11 +82,9 @@
                         var.Visible = true;
                     }
                 }
-                this.Hide();
                 this.Close();
                 this.Dispose();
                 GC.Collect();
-                GC.WaitForPendingFinalizers();
             }
         }
 
@@ -150,11 +148,9 @@
                     var.Visible = true;
                 }
             }
-            this.Hide();
             this.Close();
             this.Dispose();
             GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
         private void PasswordBox_KeyDown(object sender, KeyEventArgs e)
@@ -181,11 +177,9 @@
                                 var.Show();
                             }
                         }
-                        this.Hide();
                         this.Close();
                         this.Dispose();
                         GC.Collect();
-                        GC.WaitForPendingFinalizers();
                     }
                 }
                 e.SuppressKeyPress = true;

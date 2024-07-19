@@ -301,11 +301,9 @@ namespace Inventory.LoginForms
         private void ButtonReturnDash_Click(object sender, EventArgs e)
         {
             new ProgramForms.FormDashboard().Show();
-            this.Hide();
             this.Close();
             this.Dispose();
             GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
     }
 }
