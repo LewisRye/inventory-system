@@ -12,6 +12,7 @@ use hyper::service::service_fn;
 use hyper::{Method, Request, Response, StatusCode};
 use hyper_util::rt::TokioIo;
 use models::Product;
+use rusqlite::{params, Connection, Result};
 use tokio::net::TcpListener;
 
 #[tokio::main]
@@ -67,7 +68,7 @@ async fn handle_request(
 
             println!("{}: POST login: {} {}", Utc::now(), user_str.unwrap_or_default(), pass_str.unwrap_or_default());
 
-            if login(user_str.as_deref(), pass_str.as_deref()) == true {
+            if login(user_str.as_deref(), pass_str.as_deref()).unwrap_or(false) {
                 // Construct a 200 OK response
                 let response = Response::builder()
                 .status(StatusCode::OK)
@@ -116,12 +117,14 @@ async fn handle_request(
         (&Method::GET, Some("product")) => {
             let id = req.headers().get("id");
             let id_str: Option<&str> = id.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+            let id_int: i64 = id_str.unwrap_or_default().parse().unwrap();
 
             println!("{}: GET product: {}", Utc::now(), id_str.unwrap_or_default());
-            
+
+            let result = &get_product(&id_int).unwrap(); // this approach currently assumes that the product exists
+
             // Convert JSON to bytes
-            let id_int: i64 = id_str.unwrap_or_default().parse().unwrap();
-            let json = serde_json::to_string(&get_product(&id_int)).unwrap();
+            let json = serde_json::to_string(result).unwrap();
 
             // Build the HTTP response
             Ok(Response::new(full(json)))
@@ -133,8 +136,10 @@ async fn handle_request(
 
             println!("{}: GET access_level: {}", Utc::now(), user_str.unwrap_or_default());
             
+            let result = &get_access_level(&user_str.unwrap_or_default()).unwrap_or(-1);
+
             // Convert JSON to bytes
-            let json = serde_json::to_string(&get_access_level(&user_str.unwrap_or_default())).unwrap();
+            let json = serde_json::to_string(result).unwrap();
 
             // Build the HTTP response
             Ok(Response::new(full(json)))
@@ -143,8 +148,10 @@ async fn handle_request(
         (&Method::GET, Some("all_product")) => {
             println!("{}: GET all_product", Utc::now());
 
+            let result = &get_all_product().unwrap_or(Vec::new());
+
             // Convert JSON to bytes
-            let json = serde_json::to_string(&get_all_product()).unwrap();
+            let json = serde_json::to_string(result).unwrap();
 
             // Build the HTTP response
             Ok(Response::new(full(json)))
@@ -153,8 +160,10 @@ async fn handle_request(
         (&Method::GET, Some("all_access_level")) => {
             println!("{}: GET all_access_level", Utc::now());
 
+            let result = &get_all_access_level().unwrap_or(Vec::new());
+
             // Convert JSON to bytes
-            let json = serde_json::to_string(&get_all_access_level()).unwrap();
+            let json = serde_json::to_string(result).unwrap();
 
             // Build the HTTP response
             Ok(Response::new(full(json)))
@@ -163,8 +172,10 @@ async fn handle_request(
         (&Method::GET, Some("all_username")) => {
             println!("{}: GET all_username", Utc::now());
 
+            let result = &get_all_username().unwrap_or(Vec::new());
+
             // Convert JSON to bytes
-            let json = serde_json::to_string(&get_all_username()).unwrap();
+            let json = serde_json::to_string(result).unwrap();
 
             // Build the HTTP response
             Ok(Response::new(full(json)))
@@ -173,7 +184,10 @@ async fn handle_request(
         (&Method::GET, Some("dashboard_stock_type")) => {
             println!("{}: GET dashboard_stock_type", Utc::now());
             
-            let json = serde_json::to_string(&get_dashboard_stock_by_type()).unwrap();
+            let result = &get_dashboard_stock_by_type().unwrap_or(Vec::new());
+
+            // Convert JSON to bytes
+            let json = serde_json::to_string(result).unwrap();
 
             Ok(Response::new(full(json)))
         },
@@ -181,16 +195,19 @@ async fn handle_request(
         (&Method::GET, Some("dashboard_daily_orders")) => {
             println!("{}: GET dashboard_daily_orders", Utc::now());
             
-            //let json = serde_json::to_string(&get_dashboard_daily_orders()).unwrap();
+            let result = &get_dashboard_daily_orders().unwrap();
 
-            //Ok(Response::new(full(json)))
-            Ok(Response::new(empty()))
+            // Convert JSON to bytes
+            let json = serde_json::to_string(result).unwrap();
+
+            Ok(Response::new(full(json)))
         },
 
         (&Method::GET, Some("dashboard_best_sellers")) => {
             println!("{}: GET dashboard_best_sellers", Utc::now());
 
-            let json = serde_json::to_string(&get_dashboard_best_sellers()).unwrap();
+            let result = &get_dashboard_best_sellers().unwrap_or(Vec::new());
+            let json = serde_json::to_string(result).unwrap();
 
             Ok(Response::new(full(json)))
         },
@@ -198,7 +215,8 @@ async fn handle_request(
         (&Method::GET, Some("dashboard_stock")) => {
             println!("{}: GET dashboard_stock", Utc::now());
 
-            let json = serde_json::to_string(&get_dashboard_stock()).unwrap();
+            let result = &get_dashboard_stock().unwrap_or(-1);
+            let json = serde_json::to_string(result).unwrap();
 
             Ok(Response::new(full(json)))
         },
@@ -206,7 +224,8 @@ async fn handle_request(
         (&Method::GET, Some("dashboard_profit")) => {
             println!("{}: GET dashboard_profit", Utc::now());
 
-            let json = serde_json::to_string(&get_dashboard_profit()).unwrap();
+            let result = &get_dashboard_profit().unwrap_or(-1.0);
+            let json = serde_json::to_string(result).unwrap();
 
             Ok(Response::new(full(json)))
         },
@@ -214,7 +233,8 @@ async fn handle_request(
         (&Method::GET, Some("dashboard_orders")) => {
             println!("{}: GET dashboard_orders", Utc::now());
 
-            let json = serde_json::to_string(&get_dashboard_orders()).unwrap();
+            let result = &get_dashboard_orders().unwrap_or(-1);
+            let json = serde_json::to_string(result).unwrap();
 
             Ok(Response::new(full(json)))
         },
@@ -228,314 +248,242 @@ async fn handle_request(
     }
 }
 
-/* METHODS TO GET SQL DATA */
+/* LOGIN METHODS */
 
-fn login(user: Option<&str>, pass: Option<&str>) -> bool {
-    let mut uname = String::new();
-
-    let query = "SELECT username FROM account WHERE account.passhash = ?;";
+fn login(user: Option<&str>, pass: Option<&str>) -> Result<bool> {
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    let connection = sqlite::open(database_url).unwrap();
-    for row in connection
-        .prepare(query)
-        .unwrap()
-        .into_iter()
-        .bind((1, pass))
-        .unwrap()
-        .map(|row| row.unwrap())
-    {
-        uname = row.read::<&str, _>("username").to_string();
-    }
+    let conn = Connection::open(database_url)?;
 
-    return uname == user.unwrap_or_default();
+    let result: Result<i64> = conn.query_row(
+        "SELECT count(account_id) FROM account WHERE account.username = ?1 AND account.passhash = ?2;",
+        params![user, pass],
+        |row| row.get(0),
+    );
+
+    result.map(|count| count > 0)
 }
 
 fn create_account(_level: Option<&str>, _user: Option<&str>, _pass: Option<&str>) -> bool{
     return true;
 }
 
-fn get_product(id: &i64) -> Option<Product> {
-    if *id > 0 {
-        let query = "SELECT * FROM product WHERE product.product_id = ?;";
-
-        let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-        let connection = sqlite::open(database_url).unwrap();
-        for row in connection
-            .prepare(query)
-            .unwrap()
-            .into_iter()
-            .bind((1, *id))
-            .unwrap()
-            .map(|row| row.unwrap())
-        {
-            let id: i64 = row.read("product_id");
-            let name: String = row.read::<&str, _>("product_name").to_string();
-            let cid: i64 = row.read("category_id");
-            let nis: i64 = row.read("number_in_stock");
-            let bp: i64 = row.read("buy_price");
-            let disc: i64 = row.read("discontinued");
-            let product = models::Product {
-                product_id: id,
-                product_name: name,
-                category_id: cid,
-                number_in_stock: nis,
-                buy_price: bp,
-                discontinued: disc,
-            };
-
-            return Some(product);
-        }
-    }
-    return None;
-}
-
-fn get_access_level(id: &str) -> Option<i64> {
-    let query = "SELECT level_id AS id FROM account WHERE username = ?;";
-
+fn get_access_level(user: &str) -> Result<i64> {
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    let connection = sqlite::open(database_url).unwrap();
-    for row in connection
-        .prepare(query)
-        .unwrap()
-        .into_iter()
-        .bind((1, id))
-        .unwrap()
-        .map(|row| row.unwrap())
-    {
-        return row.read("id");
-    }
-    return None;
+    let conn = Connection::open(database_url)?;
+
+    let result: Result<i64> = conn.query_row(
+        "SELECT level_id AS id FROM account WHERE username = ?1;",
+        params![user],
+        |row| row.get(0),
+    );
+
+    result.map(|id| id)
 }
 
-fn get_all_product() -> Vec<Product> {
-    let mut output: Vec<Product> = Vec::new();
-
-    let query = "SELECT * FROM product;";
-
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    let connection = sqlite::open(database_url).unwrap();
-    for row in connection
-        .prepare(query)
-        .unwrap()
-        .into_iter()
-        .map(|row| row.unwrap())
-    {
-        let id: i64 = row.read("product_id");
-        let name: String = row.read::<&str, _>("product_name").to_string();
-        let cid: i64 = row.read("category_id");
-        let nis: i64 = row.read("number_in_stock");
-        let bp: i64 = row.read("buy_price");
-        let disc: i64 = row.read("discontinued");
-        let product = models::Product {
-            product_id: id,
-            product_name: name,
-            category_id: cid,
-            number_in_stock: nis,
-            buy_price: bp,
-            discontinued: disc,
-        };
-        output.push(product);
-    }
-    return output;
-}
-
-fn get_all_access_level() -> Vec<models::AccessLevel> {
+fn get_all_access_level() -> Result<Vec<models::AccessLevel>> {
     let mut output: Vec<models::AccessLevel> = Vec::new();
 
-    let query = "SELECT * FROM access_level;";
-
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    let connection = sqlite::open(database_url).unwrap();
-    for row in connection
-        .prepare(query)
-        .unwrap()
-        .into_iter()
-        .map(|row| row.unwrap())
-    {
-        let id: i64 = row.read("level_id");
-        let name: String = row.read::<&str, _>("level_name").to_string();
-        let level = models::AccessLevel {
-            level_id: id,
-            level_name: name,
-        };
-        output.push(level);
+    let conn = Connection::open(database_url)?;
+
+    let mut stmt = conn.prepare("SELECT * FROM access_level;")?;
+    let level_iter = stmt.query_map([], |row| {
+        Ok(models::AccessLevel {
+            level_id: row.get(0)?,
+            level_name: row.get(1)?,
+        })
+    })?;
+
+    for level in level_iter {
+        output.push(level?)
     }
-    return output;
+
+    Ok(output)
 }
 
-fn get_all_username() -> Vec<String> {
+fn get_all_username() -> Result<Vec<String>> {
     let mut output: Vec<String> = Vec::new();
 
-    let query = "SELECT username FROM account;";
-
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    let connection = sqlite::open(database_url).unwrap();
-    for row in connection
-        .prepare(query)
-        .unwrap()
-        .into_iter()
-        .map(|row| row.unwrap())
-    {
-        let username: String = row.read::<&str, _>("username").to_string();
-        output.push(username);
+    let conn = Connection::open(database_url)?;
+
+    let mut stmt = conn.prepare("SELECT username FROM account;")?;
+    let username_iter = stmt.query_map([], |row| {
+        Ok(row.get(0)?)
+    })?;
+
+    for username in username_iter {
+        output.push(username?)
     }
-    return output;
+
+    Ok(output)
 }
 
-fn get_dashboard_stock_by_type() -> Vec<models::StockType> {
-    let mut output = Vec::new();
+/* DATA METHODS */
 
-    let query = "SELECT SUM(number_in_stock) AS s, category.category_name AS c
-        FROM product, category WHERE product.category_id = category.category_id
-        GROUP BY category.category_name;";
-
+fn get_product(id: &i64) -> Result<Product> {
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    let connection = sqlite::open(database_url).unwrap();
-    for row in connection
-        .prepare(query)
-        .unwrap()
-        .into_iter()
-        .map(|row| row.unwrap())
-    {
-        let category: String = row.read::<&str, _>("c").to_string();
-        let quantity: i64 = row.read("s");
-        
-        let stock_type = models::StockType {
-            c: category,
-            s: quantity,
-        };
+    let conn = Connection::open(database_url)?;
 
-        output.push(stock_type);
-    }
-    return output;
+    let result: Result<Product, rusqlite::Error> = conn.query_row(
+        "SELECT * FROM product WHERE product_id = ?1;",
+        params![id],
+        |row| {
+            Ok(Product {
+                product_id: row.get(0)?,
+                product_name: row.get(1)?,
+                category_id: row.get(2)?,
+                number_in_stock: row.get(3)?,
+                buy_price: row.get(4)?,
+                discontinued: row.get(5)?,
+            })
+        }
+    );
+
+    result.map(|product| product)
 }
 
-/*
-fn get_dashboard_daily_orders() -> Vec<models::DailyOrder> {
-    let mut output = Vec::new();
-
-    let query = "WITH RECURSIVE date_range(date) AS (
-        SELECT DATE('now', '-7 days')
-        UNION ALL
-        SELECT DATE(date_range.date, '+1 day')
-        FROM date_range
-        WHERE date_range.date < DATE('now')
-    )
-    SELECT
-        CASE
-            WHEN date_range.date = DATE('now', '-7 days') THEN '-7.0'
-            ELSE '-' || (julianday(DATE('now')) - julianday(date_range.date))
-        END AS date,
-        COALESCE(COUNT(customer_orders.order_date), 0) AS orders
-    FROM
-        date_range
-    LEFT JOIN
-        customer_orders ON date_range.date = customer_orders.order_date
-    GROUP BY
-        date_range.date;";
+fn get_all_product() -> Result<Vec<Product>> {
+    let mut output: Vec<models::Product> = Vec::new();
 
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    let connection = sqlite::open(database_url).unwrap();
-    for row in connection
-        .prepare(query)
-        .unwrap()
-        .into_iter()
-        .map(|row| row.unwrap())
-    {
-        let day_f64: f64 = row.read("date");
-        let orders: i64 = row.read("orders");
-        
-        let daily_order = models::DailyOrder {
-            day: day_f64 as i64,
-            orders: orders,
-        };
+    let conn = Connection::open(database_url)?;
 
-        output.push(daily_order);
+    let mut stmt = conn.prepare("SELECT * FROM product;")?;
+    let product_iter = stmt.query_map([], |row| {
+        Ok(models::Product {
+            product_id: row.get(0)?,
+            product_name: row.get(1)?,
+            category_id: row.get(2)?,
+            number_in_stock: row.get(3)?,
+            buy_price: row.get(4)?,
+            discontinued: row.get(5)?,
+        })
+    })?;
+
+    for product in product_iter {
+        output.push(product?)
     }
-    return output;
+
+    Ok(output)
 }
-*/
 
-fn get_dashboard_best_sellers() -> Vec<models::BestSeller> {
-    let mut output = Vec::new();
+fn get_dashboard_stock_by_type() -> Result<Vec<models::StockType>> {
+    let mut output: Vec<models::StockType> = Vec::new();
 
-    let query = "SELECT SUM(customer_order_details.quantity_ordered) AS quantity, product.product_name AS name FROM customer_order_details
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let conn = Connection::open(database_url)?;
+
+    let mut stmt = conn.prepare("SELECT category.category_name AS c, SUM(number_in_stock) AS s 
+        FROM product, category 
+        WHERE product.category_id = category.category_id 
+        GROUP BY category.category_name;
+    ")?;
+    let stocktype_iter = stmt.query_map([], |row| {
+        Ok(models::StockType {
+            c: row.get(0)?,
+            s: row.get(1)?,
+        })
+    })?;
+
+    for stocktype in stocktype_iter {
+        output.push(stocktype?)
+    }
+
+    Ok(output)
+}
+
+fn get_dashboard_daily_orders() -> Result<Vec<models::DailyOrder>> {
+    let mut output: Vec<models::DailyOrder> = Vec::new();
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let conn = Connection::open(database_url)?;
+
+    let mut stmt = conn.prepare("SELECT order_date AS date, COUNT(order_id) AS orders 
+        FROM customer_orders 
+        WHERE order_date >= date('now', '-7 days') 
+        GROUP BY order_date ORDER BY order_date;
+    ")?;
+    let dailyorder_iter = stmt.query_map([], |row| {
+        Ok(models::DailyOrder {
+            date: row.get(0)?,
+            orders: row.get(1)?,
+        })
+    })?;
+
+    for dailyorder in dailyorder_iter {
+        output.push(dailyorder?)
+    }
+
+    Ok(output)
+}
+
+fn get_dashboard_best_sellers() -> Result<Vec<models::BestSeller>> {
+    let mut output: Vec<models::BestSeller> = Vec::new();
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let conn = Connection::open(database_url)?;
+
+    let mut stmt = conn.prepare("SELECT product.product_name AS name, SUM(customer_order_details.quantity_ordered) AS quantity FROM customer_order_details
         INNER JOIN product ON product.product_id = customer_order_details.product_id
         GROUP BY customer_order_details.product_id, product_name
-        ORDER BY SUM(quantity_ordered) DESC LIMIT 5;";
+        ORDER BY SUM(quantity_ordered) DESC LIMIT 5;")?;
+    let bestseller_iter = stmt.query_map([], |row| {
+        Ok(models::BestSeller {
+            name: row.get(0)?,
+            quantity: row.get(1)?,
+        })
+    })?;
 
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    let connection = sqlite::open(database_url).unwrap();
-    for row in connection
-        .prepare(query)
-        .unwrap()
-        .into_iter()
-        .map(|row| row.unwrap())
-    {
-        let name: String = row.read::<&str, _>("name").to_string();
-        let quantity: i64 = row.read("quantity");
-        
-        let best_seller = models::BestSeller {
-            name: name,
-            quantity: quantity,
-        };
-
-        output.push(best_seller);
+    for bestseller in bestseller_iter {
+        output.push(bestseller?)
     }
-    return output;
+
+    Ok(output)
 }
 
-fn get_dashboard_stock() -> i64 {
-    let query = "SELECT SUM(number_in_stock) AS x FROM product;";
-
+fn get_dashboard_stock() -> Result<i64> {
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    let connection = sqlite::open(database_url).unwrap();
-    for row in connection
-        .prepare(query)
-        .unwrap()
-        .into_iter()
-        .map(|row| row.unwrap())
-    {
-        return row.read("x");
-    }
-    return 0;
+    let conn = Connection::open(database_url)?;
+
+    let result: Result<i64> = conn.query_row(
+        "SELECT SUM(number_in_stock) FROM product;",
+        [], 
+        |row| row.get(0),
+    );
+
+    result.map(|id| id)
 }
 
-fn get_dashboard_profit() -> f64 {
-    let query = "SELECT SUM((1.2 * product.buy_price) * customer_order_details.quantity_ordered) AS x 
+fn get_dashboard_profit() -> Result<f64> {
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let conn = Connection::open(database_url)?;
+
+    let result: Result<f64> = conn.query_row(
+        "SELECT SUM((1.2 * product.buy_price) * customer_order_details.quantity_ordered) 
         FROM customer_order_details, product, customer_orders
         WHERE product.product_id = customer_order_details.product_id
         AND customer_orders.order_id = customer_order_details.order_id
-        AND customer_orders.order_date BETWEEN DATE('now') - 7 AND DATE('now');";
+        AND customer_orders.order_date BETWEEN DATE('now') - 7 AND DATE('now');",
+        [], 
+        |row| row.get(0),
+    );
 
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    let connection = sqlite::open(database_url).unwrap();
-    for row in connection
-        .prepare(query)
-        .unwrap()
-        .into_iter()
-        .map(|row| row.unwrap())
-    {        
-        return row.read("x");
-    }
-    return 0.0;
+    result.map(|id| id)
 }
 
-fn get_dashboard_orders() -> i64 {
-    let query = "SELECT COUNT(order_id) AS x FROM customer_orders
-        WHERE order_date BETWEEN DATE('now') - 7 and DATE('now');";
-
+fn get_dashboard_orders() -> Result<i64> {
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    let connection = sqlite::open(database_url).unwrap();
-    for row in connection
-        .prepare(query)
-        .unwrap()
-        .into_iter()
-        .map(|row| row.unwrap())
-    {        
-        return row.read("x");
-    }
-    return 0;
+    let conn = Connection::open(database_url)?;
+
+    let result: Result<i64> = conn.query_row(
+        "SELECT COUNT(order_id) FROM customer_orders
+        WHERE order_date BETWEEN DATE('now') - 7 and DATE('now');",
+        [], 
+        |row| row.get(0),
+    );
+
+    result.map(|id| id)
 }
 
 fn empty() -> BoxBody<Bytes, hyper::Error> {

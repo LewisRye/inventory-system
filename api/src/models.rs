@@ -65,7 +65,7 @@ pub struct StockType {
 
 #[derive(Serialize, Deserialize)]
 pub struct DailyOrder {
-    pub day: i64,
+    pub date: String,
     pub orders: i64,
 }
 
