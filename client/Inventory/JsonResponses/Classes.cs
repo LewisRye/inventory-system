@@ -14,7 +14,7 @@ namespace Inventory.JsonResponses
     public class DailyOrder
     {
         [JsonPropertyName("date")]
-        public int Date { get; set; }
+        public DateTime Date { get; set; }
 
         [JsonPropertyName("orders")]
         public int Orders { get; set; }
