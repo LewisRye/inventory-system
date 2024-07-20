@@ -50,6 +50,7 @@
             ButtonApplyCategoryFilter = new MaterialSkin.Controls.MaterialButton();
             ButtonApplySort = new MaterialSkin.Controls.MaterialButton();
             ButtonResetSort = new MaterialSkin.Controls.MaterialButton();
+            ButtonSearch = new MaterialSkin.Controls.MaterialButton();
             LeftPanel.SuspendLayout();
             ((ISupportInitialize)DatabaseGrid).BeginInit();
             SuspendLayout();
@@ -180,7 +181,7 @@
             // 
             // TextWelcome
             // 
-            TextWelcome.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
+            TextWelcome.Font = new Font("Segoe UI", 15.75F);
             TextWelcome.Location = new Point(0, 0);
             TextWelcome.Name = "TextWelcome";
             TextWelcome.Size = new Size(221, 38);
@@ -190,7 +191,7 @@
             // 
             // TextFilter
             // 
-            TextFilter.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
+            TextFilter.Font = new Font("Segoe UI", 15.75F);
             TextFilter.Location = new Point(226, 0);
             TextFilter.Name = "TextFilter";
             TextFilter.Size = new Size(221, 38);
@@ -200,8 +201,8 @@
             // 
             // TextSort
             // 
-            TextSort.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
-            TextSort.Location = new Point(628, 0);
+            TextSort.Font = new Font("Segoe UI", 15.75F);
+            TextSort.Location = new Point(552, 0);
             TextSort.Name = "TextSort";
             TextSort.Size = new Size(358, 38);
             TextSort.TabIndex = 3;
@@ -220,7 +221,7 @@
             DatabaseGrid.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
             dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.AppWorkspace;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
@@ -228,24 +229,23 @@
             DatabaseGrid.DefaultCellStyle = dataGridViewCellStyle1;
             DatabaseGrid.EnableHeadersVisualStyles = false;
             DatabaseGrid.GridColor = Color.White;
-            DatabaseGrid.Location = new Point(226, 160);
+            DatabaseGrid.Location = new Point(226, 103);
             DatabaseGrid.Name = "DatabaseGrid";
             DatabaseGrid.ReadOnly = true;
             DatabaseGrid.RowHeadersVisible = false;
-            DatabaseGrid.RowTemplate.Height = 25;
             DatabaseGrid.ShowCellErrors = false;
             DatabaseGrid.ShowCellToolTips = false;
             DatabaseGrid.ShowEditingIcon = false;
             DatabaseGrid.ShowRowErrors = false;
-            DatabaseGrid.Size = new Size(761, 411);
+            DatabaseGrid.Size = new Size(761, 468);
             DatabaseGrid.TabIndex = 29;
             // 
             // TextSearch
             // 
             TextSearch.AutoSize = true;
             TextSearch.BackColor = Color.Transparent;
-            TextSearch.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            TextSearch.Location = new Point(226, 584);
+            TextSearch.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            TextSearch.Location = new Point(224, 586);
             TextSearch.Name = "TextSearch";
             TextSearch.Size = new Size(155, 17);
             TextSearch.TabIndex = 30;
@@ -257,9 +257,9 @@
             SearchBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             SearchBox.Location = new Point(387, 585);
             SearchBox.Name = "SearchBox";
-            SearchBox.Size = new Size(497, 23);
+            SearchBox.Size = new Size(405, 23);
             SearchBox.TabIndex = 31;
-            SearchBox.TextChanged += SearchBox_TextChanged;
+            SearchBox.KeyDown += SearchBox_KeyDown;
             // 
             // ButtonClear
             // 
@@ -268,15 +268,15 @@
             ButtonClear.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ButtonClear.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             ButtonClear.Depth = 0;
-            ButtonClear.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            ButtonClear.Font = new Font("Segoe UI", 8.25F);
             ButtonClear.HighEmphasis = true;
             ButtonClear.Icon = null;
-            ButtonClear.Location = new Point(891, 585);
+            ButtonClear.Location = new Point(899, 580);
             ButtonClear.Margin = new Padding(4, 6, 4, 6);
             ButtonClear.MouseState = MouseState.HOVER;
             ButtonClear.Name = "ButtonClear";
             ButtonClear.NoAccentTextColor = Color.Empty;
-            ButtonClear.Size = new Size(100, 23);
+            ButtonClear.Size = new Size(92, 30);
             ButtonClear.TabIndex = 32;
             ButtonClear.Text = "Clear";
             ButtonClear.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -287,7 +287,7 @@
             // TextType
             // 
             TextType.AutoSize = true;
-            TextType.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            TextType.Font = new Font("Segoe UI", 9.75F);
             TextType.Location = new Point(227, 41);
             TextType.Name = "TextType";
             TextType.Size = new Size(38, 17);
@@ -313,15 +313,15 @@
             ComboBoxType.MaxDropDownItems = 4;
             ComboBoxType.MouseState = MouseState.OUT;
             ComboBoxType.Name = "ComboBoxType";
-            ComboBoxType.Size = new Size(274, 49);
+            ComboBoxType.Size = new Size(199, 49);
             ComboBoxType.StartIndex = 0;
             ComboBoxType.TabIndex = 34;
             // 
             // TextSortBy
             // 
             TextSortBy.AutoSize = true;
-            TextSortBy.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            TextSortBy.Location = new Point(630, 41);
+            TextSortBy.Font = new Font("Segoe UI", 9.75F);
+            TextSortBy.Location = new Point(554, 41);
             TextSortBy.Name = "TextSortBy";
             TextSortBy.Size = new Size(24, 17);
             TextSortBy.TabIndex = 35;
@@ -342,7 +342,7 @@
             ComboBoxSort.FormattingEnabled = true;
             ComboBoxSort.IntegralHeight = false;
             ComboBoxSort.ItemHeight = 43;
-            ComboBoxSort.Location = new Point(672, 41);
+            ComboBoxSort.Location = new Point(596, 41);
             ComboBoxSort.MaxDropDownItems = 4;
             ComboBoxSort.MouseState = MouseState.OUT;
             ComboBoxSort.Name = "ComboBoxSort";
@@ -359,7 +359,7 @@
             ButtonApplyCategoryFilter.Depth = 0;
             ButtonApplyCategoryFilter.HighEmphasis = true;
             ButtonApplyCategoryFilter.Icon = null;
-            ButtonApplyCategoryFilter.Location = new Point(554, 41);
+            ButtonApplyCategoryFilter.Location = new Point(479, 41);
             ButtonApplyCategoryFilter.Margin = new Padding(4, 6, 4, 6);
             ButtonApplyCategoryFilter.MouseState = MouseState.HOVER;
             ButtonApplyCategoryFilter.Name = "ButtonApplyCategoryFilter";
@@ -381,7 +381,7 @@
             ButtonApplySort.Depth = 0;
             ButtonApplySort.HighEmphasis = true;
             ButtonApplySort.Icon = null;
-            ButtonApplySort.Location = new Point(922, 41);
+            ButtonApplySort.Location = new Point(846, 41);
             ButtonApplySort.Margin = new Padding(4, 6, 4, 6);
             ButtonApplySort.MouseState = MouseState.HOVER;
             ButtonApplySort.Name = "ButtonApplySort";
@@ -403,18 +403,41 @@
             ButtonResetSort.Depth = 0;
             ButtonResetSort.HighEmphasis = true;
             ButtonResetSort.Icon = null;
-            ButtonResetSort.Location = new Point(228, 102);
+            ButtonResetSort.Location = new Point(923, 41);
             ButtonResetSort.Margin = new Padding(4, 6, 4, 6);
             ButtonResetSort.MouseState = MouseState.HOVER;
             ButtonResetSort.Name = "ButtonResetSort";
             ButtonResetSort.NoAccentTextColor = Color.Empty;
-            ButtonResetSort.Size = new Size(763, 49);
+            ButtonResetSort.Size = new Size(68, 49);
             ButtonResetSort.TabIndex = 38;
-            ButtonResetSort.Text = "Reset All Sorts And Filters";
+            ButtonResetSort.Text = "Reset All";
             ButtonResetSort.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             ButtonResetSort.UseAccentColor = false;
             ButtonResetSort.UseVisualStyleBackColor = false;
             ButtonResetSort.Click += ButtonResetSort_Click;
+            // 
+            // ButtonSearch
+            // 
+            ButtonSearch.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            ButtonSearch.AutoSize = false;
+            ButtonSearch.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            ButtonSearch.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            ButtonSearch.Depth = 0;
+            ButtonSearch.Font = new Font("Segoe UI", 8.25F);
+            ButtonSearch.HighEmphasis = true;
+            ButtonSearch.Icon = null;
+            ButtonSearch.Location = new Point(799, 580);
+            ButtonSearch.Margin = new Padding(4, 6, 4, 6);
+            ButtonSearch.MouseState = MouseState.HOVER;
+            ButtonSearch.Name = "ButtonSearch";
+            ButtonSearch.NoAccentTextColor = Color.Empty;
+            ButtonSearch.Size = new Size(92, 30);
+            ButtonSearch.TabIndex = 39;
+            ButtonSearch.Text = "Search";
+            ButtonSearch.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            ButtonSearch.UseAccentColor = false;
+            ButtonSearch.UseVisualStyleBackColor = false;
+            ButtonSearch.Click += ButtonSearch_Click;
             // 
             // FormViewStock
             // 
@@ -422,6 +445,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(997, 616);
+            Controls.Add(ButtonSearch);
             Controls.Add(ButtonResetSort);
             Controls.Add(ButtonApplySort);
             Controls.Add(ButtonApplyCategoryFilter);
@@ -472,5 +496,6 @@
         private MaterialSkin.Controls.MaterialButton ButtonApplyCategoryFilter;
         private MaterialSkin.Controls.MaterialButton ButtonApplySort;
         private MaterialSkin.Controls.MaterialButton ButtonResetSort;
+        private MaterialSkin.Controls.MaterialButton ButtonSearch;
     }
 }

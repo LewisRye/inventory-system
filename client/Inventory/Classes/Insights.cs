@@ -20,19 +20,13 @@ namespace Inventory.Classes
                     string jsonContent = await response.Content.ReadAsStringAsync();
                     List<StockType>? stockTypes = JsonSerializer.Deserialize<List<StockType>>(jsonContent);
 
-                    Series s = new Series
-                    {
-                        Name = "Stock By Type",
-                        ChartType = SeriesChartType.Doughnut,
-                    };
+                    Series s = chart.Series[0];
 
                     if (stockTypes != null)
                         foreach (var stock in stockTypes)
                         {
                             s.Points.AddXY(stock.Category, stock.Stock);
                         }
-
-                    chart.Series.Add(s);
                 }
             }
             catch (JsonException e)
@@ -57,19 +51,35 @@ namespace Inventory.Classes
                     string jsonContent = await response.Content.ReadAsStringAsync();
                     List<DailyOrder>? dailyOrders = JsonSerializer.Deserialize<List<DailyOrder>>(jsonContent);
 
-                    Series s = new Series
+                    Series s = chart.Series[0];
+                    DateTime today = DateTime.Today;
+
+                    // create the series for the previous week and set the orders placeholder to 0
+                    for (int i = 7; i > 0; i--)
                     {
-                        Name = "Daily Orders",
-                        ChartType = SeriesChartType.Bar,
-                    };
+                        s.Points.AddXY(today.AddDays(-i).ToString("dd/MM"), 0);
+                    }
+
+                    // create a dictionary to map dates to their order counts
+                    Dictionary<string, int> dailyOrderDict = new Dictionary<string, int>();
 
                     if (dailyOrders != null)
+                    {
                         foreach (DailyOrder day in dailyOrders)
                         {
-                            s.Points.AddXY(day.Date, day.Orders);
+                            dailyOrderDict[day.Date.ToString("dd/MM")] = day.Orders;
                         }
+                    }
 
-                    chart.Series.Add(s);
+                    // update the existing points in the series based on the dictionary
+                    foreach (DataPoint point in s.Points)
+                    {
+                        string pointDate = point.AxisLabel;
+                        if (dailyOrderDict.ContainsKey(pointDate))
+                        {
+                            point.YValues[0] = dailyOrderDict[pointDate];
+                        }
+                    }
                 }
             }
             catch (JsonException e)
