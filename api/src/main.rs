@@ -130,13 +130,10 @@ async fn handle_request(
             Ok(Response::new(full(json)))
         },
 
-        (&Method::GET, Some("access_level")) => {
-            let user = req.headers().get("user");
-            let user_str: Option<&str> = user.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+        (&Method::GET, Some("all_product")) => {
+            println!("{}: GET all_product", Utc::now());
 
-            println!("{}: GET access_level: {}", Utc::now(), user_str.unwrap_or_default());
-            
-            let result = &get_access_level(&user_str.unwrap_or_default()).unwrap_or(-1);
+            let result = &get_all_product().unwrap_or(Vec::new());
 
             // Convert JSON to bytes
             let json = serde_json::to_string(result).unwrap();
@@ -145,10 +142,40 @@ async fn handle_request(
             Ok(Response::new(full(json)))
         },
 
-        (&Method::GET, Some("all_product")) => {
-            println!("{}: GET all_product", Utc::now());
+        (&Method::GET, Some("search_product")) => {
+            let search = req.headers().get("search");
+            let search_str: Option<&str> = search.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
 
-            let result = &get_all_product().unwrap_or(Vec::new());
+            println!("{}: GET search_product: {}", Utc::now(), search_str.unwrap_or_default());
+
+            let result = &get_search_product(&search_str.unwrap_or_default()).unwrap_or(Vec::new());
+
+            // Convert JSON to bytes
+            let json = serde_json::to_string(result).unwrap();
+
+            // Build the HTTP response
+            Ok(Response::new(full(json)))
+        },
+
+        (&Method::GET, Some("all_category")) => {
+            println!("{}: GET all_category", Utc::now());
+
+            let result = &get_all_category().unwrap_or(Vec::new());
+
+            // Convert JSON to bytes
+            let json = serde_json::to_string(result).unwrap();
+
+            // Build the HTTP response
+            Ok(Response::new(full(json)))
+        },
+
+        (&Method::GET, Some("access_level")) => {
+            let user = req.headers().get("user");
+            let user_str: Option<&str> = user.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+
+            println!("{}: GET access_level: {}", Utc::now(), user_str.unwrap_or_default());
+            
+            let result = &get_access_level(&user_str.unwrap_or_default()).unwrap_or(-1);
 
             // Convert JSON to bytes
             let json = serde_json::to_string(result).unwrap();
@@ -343,7 +370,7 @@ fn get_product(id: &i64) -> Result<Product> {
     result.map(|product| product)
 }
 
-fn get_all_product() -> Result<Vec<Product>> {
+fn get_all_product() -> Result<Vec<models::Product>> {
     let mut output: Vec<models::Product> = Vec::new();
 
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
@@ -363,6 +390,54 @@ fn get_all_product() -> Result<Vec<Product>> {
 
     for product in product_iter {
         output.push(product?)
+    }
+
+    Ok(output)
+}
+
+fn get_search_product(search: &str) -> Result<Vec<models::Product>> {
+    let mut output: Vec<models::Product> = Vec::new();
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let conn = Connection::open(database_url)?;
+
+    let mut stmt = conn.prepare("SELECT * FROM product 
+        INNER JOIN category ON product.category_id = category.category_id 
+        WHERE product_name LIKE ?1 OR category.category_name LIKE ?2;")?;
+    let product_iter = stmt.query_map([format!("%{}%", search), format!("{}", search)], |row| {
+        Ok(models::Product {
+            product_id: row.get(0)?,
+            product_name: row.get(1)?,
+            category_id: row.get(2)?,
+            number_in_stock: row.get(3)?,
+            buy_price: row.get(4)?,
+            discontinued: row.get(5)?,
+        })
+    })?;
+
+    for product in product_iter {
+        output.push(product?)
+    }
+
+    Ok(output)
+}
+
+fn get_all_category() -> Result<Vec<models::Category>> {
+    let mut output: Vec<models::Category> = Vec::new();
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let conn = Connection::open(database_url)?;
+
+    let mut stmt = conn.prepare("SELECT * FROM category;")?;
+    let category_iter = stmt.query_map([], |row| {
+        Ok(models::Category {
+            category_id: row.get(0)?,
+            category_name: row.get(1)?,
+        })
+    })?;
+
+    for category in category_iter {
+        output.push(category?)
     }
 
     Ok(output)
