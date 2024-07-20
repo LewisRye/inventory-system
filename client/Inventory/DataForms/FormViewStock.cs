@@ -1,12 +1,9 @@
-﻿using Inventory.Classes;
+﻿using Inventory.JsonResponses;
 
 namespace Inventory.DataForms
 {
     public partial class FormViewStock : Form
     {
-        private readonly Database _database = new Database();
-        private MySqlConnection _databaseConn = new MySqlConnection(Logon.ConnectionString);
-
         private List<Category> _allCategories = new List<Category>();
         private List<Product> _allProducts = new List<Product>();
         private List<Product> _newProducts = new List<Product>();
@@ -34,50 +31,64 @@ namespace Inventory.DataForms
             ComboBoxType.SelectedIndex = 0;
             ComboBoxSort.SelectedIndex = 0;
 
-            _allCategories = _database.GetCategories();
-            _allProducts = _database.GetProducts();
+            try
+            {
+                using HttpClient client = new HttpClient();
+                HttpRequestMessage request;
+                HttpResponseMessage response;
+
+                request = new HttpRequestMessage(HttpMethod.Get, Classes.Logon.UriPath + "all_product");
+                response = client.Send(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = response.Content.ReadAsStringAsync().Result;
+
+                    _allProducts = JsonSerializer.Deserialize<List<Product>>(json)!;
+                }
+
+                request = new HttpRequestMessage(HttpMethod.Get, Classes.Logon.UriPath + "all_category");
+                response = client.Send(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = response.Content.ReadAsStringAsync().Result;
+
+                    _allCategories = JsonSerializer.Deserialize<List<Category>>(json)!;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
         }
 
         private void FormViewStock_Load(object sender, EventArgs e)
         {
             foreach (Category c in _allCategories)
             {
-                ComboBoxType.Items.Add(c.GetName());
+                ComboBoxType.Items.Add(c.Name + "");
             }
 
             foreach (Product p in _allProducts)
             {
-                DatabaseGrid.Rows.Add(p.GetId(), p.GetName(), p.GetCategory(), p.GetStock(), "£" + p.GetPrice(), p.GetDiscontinued());
+                DatabaseGrid.Rows.Add(p.Id, p.ProdName, _allCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
             }
 
-            TextWelcome.Text = $"welcome, {Logon.CurrentUser}!";
+            TextWelcome.Text = $"welcome, {Classes.Logon.CurrentUser}!";
         }
 
         private void ButtonApplyCategoryFilter_Click(object sender, EventArgs e)
         {
             if (ComboBoxType.SelectedIndex != 0)
             {
-                List<Product> newProducts = new List<Product>();
                 DatabaseGrid.Rows.Clear();
-                _databaseConn.Open();
-
-                var command = new MySqlCommand(@"SELECT Product.Product_ID as 'ID', Product.Product_Name as 'Name', 
-                    Category.Category_Name as 'Category', Product.Number_In_Stock as 'Stock', Product.Buy_Price as 'Buy Price', 
-                    Product.Discontinued AS 'Discontinued' 
-                    FROM Product INNER JOIN Category ON Product.Category_ID = Category.Category_ID 
-                    WHERE Product.Category_ID = @category;", _databaseConn);
-                command.Parameters.AddWithValue("@category", ComboBoxType.SelectedIndex);
-
-                var reader = command.ExecuteReader();
-                while (reader.Read())
+                foreach (Product p in _allProducts)
                 {
-                    newProducts.Add(new Classes.Product(Convert.ToInt32(reader.GetString(0)), reader.GetString(1), reader.GetString(2), Convert.ToInt32(reader.GetString(3)), Convert.ToDecimal(reader.GetString(4)), Convert.ToChar(reader.GetString(5))));
-                }
-                _databaseConn.Close();
-
-                foreach (Product p in newProducts)
-                {
-                    DatabaseGrid.Rows.Add(p.GetId(), p.GetName(), p.GetCategory(), p.GetStock(), "£" + p.GetPrice(), p.GetDiscontinued());
+                    if (p.CatId == ComboBoxType.SelectedIndex)
+                    {
+                        DatabaseGrid.Rows.Add(p.Id, p.ProdName, _allCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
+                    }
                 }
             }
             else
@@ -94,10 +105,10 @@ namespace Inventory.DataForms
                     MessageBox.Show("You must apply a sort first.", "Error");
                     break;
                 case 1:
-                    DatabaseGrid.Sort(DatabaseGrid.Columns["5"], ListSortDirection.Ascending);
+                    DatabaseGrid.Sort(DatabaseGrid.Columns["4"], ListSortDirection.Descending);
                     break;
                 case 2:
-                    DatabaseGrid.Sort(DatabaseGrid.Columns["5"], ListSortDirection.Descending);
+                    DatabaseGrid.Sort(DatabaseGrid.Columns["4"], ListSortDirection.Ascending);
                     break;
                 case 3:
                     DatabaseGrid.Sort(DatabaseGrid.Columns["1"], ListSortDirection.Ascending);
@@ -119,7 +130,7 @@ namespace Inventory.DataForms
             DatabaseGrid.Rows.Clear();
             foreach (Product p in _allProducts)
             {
-                DatabaseGrid.Rows.Add(p.GetId(), p.GetName(), p.GetCategory(), p.GetStock(), "£" + p.GetPrice(), p.GetDiscontinued());
+                DatabaseGrid.Rows.Add(p.Id, p.ProdName, _allCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
             }
 
             SearchBox.Text = "";
@@ -127,7 +138,50 @@ namespace Inventory.DataForms
             ComboBoxSort.SelectedIndex = 0;
         }
 
-        private void SearchBox_TextChanged(object sender, EventArgs e)
+        private void SearchBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter) return; // ignores if the user didnt press enter
+
+            DatabaseGrid.Rows.Clear();
+            _newProducts.Clear();
+
+            if (SearchBox.Text == "")
+            {
+                foreach (Product p in _allProducts)
+                {
+                    DatabaseGrid.Rows.Add(p.Id, p.ProdName, _allCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
+                }
+            }
+            else
+            {
+                try
+                {
+                    using HttpClient client = new HttpClient();
+                    HttpRequestMessage request =
+                        new HttpRequestMessage(HttpMethod.Get, Classes.Logon.UriPath + "search_product");
+                    request.Headers.Add("search", SearchBox.Text);
+                    HttpResponseMessage response = client.Send(request);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var json = response.Content.ReadAsStringAsync().Result;
+
+                        _newProducts = JsonSerializer.Deserialize<List<Product>>(json)!;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error");
+                }
+
+                foreach (Product p in _newProducts)
+                {
+                    DatabaseGrid.Rows.Add(p.Id, p.ProdName, _allCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
+                }
+            }
+        }
+
+        private void ButtonSearch_Click(object sender, EventArgs e)
         {
             DatabaseGrid.Rows.Clear();
             _newProducts.Clear();
@@ -136,15 +190,34 @@ namespace Inventory.DataForms
             {
                 foreach (Product p in _allProducts)
                 {
-                    DatabaseGrid.Rows.Add(p.GetId(), p.GetName(), p.GetCategory(), p.GetStock(), "£" + p.GetPrice(), p.GetDiscontinued());
+                    DatabaseGrid.Rows.Add(p.Id, p.ProdName, _allCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
                 }
             }
             else
             {
-                _newProducts = _database.GetProducts(SearchBox.Text);
+                try
+                {
+                    using HttpClient client = new HttpClient();
+                    HttpRequestMessage request =
+                        new HttpRequestMessage(HttpMethod.Get, Classes.Logon.UriPath + "search_product");
+                    request.Headers.Add("search", SearchBox.Text);
+                    HttpResponseMessage response = client.Send(request);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var json = response.Content.ReadAsStringAsync().Result;
+
+                        _newProducts = JsonSerializer.Deserialize<List<Product>>(json)!;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error");
+                }
+
                 foreach (Product p in _newProducts)
                 {
-                    DatabaseGrid.Rows.Add(p.GetId(), p.GetName(), p.GetCategory(), p.GetStock(), "£" + p.GetPrice(), p.GetDiscontinued());
+                    DatabaseGrid.Rows.Add(p.Id, p.ProdName, _allCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
                 }
             }
         }
@@ -157,51 +230,41 @@ namespace Inventory.DataForms
         private void ButtonAddCategory_Click(object sender, EventArgs e)
         {
             new ProgramForms.FormAlter().Show();
-            this.Hide();
             this.Close();
             this.Dispose();
             GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
         private void ButtonAddProduct_Click(object sender, EventArgs e)
         {
             new ProgramForms.FormAlter().Show();
-            this.Hide();
             this.Close();
             this.Dispose();
             GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
         private void ButtonDiscontinue_Click(object sender, EventArgs e)
         {
             new ProgramForms.FormAlter().Show();
-            this.Hide();
             this.Close();
             this.Dispose();
             GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
         private void ButtonChangePrice_Click(object sender, EventArgs e)
         {
             new ProgramForms.FormAlter().Show();
-            this.Hide();
             this.Close();
             this.Dispose();
             GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
         private void ButtonClose_Click(object sender, EventArgs e)
         {
             new ProgramForms.FormDashboard().Show();
-            this.Hide();
             this.Close();
             this.Dispose();
             GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
     }
 }
