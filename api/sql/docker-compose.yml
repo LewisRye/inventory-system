@@ -1,7 +1,7 @@
 version: '3.8'
 
 # Docker Compose file to create the MySQL database using Docker.
-# Connect to the database using your own IDE and paste SQL commands found in this folder.
+# This is for the mysql version of the client, it will not work with the new sqlite API.
 
 services:
   db:
