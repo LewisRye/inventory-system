@@ -1,9 +1,10 @@
-﻿namespace Inventory.DataForms
+﻿using Inventory.Classes;
+using Inventory.JsonResponses;
+
+namespace Inventory.DataForms
 {
     public partial class FormViewInsights : Form
     {
-        private static readonly string ConnStr = ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
-
         public FormViewInsights()
         {
             InitializeComponent();
@@ -22,72 +23,26 @@
             WelcomeText.Text = $"welcome, {Classes.Logon.CurrentUser}!";
         }
 
-        private void GenerateBestSeller(Label bestSellerLabel)
+        private void GenerateTotalItemsSold(Label itemsSold)
         {
-            var databaseConn = new MySqlConnection(ConnStr);
-
             try
             {
-                databaseConn.Open();
+                using HttpClient client = new HttpClient();
+                HttpRequestMessage request;
+                HttpResponseMessage response;
 
-                var bestSeller = new MySqlCommand($@"SELECT Product.product_name, CustomerOrderDetails.quantity_ordered
-                    FROM CustomerOrders
-                    INNER JOIN CustomerOrderDetails ON CustomerOrderDetails.order_id = CustomerOrders.order_id
-                    INNER JOIN Product ON Product.product_id = CustomerOrderDetails.product_id
-                    WHERE CustomerOrders.order_date BETWEEN '{FromDate.Value.ToString("MM/dd/yyyy")}' AND '{ToDate.Value.ToString("MM/dd/yyyy")}'
-                    GROUP BY Product.product_name, CustomerOrderDetails.quantity_ordered
-                    ORDER BY SUM(CustomerOrderDetails.quantity_ordered) DESC LIMIT 1;", databaseConn); // finds the top selling item between dates selected
+                request = new HttpRequestMessage(HttpMethod.Get, Classes.Logon.UriPath + "insight_total_items");
+                request.Headers.Add("from", FromDate.Value.ToString("dd/MM/yyyy"));
+                request.Headers.Add("to", ToDate.Value.ToString("dd/MM/yyyy"));
+                response = client.Send(request);
 
-                var reader = bestSeller.ExecuteReader();
-
-                while (reader.Read())
+                if (response.IsSuccessStatusCode)
                 {
-                    if (reader[0] != DBNull.Value) // stops an error when the database is empty
-                    {
-                        bestSellerLabel.Text = $@"•The best selling item was: {reader[0]} ({reader[1]} sold)";
-                    }
+                    var json = response.Content.ReadAsStringAsync().Result;
+
+                    Int32 i = JsonSerializer.Deserialize<Int32>(json)!;
+                    itemsSold.Text = $@"•The amount of items sold was: {i}";
                 }
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show("Unable to connect to the database. " + ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error");
-            }
-        }
-
-        private void GenerateTotalProfit(Label totalProfit)
-        {
-            var databaseConn = new MySqlConnection(ConnStr);
-
-            try
-            {
-                databaseConn.Open();
-
-                var profitTotal = new MySqlCommand($@"SELECT SUM((Product.buy_price/0.8) *
-                    CustomerOrderDetails.quantity_ordered) FROM CustomerOrderDetails, Product, CustomerOrders
-                    WHERE Product.product_id = CustomerOrderDetails.product_id
-                    AND CustomerOrders.order_id = CustomerOrderDetails.order_id
-                    AND CustomerOrders.order_date BETWEEN '{FromDate.Value.ToString("MM/dd/yyyy")}' AND '{ToDate.Value.ToString("MM/dd/yyyy")}'
-                    ORDER BY SUM((Product.buy_price/0.8) *
-                    CustomerOrderDetails.quantity_ordered) DESC;", databaseConn); // finds the top selling item between dates selected
-
-                var reader = profitTotal.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if (reader[0] != DBNull.Value) // stops an error when the database is empty
-                    {
-                        var profit = reader[0];
-                        totalProfit.Text = $@"•The total profit was: £{profit}";
-                    }
-                }
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show("Unable to connect to the database. " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -97,6 +52,7 @@
 
         private void GenerateMostProfitableDay(Label mostProfitableDayLabel)
         {
+            /*
             var databaseConn = new MySqlConnection(ConnStr);
 
             try
@@ -133,30 +89,34 @@
             {
                 MessageBox.Show(ex.Message, "Error");
             }
+            */
         }
 
-        private void GenerateTotalItemsSold(Label itemsSold)
+        private void GenerateTotalProfit(Label totalProfit)
         {
+            /*
             var databaseConn = new MySqlConnection(ConnStr);
 
             try
             {
                 databaseConn.Open();
 
-                var bestSeller = new MySqlCommand($@"SELECT SUM(quantity_ordered) 
-                    FROM CustomerOrderDetails, CustomerOrders
-                    WHERE CustomerOrderDetails.order_id = CustomerOrders.order_id 
-                    AND CustomerOrders.order_date BETWEEN '
-                {FromDate.Value.ToString("MM/dd/yyyy")}' 
-                    AND '{ToDate.Value.ToString("MM/dd/yyyy")}';", databaseConn); // finds the top selling item between dates selected
+                var profitTotal = new MySqlCommand($@"SELECT SUM((Product.buy_price/0.8) *
+                    CustomerOrderDetails.quantity_ordered) FROM CustomerOrderDetails, Product, CustomerOrders
+                    WHERE Product.product_id = CustomerOrderDetails.product_id
+                    AND CustomerOrders.order_id = CustomerOrderDetails.order_id
+                    AND CustomerOrders.order_date BETWEEN '{FromDate.Value.ToString("MM/dd/yyyy")}' AND '{ToDate.Value.ToString("MM/dd/yyyy")}'
+                    ORDER BY SUM((Product.buy_price/0.8) *
+                    CustomerOrderDetails.quantity_ordered) DESC;", databaseConn); // finds the top selling item between dates selected
 
-                var reader = bestSeller.ExecuteReader();
+                var reader = profitTotal.ExecuteReader();
 
                 while (reader.Read())
                 {
                     if (reader[0] != DBNull.Value) // stops an error when the database is empty
                     {
-                        itemsSold.Text = $@"•The amount of items sold was: {reader[0]}";
+                        var profit = reader[0];
+                        totalProfit.Text = $@"•The total profit was: £{profit}";
                     }
                 }
             }
@@ -168,10 +128,39 @@
             {
                 MessageBox.Show(ex.Message, "Error");
             }
+            */
+        }
+
+        private void GenerateBestSeller(Label bestSellerLabel)
+        {
+            try
+            {
+                using HttpClient client = new HttpClient();
+                HttpRequestMessage request;
+                HttpResponseMessage response;
+
+                request = new HttpRequestMessage(HttpMethod.Get, Classes.Logon.UriPath + "insight_best_seller");
+                request.Headers.Add("from", FromDate.Value.ToString("dd/MM/yyyy"));
+                request.Headers.Add("to", ToDate.Value.ToString("dd/MM/yyyy"));
+                response = client.Send(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = response.Content.ReadAsStringAsync().Result;
+
+                    List<BestSeller> b = JsonSerializer.Deserialize<List<BestSeller>>(json)!;
+                    bestSellerLabel.Text = $@"•The best selling item was: {b.First().Name} ({b.First().Quantity} sold)";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
         }
 
         private void CreateDailyOrdersChart(Chart chart)
         {
+            /*
             var databaseConn = new MySqlConnection(ConnStr);
 
             try
@@ -205,12 +194,14 @@
             {
                 MessageBox.Show(ex.Message, "Error");
             }
+            */
         }
 
         private void ButtonInsight_Click(object sender, EventArgs e)
         {
             TextSelectDate.Visible = false;
 
+            /*
             var databaseConnection = new MySqlConnection(ConnStr);                                                       // directs code to location of my database file
 
             databaseConnection.Open();
@@ -236,22 +227,21 @@
                 TextTotalProfit.Text = "";
                 TextBestSeller.Text = "";
             }
+            */
 
             GenerateTotalItemsSold(TextTotalItemsSold);
-            GenerateMostProfitableDay(TextMostProfitableDay);
-            GenerateTotalProfit(TextTotalProfit);
+            //GenerateMostProfitableDay(TextMostProfitableDay);
+            //GenerateTotalProfit(TextTotalProfit);
             GenerateBestSeller(TextBestSeller);
-            CreateDailyOrdersChart(ChartDailyRevenue);
+            //CreateDailyOrdersChart(ChartDailyRevenue);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
             new ProgramForms.FormDashboard().Show();
-            this.Hide();
             this.Close();
             this.Dispose();
             GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
         private void FromDate_ValueChanged(object sender, EventArgs e)
