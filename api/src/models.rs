@@ -4,7 +4,7 @@ use serde::{Serialize, Deserialize};
 #[derive(Serialize, Deserialize)]
 pub struct AccessLevel {
     pub level_id: i64,
-    pub name: String,
+    pub level_name: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -55,6 +55,18 @@ pub struct Product {
     pub number_in_stock: i64,
     pub buy_price: i64,
     pub discontinued: i64,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct StockType {
+    pub c: String,
+    pub s: i64,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct DailyOrder {
+    pub date: String,
+    pub orders: i64,
 }
 
 #[derive(Serialize, Deserialize)]
