@@ -208,6 +208,21 @@ async fn handle_request(
             Ok(Response::new(full(json)))
         },
 
+        (&Method::GET, Some("notification")) => {
+            let threshold = req.headers().get("threshold");
+            let threshold_str: Option<&str> = threshold.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+            let threshold_int: i64 = threshold_str.unwrap_or_default().parse().unwrap();
+
+            println!("{}: GET notification", Utc::now());
+            
+            let result = &get_notification(&threshold_int).unwrap_or(-1);
+
+            // Convert JSON to bytes
+            let json = serde_json::to_string(result).unwrap();
+
+            Ok(Response::new(full(json)))
+        },
+
         (&Method::GET, Some("dashboard_stock_type")) => {
             println!("{}: GET dashboard_stock_type", Utc::now());
             
@@ -442,6 +457,21 @@ fn get_all_category() -> Result<Vec<models::Category>> {
 
     Ok(output)
 }
+
+fn get_notification(threshold: &i64) -> Result<i64> {
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let conn = Connection::open(database_url)?;
+
+    let result: Result<i64> = conn.query_row(
+        "SELECT COUNT(product_id) FROM product WHERE number_in_stock <= ?1;",
+        [threshold], 
+        |row| row.get(0),
+    );
+
+    result.map(|id| id)
+}
+
+/* DASHBOARD METHODS */
 
 fn get_dashboard_stock_by_type() -> Result<Vec<models::StockType>> {
     let mut output: Vec<models::StockType> = Vec::new();
