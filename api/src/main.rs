@@ -281,6 +281,36 @@ async fn handle_request(
             Ok(Response::new(full(json)))
         },
 
+        (&Method::GET, Some("insight_total_items")) => {
+            let from = req.headers().get("from");
+            let from_str: Option<&str> = from.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+
+            let to = req.headers().get("to");
+            let to_str: Option<&str> = to.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+
+            println!("{}: GET insight_total_items {} {}", Utc::now(), &from_str.unwrap_or_default(), &to_str.unwrap_or_default());
+
+            let result = &get_insight_total_items(from_str.unwrap_or_default(), to_str.unwrap_or_default()).unwrap_or(-1);
+            let json = serde_json::to_string(result).unwrap();
+
+            Ok(Response::new(full(json)))
+        },
+
+        (&Method::GET, Some("insight_best_seller")) => {
+            let from = req.headers().get("from");
+            let from_str: Option<&str> = from.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+
+            let to = req.headers().get("to");
+            let to_str: Option<&str> = to.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+
+            println!("{}: GET insight_best_seller {} {}", Utc::now(), &from_str.unwrap_or_default(), &to_str.unwrap_or_default());
+
+            let result = &get_insight_best_seller(from_str.unwrap_or_default(), to_str.unwrap_or_default()).unwrap_or(Vec::new());
+            let json = serde_json::to_string(result).unwrap();
+
+            Ok(Response::new(full(json)))
+        },
+
         (&Method::GET, Some("all_order")) => {
             println!("{}: GET all_order", Utc::now());
 
@@ -687,6 +717,49 @@ fn get_dashboard_orders() -> Result<i64> {
     );
 
     result.map(|id| id)
+}
+
+fn get_insight_total_items(from: &str, to: &str) -> Result<i64> {
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let conn = Connection::open(database_url)?;
+
+    let result: Result<i64> = conn.query_row(
+        "SELECT SUM(quantity_ordered) 
+            FROM customer_order_details, customer_orders
+            WHERE customer_order_details.order_id = customer_orders.order_id 
+            AND customer_orders.order_date BETWEEN ?1 AND ?2;",
+        [from, to], 
+        |row| row.get(0),
+    );
+
+    result.map(|id| id)
+}
+
+fn get_insight_best_seller(from: &str, to: &str) -> Result<Vec<models::BestSeller>> {
+    let mut output: Vec<models::BestSeller> = Vec::new();
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let conn = Connection::open(database_url)?;
+
+    let mut stmt = conn.prepare("SELECT product.product_name, customer_order_details.quantity_ordered
+        FROM customer_order_details
+        INNER JOIN customer_orders ON customer_order_details.order_id = customer_orders.order_id
+        INNER JOIN product ON product.product_id = customer_order_details.product_id
+        WHERE customer_orders.order_date BETWEEN ?1 AND ?2 
+        GROUP BY product.product_name, customer_order_details.quantity_ordered
+        ORDER BY SUM(customer_order_details.quantity_ordered) DESC LIMIT 1;")?;
+    let bestseller_iter = stmt.query_map([from, to], |row| {
+        Ok(models::BestSeller {
+            name: row.get(0)?,
+            quantity: row.get(1)?,
+        })
+    })?;
+
+    for bestseller in bestseller_iter {
+        output.push(bestseller?)
+    }
+
+    Ok(output)
 }
 
 fn empty() -> BoxBody<Bytes, hyper::Error> {
