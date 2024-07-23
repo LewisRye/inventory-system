@@ -1,4 +1,7 @@
-﻿namespace Inventory.ProgramForms
+﻿using Inventory.Classes;
+using Inventory.JsonResponses;
+
+namespace Inventory.ProgramForms
 {
     public partial class FormAlter : Form
     {
@@ -22,51 +25,19 @@
         {
             CategoryList.Items.Add("Select the category");
 
-            var databaseConn = new MySqlConnection(ConnStr);
-
-            try
+            foreach (Category c in Logon.AllCategories)
             {
-                databaseConn.Open();                                                        // connects to database and reads it
-
-                var cmd = new MySqlCommand("SELECT Category_Name FROM Category", databaseConn); // uses SQL query to read data
-                MySqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    CategoryList.Items.Add(dr["Category_Name"].ToString());               // populates the list from the SQL query
-                }
-                CategoryList.SelectedIndex = 0;                                              // shows text 'select item to order'
-                databaseConn.Close();
+                CategoryList.Items.Add($"{c.Name}");
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error");
-            }
+            CategoryList.SelectedIndex = 0; // shows text 'select the category'
 
             ProductList.Items.Add("Select the item to discontinue");
 
-            var databaseConnection = new MySqlConnection(ConnStr);
-
-            try
+            foreach (Product p in Logon.AllProducts)
             {
-                databaseConnection.Open();                                                 // connects to database and reads it
-
-                var cmd = new MySqlCommand("SELECT Product_Name FROM Product", databaseConnection); // uses SQL query to read data
-                MySqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    ProductList.Items.Add(dr["Product_Name"].ToString());               // populates the list from the SQL query
-                }
-                ProductList.SelectedIndex = 0;                                             // shows text 'select item to order'
-                databaseConnection.Close();
+                ProductList.Items.Add($"{p.ProdName}");
             }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show("Unable to connect to the database. " + ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error");
-            }
+            ProductList.SelectedIndex = 0; // shows text 'select the item to discontinue'
         }
 
         private void AddCategoryButton_Click(object sender, EventArgs e)
@@ -251,12 +222,10 @@
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            this.Hide();
             new DataForms.FormViewStock().Show();
             this.Close();
             this.Dispose();
             GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
     }
 }

@@ -21,7 +21,7 @@
 
         private void RestockForm_Load(object sender, EventArgs e)
         {
-            _database.LoadNoStockFromProductDb(DatabaseGrid, ListProducts);
+            //_database.LoadNoStockFromProductDb(DatabaseGrid, ListProducts);
             TextWelcome.Text = $"welcome, {Classes.Logon.CurrentUser}!";
         }
 

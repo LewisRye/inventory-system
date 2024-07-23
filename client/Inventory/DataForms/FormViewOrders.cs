@@ -19,7 +19,7 @@ namespace Inventory.DataForms
             DatabaseGrid.Columns.Add("4", "Date Ordered");
             DatabaseGrid.Columns.Add("5", "Order Price");
 
-            _allOrders = _database.GetOrders();
+            //_allOrders = _database.GetOrders();
         }
 
         private void ViewOrdersForm_Load(object sender, EventArgs e)
@@ -46,7 +46,7 @@ namespace Inventory.DataForms
             }
             else
             {
-                _newOrders = _database.GetOrders(SearchBox.Text);
+                //_newOrders = _database.GetOrders(SearchBox.Text);
                 foreach (Order o in _newOrders)
                 {
                     DatabaseGrid.Rows.Add(o.GetId(), o.GetProductName(), o.GetFullName(), o.GetQuantity(), o.GetDate().ToString("dd/MM/yyyy"), "£" + o.GetPrice());

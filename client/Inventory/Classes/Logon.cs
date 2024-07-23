@@ -1,4 +1,6 @@
-﻿namespace Inventory.Classes
+﻿using Inventory.JsonResponses;
+
+namespace Inventory.Classes
 {
     internal static class Logon
     {
@@ -6,7 +8,7 @@
          *  Contents
          */
 
-        //  -stores variables useful for the log on screen
+        // stores variables useful for the log on screen
 
         public static string CurrentUser = ""; // shows info about currently logged in user
         public static string AccessLevel = "";
@@ -19,5 +21,10 @@
         public static readonly string ConnectionString = ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
         public static readonly string UriPath = ConfigurationManager.ConnectionStrings["Uri"].ConnectionString;
         public static readonly string FilePath = ConfigurationManager.ConnectionStrings["Settings"].ConnectionString;
+
+        // stores lists of products and categories to avoid unnecessary API calls
+
+        public static List<Category> AllCategories = new List<Category>();
+        public static List<Product> AllProducts = new List<Product>();
     }
 }

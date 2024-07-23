@@ -1,11 +1,10 @@
-﻿using Inventory.JsonResponses;
+﻿using Inventory.Classes;
+using Inventory.JsonResponses;
 
 namespace Inventory.DataForms
 {
     public partial class FormViewStock : Form
     {
-        private List<Category> _allCategories = new List<Category>();
-        private List<Product> _allProducts = new List<Product>();
         private List<Product> _newProducts = new List<Product>();
 
         public FormViewStock()
@@ -44,7 +43,7 @@ namespace Inventory.DataForms
                 {
                     var json = response.Content.ReadAsStringAsync().Result;
 
-                    _allProducts = JsonSerializer.Deserialize<List<Product>>(json)!;
+                    Logon.AllProducts = JsonSerializer.Deserialize<List<Product>>(json)!;
                 }
 
                 request = new HttpRequestMessage(HttpMethod.Get, Classes.Logon.UriPath + "all_category");
@@ -54,7 +53,7 @@ namespace Inventory.DataForms
                 {
                     var json = response.Content.ReadAsStringAsync().Result;
 
-                    _allCategories = JsonSerializer.Deserialize<List<Category>>(json)!;
+                    Logon.AllCategories = JsonSerializer.Deserialize<List<Category>>(json)!;
                 }
             }
             catch (Exception ex)
@@ -65,14 +64,14 @@ namespace Inventory.DataForms
 
         private void FormViewStock_Load(object sender, EventArgs e)
         {
-            foreach (Category c in _allCategories)
+            foreach (Category c in Logon.AllCategories)
             {
                 ComboBoxType.Items.Add(c.Name + "");
             }
 
-            foreach (Product p in _allProducts)
+            foreach (Product p in Logon.AllProducts)
             {
-                DatabaseGrid.Rows.Add(p.Id, p.ProdName, _allCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
+                DatabaseGrid.Rows.Add(p.Id, p.ProdName, Logon.AllCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
             }
 
             TextWelcome.Text = $"welcome, {Classes.Logon.CurrentUser}!";
@@ -83,11 +82,11 @@ namespace Inventory.DataForms
             if (ComboBoxType.SelectedIndex != 0)
             {
                 DatabaseGrid.Rows.Clear();
-                foreach (Product p in _allProducts)
+                foreach (Product p in Logon.AllProducts)
                 {
                     if (p.CatId == ComboBoxType.SelectedIndex)
                     {
-                        DatabaseGrid.Rows.Add(p.Id, p.ProdName, _allCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
+                        DatabaseGrid.Rows.Add(p.Id, p.ProdName, Logon.AllCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
                     }
                 }
             }
@@ -128,9 +127,9 @@ namespace Inventory.DataForms
         private void ButtonResetSort_Click(object sender, EventArgs e)
         {
             DatabaseGrid.Rows.Clear();
-            foreach (Product p in _allProducts)
+            foreach (Product p in Logon.AllProducts)
             {
-                DatabaseGrid.Rows.Add(p.Id, p.ProdName, _allCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
+                DatabaseGrid.Rows.Add(p.Id, p.ProdName, Logon.AllCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
             }
 
             SearchBox.Text = "";
@@ -147,9 +146,9 @@ namespace Inventory.DataForms
 
             if (SearchBox.Text == "")
             {
-                foreach (Product p in _allProducts)
+                foreach (Product p in Logon.AllProducts)
                 {
-                    DatabaseGrid.Rows.Add(p.Id, p.ProdName, _allCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
+                    DatabaseGrid.Rows.Add(p.Id, p.ProdName, Logon.AllCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
                 }
             }
             else
@@ -176,7 +175,7 @@ namespace Inventory.DataForms
 
                 foreach (Product p in _newProducts)
                 {
-                    DatabaseGrid.Rows.Add(p.Id, p.ProdName, _allCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
+                    DatabaseGrid.Rows.Add(p.Id, p.ProdName, Logon.AllCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
                 }
             }
         }
@@ -188,9 +187,9 @@ namespace Inventory.DataForms
 
             if (SearchBox.Text == "")
             {
-                foreach (Product p in _allProducts)
+                foreach (Product p in Logon.AllProducts)
                 {
-                    DatabaseGrid.Rows.Add(p.Id, p.ProdName, _allCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
+                    DatabaseGrid.Rows.Add(p.Id, p.ProdName, Logon.AllCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
                 }
             }
             else
@@ -217,7 +216,7 @@ namespace Inventory.DataForms
 
                 foreach (Product p in _newProducts)
                 {
-                    DatabaseGrid.Rows.Add(p.Id, p.ProdName, _allCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
+                    DatabaseGrid.Rows.Add(p.Id, p.ProdName, Logon.AllCategories[p.CatId - 1].Name, p.Stock, "£" + p.Price.ToString("0.00"), p.Discontinued);
                 }
             }
         }

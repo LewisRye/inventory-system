@@ -27,8 +27,6 @@
                         var json = response.Content.ReadAsStringAsync().Result;
 
                         NumberLowItems = JsonSerializer.Deserialize<int>(json)!;
-
-                        MessageBox.Show("checked and got good result");
                     }
                 }
                 catch (Exception ex)

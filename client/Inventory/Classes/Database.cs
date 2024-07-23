@@ -2,6 +2,7 @@
 {
     internal class Database
     {
+        /*
         private MySqlConnection _databaseConnection = new MySqlConnection(Logon.ConnectionString); // directs code to location of my database file
 
         private List<Classes.Product> _products = new List<Classes.Product>();
@@ -214,6 +215,7 @@
          *  Order Database
          */
 
+        /*
         public void LoadDataFromOrdersDb(DataGridView databaseGrid)
         {
             try
@@ -275,5 +277,6 @@
                 MessageBox.Show("Unable to connect to the database. " + ex.Message);
             }
         }
+        */
     }
 }
