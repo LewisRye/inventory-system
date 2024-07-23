@@ -28,7 +28,7 @@ namespace Inventory.JsonResponses
         [JsonPropertyName("quantity")]
         public int Quantity { get; set; }
     }
-    
+
     public class AccessLevel
     {
         [JsonPropertyName("level_id")]
@@ -40,22 +40,19 @@ namespace Inventory.JsonResponses
 
     public class Order
     {
-        [JsonPropertyName("order_id")]
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
         [JsonPropertyName("product_name")]
-        public string? Name { get; set; }
+        public string? ProdName { get; set; }
 
-        [JsonPropertyName("fname")]
-        public string? Fname { get; set; }
+        [JsonPropertyName("customer_name")]
+        public string? CustName { get; set; }
 
-        [JsonPropertyName("lname")]
-        public string? Lname { get; set; }
-
-        [JsonPropertyName("quantity_ordered")]
+        [JsonPropertyName("quantity")]
         public int Quantity { get; set; }
 
-        [JsonPropertyName("order_date")]
+        [JsonPropertyName("date")]
         public DateTime Date { get; set; }
 
         [JsonPropertyName("price")]

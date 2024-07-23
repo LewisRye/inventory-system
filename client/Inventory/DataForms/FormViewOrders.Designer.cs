@@ -33,9 +33,10 @@
             DatabaseGrid = new DataGridView();
             ButtonClose = new MaterialSkin.Controls.MaterialButton();
             WelcomeText = new Label();
-            ButtonClear = new MaterialSkin.Controls.MaterialButton();
+            ButtonReset = new MaterialSkin.Controls.MaterialButton();
             SearchBox = new TextBox();
             TextSearch = new Label();
+            ButtonSearch = new MaterialSkin.Controls.MaterialButton();
             ((ISupportInitialize)DatabaseGrid).BeginInit();
             SuspendLayout();
             // 
@@ -51,7 +52,7 @@
             DatabaseGrid.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Microsoft YaHei UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.Font = new Font("Microsoft YaHei UI", 9.75F);
             dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.AppWorkspace;
             dataGridViewCellStyle1.SelectionForeColor = Color.White;
@@ -96,7 +97,7 @@
             // 
             // WelcomeText
             // 
-            WelcomeText.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
+            WelcomeText.Font = new Font("Segoe UI", 15.75F);
             WelcomeText.Location = new Point(1, 9);
             WelcomeText.Name = "WelcomeText";
             WelcomeText.Size = new Size(221, 38);
@@ -104,42 +105,42 @@
             WelcomeText.Text = "welcome, {username}!";
             WelcomeText.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // ButtonClear
+            // ButtonReset
             // 
-            ButtonClear.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            ButtonClear.AutoSize = false;
-            ButtonClear.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ButtonClear.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            ButtonClear.Depth = 0;
-            ButtonClear.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
-            ButtonClear.HighEmphasis = true;
-            ButtonClear.Icon = null;
-            ButtonClear.Location = new Point(897, 22);
-            ButtonClear.Margin = new Padding(4, 6, 4, 6);
-            ButtonClear.MouseState = MouseState.HOVER;
-            ButtonClear.Name = "ButtonClear";
-            ButtonClear.NoAccentTextColor = Color.Empty;
-            ButtonClear.Size = new Size(145, 23);
-            ButtonClear.TabIndex = 35;
-            ButtonClear.Text = "Clear";
-            ButtonClear.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            ButtonClear.UseAccentColor = false;
-            ButtonClear.UseVisualStyleBackColor = false;
+            ButtonReset.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            ButtonReset.AutoSize = false;
+            ButtonReset.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            ButtonReset.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            ButtonReset.Depth = 0;
+            ButtonReset.Font = new Font("Segoe UI", 8.25F);
+            ButtonReset.HighEmphasis = true;
+            ButtonReset.Icon = null;
+            ButtonReset.Location = new Point(949, 22);
+            ButtonReset.Margin = new Padding(4, 6, 4, 6);
+            ButtonReset.MouseState = MouseState.HOVER;
+            ButtonReset.Name = "ButtonReset";
+            ButtonReset.NoAccentTextColor = Color.Empty;
+            ButtonReset.Size = new Size(93, 23);
+            ButtonReset.TabIndex = 35;
+            ButtonReset.Text = "Reset";
+            ButtonReset.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            ButtonReset.UseAccentColor = false;
+            ButtonReset.UseVisualStyleBackColor = false;
+            ButtonReset.Click += ButtonReset_Click;
             // 
             // SearchBox
             // 
             SearchBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             SearchBox.Location = new Point(471, 22);
             SearchBox.Name = "SearchBox";
-            SearchBox.Size = new Size(419, 23);
+            SearchBox.Size = new Size(370, 23);
             SearchBox.TabIndex = 34;
-            SearchBox.TextChanged += SearchBox_TextChanged;
             // 
             // TextSearch
             // 
             TextSearch.AutoSize = true;
             TextSearch.BackColor = Color.Transparent;
-            TextSearch.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            TextSearch.Font = new Font("Segoe UI", 9.75F);
             TextSearch.Location = new Point(232, 21);
             TextSearch.Name = "TextSearch";
             TextSearch.Size = new Size(233, 17);
@@ -147,13 +148,37 @@
             TextSearch.Text = "Search by Customer Name or Product:";
             TextSearch.TextAlign = ContentAlignment.MiddleLeft;
             // 
+            // ButtonSearch
+            // 
+            ButtonSearch.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            ButtonSearch.AutoSize = false;
+            ButtonSearch.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            ButtonSearch.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            ButtonSearch.Depth = 0;
+            ButtonSearch.Font = new Font("Segoe UI", 8.25F);
+            ButtonSearch.HighEmphasis = true;
+            ButtonSearch.Icon = null;
+            ButtonSearch.Location = new Point(848, 22);
+            ButtonSearch.Margin = new Padding(4, 6, 4, 6);
+            ButtonSearch.MouseState = MouseState.HOVER;
+            ButtonSearch.Name = "ButtonSearch";
+            ButtonSearch.NoAccentTextColor = Color.Empty;
+            ButtonSearch.Size = new Size(93, 23);
+            ButtonSearch.TabIndex = 36;
+            ButtonSearch.Text = "Search";
+            ButtonSearch.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            ButtonSearch.UseAccentColor = false;
+            ButtonSearch.UseVisualStyleBackColor = false;
+            ButtonSearch.Click += ButtonSearch_Click;
+            // 
             // FormViewOrders
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1056, 599);
-            Controls.Add(ButtonClear);
+            Controls.Add(ButtonSearch);
+            Controls.Add(ButtonReset);
             Controls.Add(SearchBox);
             Controls.Add(TextSearch);
             Controls.Add(ButtonClose);
@@ -175,8 +200,9 @@
         private DataGridView DatabaseGrid;
         private MaterialSkin.Controls.MaterialButton ButtonClose;
         private Label WelcomeText;
-        private MaterialSkin.Controls.MaterialButton ButtonClear;
+        private MaterialSkin.Controls.MaterialButton ButtonReset;
         private TextBox SearchBox;
         private Label TextSearch;
+        private MaterialSkin.Controls.MaterialButton ButtonSearch;
     }
 }

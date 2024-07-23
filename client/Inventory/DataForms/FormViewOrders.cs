@@ -1,11 +1,10 @@
 ﻿using Inventory.Classes;
+using Inventory.JsonResponses;
 
 namespace Inventory.DataForms
 {
     public partial class FormViewOrders : Form
     {
-        private readonly Database _database = new Database();
-        private List<Order> _allOrders = new List<Order>();
         private List<Order> _newOrders = new List<Order>();
 
         public FormViewOrders()
@@ -19,49 +18,88 @@ namespace Inventory.DataForms
             DatabaseGrid.Columns.Add("4", "Date Ordered");
             DatabaseGrid.Columns.Add("5", "Order Price");
 
-            //_allOrders = _database.GetOrders();
+            try
+            {
+                using HttpClient client = new HttpClient();
+                HttpRequestMessage request;
+                HttpResponseMessage response;
+
+                request = new HttpRequestMessage(HttpMethod.Get, Classes.Logon.UriPath + "all_order");
+                response = client.Send(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = response.Content.ReadAsStringAsync().Result;
+
+                    Logon.AllOrders = JsonSerializer.Deserialize<List<Order>>(json)!;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
         }
 
         private void ViewOrdersForm_Load(object sender, EventArgs e)
         {
-            foreach (Order o in _allOrders)
+            foreach (Order o in Logon.AllOrders)
             {
-                DatabaseGrid.Rows.Add(o.GetId(), o.GetProductName(), o.GetFullName(), o.GetQuantity(), o.GetDate().ToString("dd/MM/yyyy"), "£" + o.GetPrice());
+                DatabaseGrid.Rows.Add(o.Id, o.ProdName, o.CustName, o.Quantity, o.Date.ToString("dd/MM/yyyy"), "£" + o.Price);
             }
 
             WelcomeText.Text = $"welcome, {Logon.CurrentUser}!";
         }
 
-        private void SearchBox_TextChanged(object sender, EventArgs e)
+        private void ButtonSearch_Click(object sender, EventArgs e)
         {
             DatabaseGrid.Rows.Clear();
             _newOrders.Clear();
 
-            if (SearchBox.Text == "")
+            try
             {
-                foreach (Order o in _allOrders)
+                using HttpClient client = new HttpClient();
+                HttpRequestMessage request;
+                HttpResponseMessage response;
+
+                request = new HttpRequestMessage(HttpMethod.Get, Classes.Logon.UriPath + "search_order");
+                request.Headers.Add("search", SearchBox.Text);
+                response = client.Send(request);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    DatabaseGrid.Rows.Add(o.GetId(), o.GetProductName(), o.GetFullName(), o.GetQuantity(), o.GetDate().ToString("dd/MM/yyyy"), "£" + o.GetPrice());
+                    var json = response.Content.ReadAsStringAsync().Result;
+
+                    _newOrders = JsonSerializer.Deserialize<List<Order>>(json)!;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                //_newOrders = _database.GetOrders(SearchBox.Text);
-                foreach (Order o in _newOrders)
-                {
-                    DatabaseGrid.Rows.Add(o.GetId(), o.GetProductName(), o.GetFullName(), o.GetQuantity(), o.GetDate().ToString("dd/MM/yyyy"), "£" + o.GetPrice());
-                }
+                MessageBox.Show(ex.Message, "Error");
+            }
+
+            foreach (Order o in _newOrders)
+            {
+                DatabaseGrid.Rows.Add(o.Id, o.ProdName, o.CustName, o.Quantity, o.Date.ToString("dd/MM/yyyy"), "£" + o.Price);
+            }
+        }
+
+        private void ButtonReset_Click(object sender, EventArgs e)
+        {
+            DatabaseGrid.Rows.Clear();
+            _newOrders.Clear();
+
+            foreach (Order o in Logon.AllOrders)
+            {
+                DatabaseGrid.Rows.Add(o.Id, o.ProdName, o.CustName, o.Quantity, o.Date.ToString("dd/MM/yyyy"), "£" + o.Price);
             }
         }
 
         private void ButtonClose_Click(object sender, EventArgs e)
         {
             new ProgramForms.FormDashboard().Show();
-            this.Hide();
             this.Close();
             this.Dispose();
             GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
     }
 }

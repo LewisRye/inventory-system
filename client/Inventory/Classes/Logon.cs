@@ -26,5 +26,6 @@ namespace Inventory.Classes
 
         public static List<Category> AllCategories = new List<Category>();
         public static List<Product> AllProducts = new List<Product>();
+        public static List<Order> AllOrders = new List<Order>();
     }
 }
