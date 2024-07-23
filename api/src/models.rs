@@ -1,4 +1,3 @@
-use chrono::NaiveDateTime;
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize)]
@@ -44,7 +43,17 @@ pub struct CustomerOrderDetails {
 pub struct CustomerOrder {
     pub order_id: i64,
     pub customer_id: i64,
-    pub order_date: NaiveDateTime,
+    pub order_date: String,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Order {
+    pub id: i64,
+    pub product_name: String,
+    pub customer_name: String, 
+    pub quantity: i64,
+    pub date: String,
+    pub price: i64,
 }
 
 #[derive(Serialize, Deserialize)]

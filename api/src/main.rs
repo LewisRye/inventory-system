@@ -281,6 +281,33 @@ async fn handle_request(
             Ok(Response::new(full(json)))
         },
 
+        (&Method::GET, Some("all_order")) => {
+            println!("{}: GET all_order", Utc::now());
+
+            let result = &get_all_order().unwrap_or(Vec::new());
+
+            // Convert JSON to bytes
+            let json = serde_json::to_string(result).unwrap();
+
+            // Build the HTTP response
+            Ok(Response::new(full(json)))
+        },
+
+        (&Method::GET, Some("search_order")) => {
+            let search = req.headers().get("search");
+            let search_str: Option<&str> = search.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+
+            println!("{}: GET search_order: {}", Utc::now(), search_str.unwrap_or_default());
+
+            let result = &get_search_order(&search_str.unwrap_or_default()).unwrap_or(Vec::new());
+
+            // Convert JSON to bytes
+            let json = serde_json::to_string(result).unwrap();
+
+            // Build the HTTP response
+            Ok(Response::new(full(json)))
+        },
+
         // Return 404 Not Found for other routes.
         _ => {
             let mut not_found = Response::new(empty());
@@ -432,6 +459,77 @@ fn get_search_product(search: &str) -> Result<Vec<models::Product>> {
 
     for product in product_iter {
         output.push(product?)
+    }
+
+    Ok(output)
+}
+
+fn get_all_order() -> Result<Vec<models::Order>> {
+    let mut output: Vec<models::Order> = Vec::new();
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let conn = Connection::open(database_url)?;
+
+    let mut stmt = conn.prepare("SELECT customer_order_details.order_id AS 'id', product.product_name AS 'product_name', 
+        CONCAT(customer.customer_fname, ' ', customer.customer_lname) AS 'customer_name',
+        customer_order_details.quantity_ordered AS 'quantity',
+        customer_orders.order_date AS 'date',
+        product.buy_price AS 'price' 
+        FROM customer_orders
+        INNER JOIN product on customer_order_details.product_id = product.product_id 
+        INNER JOIN customer on customer_orders.customer_id = customer.customer_id 
+        INNER JOIN customer_order_details on customer_orders.order_id = customer_order_details.order_id
+        GROUP BY customer_order_details.order_id, product.product_name, CONCAT(customer.customer_fname, ' ', customer.customer_lname), customer_order_details.quantity_ordered, customer_orders.order_date, product.buy_price  
+        ORDER BY order_date ASC;")?;
+    let order_iter = stmt.query_map([], |row| {
+        Ok(models::Order {
+            id: row.get(0)?,
+            product_name: row.get(1)?,
+            customer_name: row.get(2)?,
+            quantity: row.get(3)?,
+            date: row.get(4)?,
+            price: row.get(5)?,
+        })
+    })?;
+
+    for order in order_iter {
+        output.push(order?)
+    }
+
+    Ok(output)
+}
+
+fn get_search_order(search: &str) -> Result<Vec<models::Order>> {
+    let mut output: Vec<models::Order> = Vec::new();
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let conn = Connection::open(database_url)?;
+
+    let mut stmt = conn.prepare("SELECT customer_order_details.order_id AS 'id', product.product_name AS 'product_name', 
+        CONCAT(customer.customer_fname, ' ', customer.customer_lname) AS 'customer_name',
+        customer_order_details.quantity_ordered AS 'quantity',
+        customer_orders.order_date AS 'date',
+        product.buy_price AS 'price' 
+        FROM customer_orders
+        INNER JOIN product on customer_order_details.product_id = product.product_id 
+        INNER JOIN customer on customer_orders.customer_id = customer.customer_id 
+        INNER JOIN customer_order_details on customer_orders.order_id = customer_order_details.order_id
+        WHERE product.product_name LIKE ?1 OR customer_name LIKE ?2
+        GROUP BY customer_order_details.order_id, product.product_name, CONCAT(customer.customer_fname, ' ', customer.customer_lname), customer_order_details.quantity_ordered, customer_orders.order_date, product.buy_price  
+        ORDER BY order_date ASC;")?;
+    let order_iter = stmt.query_map([format!("%{}%", search), format!("%{}%", search)], |row| {
+        Ok(models::Order {
+            id: row.get(0)?,
+            product_name: row.get(1)?,
+            customer_name: row.get(2)?,
+            quantity: row.get(3)?,
+            date: row.get(4)?,
+            price: row.get(5)?,
+        })
+    })?;
+
+    for order in order_iter {
+        output.push(order?)
     }
 
     Ok(output)
