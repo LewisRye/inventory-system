@@ -440,7 +440,6 @@
             ChartDailyOrders.Palette = ChartColorPalette.Berry;
             series2.ChartArea = "ChartArea1";
             series2.ChartType = SeriesChartType.Spline;
-            series2.CustomProperties = "EmptyPointValue=Zero";
             series2.IsXValueIndexed = true;
             series2.Legend = "Legend1";
             series2.Name = "DailyOrders";

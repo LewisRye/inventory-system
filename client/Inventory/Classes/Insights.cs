@@ -54,8 +54,8 @@ namespace Inventory.Classes
                     Series s = chart.Series[0];
                     DateTime today = DateTime.Today;
 
-                    // create the series for the previous week and set the orders placeholder to 0
-                    for (int i = 7; i > 0; i--)
+                    // create the series for the previous week and set the orders placeholder to 0 orders
+                    for (int i = 7; i >= 0; i--)
                     {
                         s.Points.AddXY(today.AddDays(-i).ToString("dd/MM"), 0);
                     }
