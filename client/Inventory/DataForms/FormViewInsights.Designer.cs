@@ -29,10 +29,6 @@
         private void InitializeComponent()
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            ChartArea chartArea1 = new ChartArea();
-            Legend legend1 = new Legend();
-            Series series1 = new Series();
-            Title title1 = new Title();
             CloseButton = new MaterialSkin.Controls.MaterialButton();
             WelcomeText = new Label();
             TextInsights = new Label();
@@ -46,11 +42,9 @@
             TextTotalItemsSold = new Label();
             DatabaseGrid = new DataGridView();
             TextDataGrid = new Label();
-            ChartDailyRevenue = new Chart();
             TextDuringThisTime = new Label();
             TextSelectDate = new Label();
             ((ISupportInitialize)DatabaseGrid).BeginInit();
-            ((ISupportInitialize)ChartDailyRevenue).BeginInit();
             SuspendLayout();
             // 
             // CloseButton
@@ -62,14 +56,14 @@
             CloseButton.Depth = 0;
             CloseButton.HighEmphasis = true;
             CloseButton.Icon = null;
-            CloseButton.Location = new Point(1104, 638);
+            CloseButton.Location = new Point(8, 704);
             CloseButton.Margin = new Padding(4, 6, 4, 6);
             CloseButton.MouseState = MouseState.HOVER;
             CloseButton.Name = "CloseButton";
             CloseButton.NoAccentTextColor = Color.Empty;
-            CloseButton.Size = new Size(142, 57);
+            CloseButton.Size = new Size(1075, 57);
             CloseButton.TabIndex = 28;
-            CloseButton.Text = "Dashboard";
+            CloseButton.Text = "Return to Dashboard";
             CloseButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             CloseButton.UseAccentColor = false;
             CloseButton.UseVisualStyleBackColor = true;
@@ -78,12 +72,12 @@
             // WelcomeText
             // 
             WelcomeText.BackColor = Color.Transparent;
-            WelcomeText.Font = new Font("Microsoft YaHei UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
+            WelcomeText.Font = new Font("Microsoft YaHei UI", 15.75F, FontStyle.Bold);
             WelcomeText.ForeColor = Color.Black;
             WelcomeText.Location = new Point(794, 10);
             WelcomeText.Margin = new Padding(2, 0, 2, 0);
             WelcomeText.Name = "WelcomeText";
-            WelcomeText.Size = new Size(451, 46);
+            WelcomeText.Size = new Size(294, 46);
             WelcomeText.TabIndex = 26;
             WelcomeText.Text = "welcome, (blank)!";
             WelcomeText.TextAlign = ContentAlignment.MiddleRight;
@@ -91,7 +85,7 @@
             // TextInsights
             // 
             TextInsights.BackColor = Color.Transparent;
-            TextInsights.Font = new Font("Microsoft YaHei UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
+            TextInsights.Font = new Font("Microsoft YaHei UI", 15.75F, FontStyle.Bold);
             TextInsights.Location = new Point(14, 10);
             TextInsights.Margin = new Padding(4, 0, 4, 0);
             TextInsights.Name = "TextInsights";
@@ -129,7 +123,7 @@
             // TextDates
             // 
             TextDates.BackColor = Color.Transparent;
-            TextDates.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            TextDates.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Bold);
             TextDates.Location = new Point(138, 15);
             TextDates.Margin = new Padding(4, 0, 4, 0);
             TextDates.Name = "TextDates";
@@ -162,7 +156,7 @@
             // TextBestSeller
             // 
             TextBestSeller.BackColor = Color.Transparent;
-            TextBestSeller.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            TextBestSeller.Font = new Font("Microsoft YaHei UI", 12F);
             TextBestSeller.Location = new Point(15, 230);
             TextBestSeller.Margin = new Padding(4, 0, 4, 0);
             TextBestSeller.Name = "TextBestSeller";
@@ -174,7 +168,7 @@
             // TextMostProfitableDay
             // 
             TextMostProfitableDay.BackColor = Color.Transparent;
-            TextMostProfitableDay.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            TextMostProfitableDay.Font = new Font("Microsoft YaHei UI", 12F);
             TextMostProfitableDay.Location = new Point(15, 158);
             TextMostProfitableDay.Margin = new Padding(4, 0, 4, 0);
             TextMostProfitableDay.Name = "TextMostProfitableDay";
@@ -186,7 +180,7 @@
             // TextTotalProfit
             // 
             TextTotalProfit.BackColor = Color.Transparent;
-            TextTotalProfit.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            TextTotalProfit.Font = new Font("Microsoft YaHei UI", 12F);
             TextTotalProfit.Location = new Point(15, 194);
             TextTotalProfit.Margin = new Padding(4, 0, 4, 0);
             TextTotalProfit.Name = "TextTotalProfit";
@@ -198,7 +192,7 @@
             // TextTotalItemsSold
             // 
             TextTotalItemsSold.BackColor = Color.Transparent;
-            TextTotalItemsSold.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            TextTotalItemsSold.Font = new Font("Microsoft YaHei UI", 12F);
             TextTotalItemsSold.Location = new Point(14, 122);
             TextTotalItemsSold.Margin = new Padding(4, 0, 4, 0);
             TextTotalItemsSold.Name = "TextTotalItemsSold";
@@ -219,7 +213,7 @@
             DatabaseGrid.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Microsoft YaHei UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.Font = new Font("Microsoft YaHei UI", 9.75F);
             dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.AppWorkspace;
             dataGridViewCellStyle1.SelectionForeColor = Color.White;
@@ -242,7 +236,7 @@
             // TextDataGrid
             // 
             TextDataGrid.BackColor = Color.Transparent;
-            TextDataGrid.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            TextDataGrid.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Bold);
             TextDataGrid.Location = new Point(15, 295);
             TextDataGrid.Margin = new Padding(4, 0, 4, 0);
             TextDataGrid.Name = "TextDataGrid";
@@ -251,51 +245,10 @@
             TextDataGrid.Text = "Orders from the selected dates:";
             TextDataGrid.TextAlign = ContentAlignment.BottomLeft;
             // 
-            // ChartDailyRevenue
-            // 
-            ChartDailyRevenue.BackColor = Color.Transparent;
-            ChartDailyRevenue.BorderlineColor = Color.Transparent;
-            ChartDailyRevenue.BorderSkin.BackColor = Color.Transparent;
-            chartArea1.BackColor = Color.Transparent;
-            chartArea1.Name = "ChartArea1";
-            ChartDailyRevenue.ChartAreas.Add(chartArea1);
-            legend1.Alignment = StringAlignment.Center;
-            legend1.BackColor = Color.Transparent;
-            legend1.Enabled = false;
-            legend1.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
-            legend1.IsTextAutoFit = false;
-            legend1.Name = "Legend1";
-            legend1.TitleFont = new Font("Microsoft YaHei UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
-            ChartDailyRevenue.Legends.Add(legend1);
-            ChartDailyRevenue.Location = new Point(775, 72);
-            ChartDailyRevenue.Margin = new Padding(4, 3, 4, 3);
-            ChartDailyRevenue.Name = "ChartDailyRevenue";
-            ChartDailyRevenue.Palette = ChartColorPalette.SeaGreen;
-            series1.BorderWidth = 5;
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = SeriesChartType.Line;
-            series1.Color = Color.Transparent;
-            series1.CustomProperties = "EmptyPointValue=Zero";
-            series1.EmptyPointStyle.BorderWidth = 5;
-            series1.EmptyPointStyle.IsValueShownAsLabel = true;
-            series1.Font = new Font("Microsoft YaHei UI", 48F, FontStyle.Bold, GraphicsUnit.Point);
-            series1.Legend = "Legend1";
-            series1.Name = "Revenue Per Order";
-            series1.Palette = ChartColorPalette.SeaGreen;
-            ChartDailyRevenue.Series.Add(series1);
-            ChartDailyRevenue.Size = new Size(471, 258);
-            ChartDailyRevenue.TabIndex = 47;
-            ChartDailyRevenue.TabStop = false;
-            ChartDailyRevenue.Text = "ChartStockType";
-            title1.Font = new Font("Microsoft YaHei UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
-            title1.Name = "Title";
-            title1.Text = "Profit Per Order (£)";
-            ChartDailyRevenue.Titles.Add(title1);
-            // 
             // TextDuringThisTime
             // 
             TextDuringThisTime.BackColor = Color.Transparent;
-            TextDuringThisTime.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            TextDuringThisTime.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Bold);
             TextDuringThisTime.Location = new Point(15, 88);
             TextDuringThisTime.Margin = new Padding(4, 0, 4, 0);
             TextDuringThisTime.Name = "TextDuringThisTime";
@@ -307,7 +260,7 @@
             // TextSelectDate
             // 
             TextSelectDate.BackColor = Color.Transparent;
-            TextSelectDate.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            TextSelectDate.Font = new Font("Microsoft YaHei UI", 12F);
             TextSelectDate.Location = new Point(15, 330);
             TextSelectDate.Margin = new Padding(4, 0, 4, 0);
             TextSelectDate.Name = "TextSelectDate";
@@ -321,10 +274,9 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(1259, 708);
+            ClientSize = new Size(1090, 768);
             Controls.Add(TextSelectDate);
             Controls.Add(TextDuringThisTime);
-            Controls.Add(ChartDailyRevenue);
             Controls.Add(ToDate);
             Controls.Add(FromDate);
             Controls.Add(TextDataGrid);
@@ -346,7 +298,6 @@
             Text = "Inventory Management System";
             Load += FormViewInsights_Load;
             ((ISupportInitialize)DatabaseGrid).EndInit();
-            ((ISupportInitialize)ChartDailyRevenue).EndInit();
             ResumeLayout(false);
         }
 
@@ -364,7 +315,6 @@
         private Label TextTotalItemsSold;
         private DataGridView DatabaseGrid;
         private Label TextDataGrid;
-        private Chart ChartDailyRevenue;
         private Label TextDuringThisTime;
         private Label TextSelectDate;
     }
