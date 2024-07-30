@@ -281,6 +281,21 @@ async fn handle_request(
             Ok(Response::new(full(json)))
         },
 
+        (&Method::GET, Some("insight_total_orders")) => {
+            let from = req.headers().get("from");
+            let from_str: Option<&str> = from.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+
+            let to = req.headers().get("to");
+            let to_str: Option<&str> = to.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+
+            println!("{}: GET insight_total_orders {} {}", Utc::now(), &from_str.unwrap_or_default(), &to_str.unwrap_or_default());
+
+            let result = &get_insight_total_orders(from_str.unwrap_or_default(), to_str.unwrap_or_default()).unwrap_or(Vec::new());
+            let json = serde_json::to_string(result).unwrap();
+
+            Ok(Response::new(full(json)))
+        },
+
         (&Method::GET, Some("insight_total_items")) => {
             let from = req.headers().get("from");
             let from_str: Option<&str> = from.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
@@ -291,6 +306,36 @@ async fn handle_request(
             println!("{}: GET insight_total_items {} {}", Utc::now(), &from_str.unwrap_or_default(), &to_str.unwrap_or_default());
 
             let result = &get_insight_total_items(from_str.unwrap_or_default(), to_str.unwrap_or_default()).unwrap_or(-1);
+            let json = serde_json::to_string(result).unwrap();
+
+            Ok(Response::new(full(json)))
+        },
+
+        (&Method::GET, Some("insight_most_profitable_day")) => {
+            let from = req.headers().get("from");
+            let from_str: Option<&str> = from.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+
+            let to = req.headers().get("to");
+            let to_str: Option<&str> = to.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+
+            println!("{}: GET insight_most_profitable_day {} {}", Utc::now(), &from_str.unwrap_or_default(), &to_str.unwrap_or_default());
+
+            let result = &get_insight_most_profitable_day(from_str.unwrap_or_default(), to_str.unwrap_or_default()).unwrap_or(Vec::new());
+            let json = serde_json::to_string(result).unwrap();
+
+            Ok(Response::new(full(json)))
+        },
+
+        (&Method::GET, Some("insight_total_profit")) => {
+            let from = req.headers().get("from");
+            let from_str: Option<&str> = from.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+
+            let to = req.headers().get("to");
+            let to_str: Option<&str> = to.and_then(|hv| hv.to_str().ok()); // Convert Option<&HeaderValue> to Option<&str>
+
+            println!("{}: GET insight_total_profit {} {}", Utc::now(), &from_str.unwrap_or_default(), &to_str.unwrap_or_default());
+
+            let result = &get_insight_total_profit(from_str.unwrap_or_default(), to_str.unwrap_or_default()).unwrap_or(-1);
             let json = serde_json::to_string(result).unwrap();
 
             Ok(Response::new(full(json)))
@@ -719,6 +764,36 @@ fn get_dashboard_orders() -> Result<i64> {
     result.map(|id| id)
 }
 
+fn get_insight_total_orders(from: &str, to: &str) -> Result<Vec<models::Order>> {
+    let mut output: Vec<models::Order> = Vec::new();
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let conn = Connection::open(database_url)?;
+
+    let mut stmt = conn.prepare("SELECT customer_orders.order_id, product.product_name, CONCAT(customer.customer_fname, ' ', customer.customer_lname), customer_order_details.quantity_ordered, customer_orders.order_date, product.buy_price
+        FROM customer_orders
+        INNER JOIN customer_order_details ON customer_order_details.order_id = customer_orders.order_id
+        INNER JOIN product ON product.product_id = customer_order_details.product_id
+        INNER JOIN customer ON customer.customer_id = customer_orders.customer_id
+        WHERE customer_orders.order_date BETWEEN ?1 AND ?2;")?;
+    let order_iter = stmt.query_map([from, to], |row| {
+        Ok(models::Order {
+            id: row.get(0)?,
+            product_name: row.get(1)?,
+            customer_name: row.get(2)?,
+            quantity: row.get(3)?,
+            date: row.get(4)?,
+            price: row.get(5)?,
+        })
+    })?;
+
+    for order in order_iter {
+        output.push(order?)
+    }
+
+    Ok(output)
+}
+
 fn get_insight_total_items(from: &str, to: &str) -> Result<i64> {
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     let conn = Connection::open(database_url)?;
@@ -728,6 +803,52 @@ fn get_insight_total_items(from: &str, to: &str) -> Result<i64> {
             FROM customer_order_details, customer_orders
             WHERE customer_order_details.order_id = customer_orders.order_id 
             AND customer_orders.order_date BETWEEN ?1 AND ?2;",
+        [from, to], 
+        |row| row.get(0),
+    );
+
+    result.map(|id| id)
+}
+
+fn get_insight_most_profitable_day(from: &str, to: &str) -> Result<Vec<models::DailyOrder>> {
+    let mut output: Vec<models::DailyOrder> = Vec::new();
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let conn = Connection::open(database_url)?;
+
+    let mut stmt = conn.prepare("SELECT customer_orders.order_date AS date, SUM(product.buy_price *
+        customer_order_details.quantity_ordered) AS orders FROM customer_order_details, product, customer_orders
+        WHERE product.product_id = customer_order_details.product_id
+        AND customer_orders.order_id = customer_order_details.order_id
+        AND customer_orders.order_date BETWEEN ?1 AND ?2
+        GROUP BY customer_orders.order_date
+        ORDER BY SUM(product.buy_price *
+        customer_order_details.quantity_ordered)
+        DESC LIMIT 1;")?;
+    let dailyorder_iter = stmt.query_map([from, to], |row| {
+        Ok(models::DailyOrder {
+            date: row.get(0)?,
+            orders: row.get(1)?,
+        })
+    })?;
+
+    for dailyorder in dailyorder_iter {
+        output.push(dailyorder?)
+    }
+
+    Ok(output)
+}
+
+fn get_insight_total_profit(from: &str, to: &str) -> Result<i64> {
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let conn = Connection::open(database_url)?;
+
+    let result: Result<i64> = conn.query_row(
+        "SELECT SUM(customer_order_details.quantity_ordered * product.buy_price) AS profit
+        FROM customer_orders
+        INNER JOIN customer_order_details ON customer_order_details.order_id = customer_orders.order_id
+        INNER JOIN product ON product.product_id = customer_order_details.product_id
+        WHERE customer_orders.order_date BETWEEN ?1 AND ?2;",
         [from, to], 
         |row| row.get(0),
     );
