@@ -23,13 +23,17 @@ My first major project committed to GitHub, an inventory management system that 
 ## Install/Setup
 1. To get started with the project, clone it to your chosen folder.
 ```
-> git clone https://github.com/LewisRye/inventory-system.git
+git clone https://github.com/LewisRye/inventory-system.git
 ```
 2. Navigate to the *'api'* folder and compile / run the server using Rust's `cargo`.
 ```
-> cd inventory-system/api/
-> cargo b
-> cargo r
+cd inventory-system/api/
+```
+```
+cargo b
+```
+```
+cargo r
 ```
 3. **Windows Only:** Navigate to the *'client'* folder and open the `Inventory.sln` file, from here, you can use any .NET IDE of your choice to build and run the Windows Forms project.
 
